@@ -7,19 +7,23 @@ import com.project.archaeosite.main.MainApp
 import com.project.archaeosite.models.ArchaeoModel
 import kotlinx.android.synthetic.main.activity_site.*
 import org.jetbrains.anko.AnkoLogger
-import org.jetbrains.anko.info
 import org.jetbrains.anko.toast
 
 class SiteActivity : AppCompatActivity(), AnkoLogger {
     var site = ArchaeoModel()
     lateinit var app: MainApp
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_site)
 
         app = application as MainApp
+
+        if (intent.hasExtra("site_edit")) {
+            site = intent.extras?.getParcelable<ArchaeoModel>("site_edit")!!
+            text_Site_Name.setText(site.title)
+            text_Site_Description.setText(site.description)
+        }
 
         button_Add_Site.setOnClickListener(){
             site.title=text_Site_Name.text.toString()
@@ -37,7 +41,5 @@ class SiteActivity : AppCompatActivity(), AnkoLogger {
         item_back.setOnClickListener(){
             finish()
         }
-
-
     }
 }

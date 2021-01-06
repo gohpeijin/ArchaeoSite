@@ -1,7 +1,6 @@
 package com.project.archaeosite.main
 
 import android.app.Application
-import com.project.archaeosite.models.ArchaeoModel
 import com.project.archaeosite.models.SiteImplement
 import com.project.archaeosite.models.SiteInterface
 import org.jetbrains.anko.AnkoLogger
@@ -19,12 +18,5 @@ class MainApp : Application(), AnkoLogger {
 
     }
 
-//    val sites = ArrayList<ArchaeoModel>()
-//    override fun onCreate() {
-//        super.onCreate()
-//        info("ArchaeoSite started")
-//        sites.add(ArchaeoModel(0,"test1","testing1"))
-//        sites.add(ArchaeoModel(1,"test2","testing2"))
-//        sites.add(ArchaeoModel(2,"test3","testing3"))
-//    }
+
 }
