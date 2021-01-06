@@ -1,7 +1,8 @@
-package com.peoject.archaeo10.models
+package com.project.archaeosite.models
 
 import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
+import kotlinx.android.parcel.Parcelize
+//import kotlinx.parcelize.Parcelize
 
 
 //we need a unique way of identifying placemarks - this is usually via an id.
