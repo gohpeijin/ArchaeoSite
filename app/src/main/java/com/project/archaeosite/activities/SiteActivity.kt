@@ -18,6 +18,7 @@ class SiteActivity : AppCompatActivity(), AnkoLogger {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_site)
+
         app = application as MainApp
 
         button_Add_Site.setOnClickListener(){

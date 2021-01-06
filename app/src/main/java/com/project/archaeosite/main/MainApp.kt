@@ -10,12 +10,21 @@ import org.jetbrains.anko.info
 class MainApp : Application(), AnkoLogger {
 
    lateinit var sites:SiteInterface
-
+    //val sites = SiteImplement()
+    //val sites = ArrayList<ArchaeoModel>()
     override fun onCreate() {
         super.onCreate()
         sites=SiteImplement()
         info("ArchaeoSite started")
 
-
     }
+
+//    val sites = ArrayList<ArchaeoModel>()
+//    override fun onCreate() {
+//        super.onCreate()
+//        info("ArchaeoSite started")
+//        sites.add(ArchaeoModel(0,"test1","testing1"))
+//        sites.add(ArchaeoModel(1,"test2","testing2"))
+//        sites.add(ArchaeoModel(2,"test3","testing3"))
+//    }
 }

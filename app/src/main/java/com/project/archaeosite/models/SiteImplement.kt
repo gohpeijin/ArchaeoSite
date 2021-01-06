@@ -8,6 +8,7 @@ var lastId = 0L //to generate id for the uniqueness of placemark
 internal fun getId(): Long {
     return lastId++
 }
+
 class SiteImplement : SiteInterface, AnkoLogger {
 
     val sites= ArrayList<ArchaeoModel>()
@@ -19,9 +20,9 @@ class SiteImplement : SiteInterface, AnkoLogger {
     override fun create(site: ArchaeoModel) {
         site.id= getId()
         sites.add(site)
-//        sites.add(ArchaeoModel(1,"test1","testing1"))
+//        sites.add(ArchaeoModel(0,"test1","testing1"))
 //        sites.add(ArchaeoModel(1,"test2","testing2"))
-//        sites.add(ArchaeoModel(1,"test3","testing3"))
+//        sites.add(ArchaeoModel(2,"test3","testing3"))
         displayAll()
     }
 

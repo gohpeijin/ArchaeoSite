@@ -11,9 +11,7 @@ import kotlinx.android.synthetic.main.card_sites.view.*
 interface SitesListener{
     fun onSiteClick(site:ArchaeoModel)
 }
-class SitesAdapter constructor(
-    private var sites: List<ArchaeoModel>,
-    private val listener:SitesListener
+class SitesAdapter constructor(private var sites: List<ArchaeoModel>, private val listener:SitesListener
     ) : RecyclerView.Adapter<SitesAdapter.MainHolder>(){
 
     inner class MainHolder constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -27,7 +25,6 @@ class SitesAdapter constructor(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainHolder {
-
         val view = LayoutInflater.from(parent?.context).inflate(R.layout.card_sites, parent, false)
         return MainHolder(view)
     }
