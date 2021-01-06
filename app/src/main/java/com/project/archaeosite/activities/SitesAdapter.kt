@@ -11,10 +11,13 @@ import kotlinx.android.synthetic.main.card_sites.view.*
 interface SitesListener{
     fun onSiteClick(site:ArchaeoModel)
 }
-class SitesAdapter constructor(private var sites: List<ArchaeoModel>,private val listener:SitesListener) : RecyclerView.Adapter<SitesAdapter.MainHolder>(){
+class SitesAdapter constructor(
+    private var sites: List<ArchaeoModel>,
+    private val listener:SitesListener
+    ) : RecyclerView.Adapter<SitesAdapter.MainHolder>(){
 
     inner class MainHolder constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(site: ArchaeoModel) {
+        fun bind(site: ArchaeoModel,listener: SitesListener) {
             itemView.siteName.text = site.title
             itemView.siteDescription.text = site.description
             itemView.setOnClickListener(){
@@ -31,7 +34,7 @@ class SitesAdapter constructor(private var sites: List<ArchaeoModel>,private val
 
     override fun onBindViewHolder(holder: MainHolder, position: Int) {
         val site =sites[holder.adapterPosition]
-        holder.bind(site)
+        holder.bind(site,listener)
     }
 
     override fun getItemCount(): Int = sites.size
