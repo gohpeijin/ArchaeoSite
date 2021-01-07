@@ -20,9 +20,6 @@ class SiteImplement : SiteInterface, AnkoLogger {
     override fun create(site: ArchaeoModel) {
         site.id= getId()
         sites.add(site)
-//        sites.add(ArchaeoModel(0,"test1","testing1"))
-//        sites.add(ArchaeoModel(1,"test2","testing2"))
-//        sites.add(ArchaeoModel(2,"test3","testing3"))
         displayAll()
     }
 

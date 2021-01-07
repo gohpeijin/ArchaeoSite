@@ -85,7 +85,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/text_Site_Description" />
 
             <ImageView
-                android:id="@+id/placemarkImage"
+                android:id="@+id/ImageSelected"
                 android:layout_width="0dp"
                 android:layout_height="150dp"
                 android:layout_marginStart="8dp"
@@ -94,7 +94,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/button_Select_Image"
-                app:srcCompat="@mipmap/ic_launcher" />
+                app:srcCompat="@mipmap/ic_launcher"
+                />
 
             <Button
                 android:id="@+id/button_Select_Location"
@@ -104,7 +105,7 @@
                 android:text="Select Location"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/placemarkImage" />
+                app:layout_constraintTop_toBottomOf="@+id/ImageSelected" />
 
             <Button
                 android:id="@+id/button_Add_Site"

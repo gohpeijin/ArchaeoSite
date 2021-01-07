@@ -9,6 +9,7 @@ import com.project.archaeosite.main.MainApp
 import com.project.archaeosite.models.ArchaeoModel
 import kotlinx.android.synthetic.main.activity_display_lists.*
 import org.jetbrains.anko.AnkoLogger
+import org.jetbrains.anko.info
 import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.startActivityForResult
 
@@ -20,6 +21,7 @@ class DisplayListsActivity : AppCompatActivity(),AnkoLogger,SitesListener{
         app = application as MainApp
 
         item_add.setOnClickListener(){
+            info("Add icon pressed")
             startActivityForResult<SiteActivity>(0)
         }
 
