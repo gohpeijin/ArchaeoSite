@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.project.archaeosite.R
+import com.project.archaeosite.helpers.readImageFromPath
 import com.project.archaeosite.models.ArchaeoModel
 import kotlinx.android.synthetic.main.card_sites.view.*
 
@@ -18,6 +19,7 @@ class SitesAdapter constructor(private var sites: List<ArchaeoModel>, private va
         fun bind(site: ArchaeoModel,listener: SitesListener) {
             itemView.siteName.text = site.title
             itemView.siteDescription.text = site.description
+            itemView.imageIcon.setImageBitmap(readImageFromPath(itemView.context, site.image))
             itemView.setOnClickListener(){
                 listener.onSiteClick(site)
             }

@@ -3,6 +3,7 @@ package com.project.archaeosite.activities
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import com.project.archaeosite.R
 import com.project.archaeosite.helpers.readImage
 import com.project.archaeosite.helpers.readImageFromPath
@@ -33,6 +34,7 @@ class SiteActivity : AppCompatActivity(), AnkoLogger {
             text_Site_Description.setText(site.description)
             button_Add_Site.setText("Save Site")
             ImageSelected.setImageBitmap(readImageFromPath(this,site.image))
+            item_delete.setVisibility(View.VISIBLE)
         }
 
         button_Add_Site.setOnClickListener(){
@@ -62,6 +64,10 @@ class SiteActivity : AppCompatActivity(), AnkoLogger {
 
         item_back.setOnClickListener(){
             info("back icon pressed")
+            finish()
+        }
+        item_delete.setOnClickListener {
+            app.sites.delete(site)
             finish()
         }
     }
