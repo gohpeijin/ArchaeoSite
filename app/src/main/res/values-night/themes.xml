@@ -13,4 +13,14 @@
         <item name="android:statusBarColor" tools:targetApi="l">@color/black</item>
         <!-- Customize your theme here. -->
     </style>
+
+<!--    <style name="SplashTheme" parent ="Theme.AppCompat.Light.NoActionBar">-->
+<!--        <item name="android:windowBackground">@layout/activity_splash_screen</item>-->
+
+<!--        //for full screen activity-->
+<!--        <item name="android:windowNoTitle">true</item>-->
+<!--        <item name="android:windowFullscreen">true</item>-->
+<!--        <item name="android:windowActionBar">false</item>-->
+<!--        <item name="android:windowContentOverlay">@null</item>-->
+<!--    </style>-->
 </resources>
