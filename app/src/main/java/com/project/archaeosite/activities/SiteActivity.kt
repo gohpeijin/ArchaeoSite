@@ -1,5 +1,6 @@
 package com.project.archaeosite.activities
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -33,7 +34,9 @@ class SiteActivity : AppCompatActivity(), AnkoLogger {
             text_Site_Name.setText(site.title)
             text_Site_Description.setText(site.description)
             button_Add_Site.setText("Save Site")
-            ImageSelected.setImageBitmap(readImageFromPath(this,site.image))
+           // ImageSelected.setImageBitmap(readImageFromPath(this,site.image))
+            if(site.image.isNotEmpty())
+                ImageSelected.setImageBitmap(readImageFromPath(this, site.image.get(0)))
             item_delete.setVisibility(View.VISIBLE)
         }
 
@@ -62,6 +65,29 @@ class SiteActivity : AppCompatActivity(), AnkoLogger {
             showImagePicker(this,IMAGE_REQUEST)
         }
 
+        var imageposition=0
+        button_next_image.setOnClickListener(){
+            if(imageposition<site.image.size-1)
+            {
+                imageposition++
+                ImageSelected.setImageBitmap(readImageFromPath(this, site.image.get(imageposition)))
+            }
+            else
+            {
+                toast("No more images")
+            }
+        }
+        button_previos_image.setOnClickListener(){
+            if(imageposition>0)
+            {
+                imageposition--
+                ImageSelected.setImageBitmap(readImageFromPath(this, site.image.get(imageposition)))
+            }
+            else
+            {
+                toast("Reach the first image")
+            }
+        }
         item_back.setOnClickListener(){
             info("back icon pressed")
             finish()
@@ -76,13 +102,28 @@ class SiteActivity : AppCompatActivity(), AnkoLogger {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
             IMAGE_REQUEST -> {
-                if (data != null) {
-                    info("setting up image")
-                    site.image = data.getData().toString()
-                 //  site.image ="content://com.android.externalstorage.documents/document/3232-6531%3ADalat%2F20191005_130946_018_saved.jpg"
-                    ImageSelected.setImageBitmap(readImage(this, resultCode, data))
+                if(resultCode== Activity.RESULT_OK){ //to prevent the app stopping when no image selected
+                    if(data!!.clipData!=null){
+                        val count=data.clipData!!.itemCount
+                        if (count>4) //only up to 4images can be selected
+                            toast("You can only select maximum 4 image. Please select again")
+                        else{
+                            site.image.clear()
+                            for(i in 0 until count){
+                                val imageUri=data.clipData!!.getItemAt(i).uri
+                                site.image.add(imageUri.toString())
+                            }
+                            ImageSelected.setImageBitmap(readImageFromPath(this, site.image.get(0)))
+                        }
+                    }
+                    else{
+                        site.image.clear()
+                        site.image.add(data.getData().toString())
+                        ImageSelected.setImageBitmap(readImage(this, resultCode, data))
+                    }
                 }
             }
         }
     }
+
 }

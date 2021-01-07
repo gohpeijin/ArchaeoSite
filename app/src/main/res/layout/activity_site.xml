@@ -130,6 +130,27 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/button_Select_Location" />
 
+            <ImageButton
+                android:id="@+id/button_previos_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/white"
+                android:rotation="180"
+                app:layout_constraintBottom_toBottomOf="@+id/ImageSelected"
+                app:layout_constraintStart_toStartOf="@+id/ImageSelected"
+                app:layout_constraintTop_toBottomOf="@+id/button_Select_Image"
+                app:srcCompat="@android:drawable/ic_media_play" />
+
+            <ImageButton
+                android:id="@+id/button_next_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/white"
+                app:layout_constraintBottom_toBottomOf="@+id/ImageSelected"
+                app:layout_constraintEnd_toEndOf="@+id/ImageSelected"
+                app:layout_constraintTop_toBottomOf="@+id/button_Select_Image"
+                app:srcCompat="@android:drawable/ic_media_play" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </RelativeLayout>
