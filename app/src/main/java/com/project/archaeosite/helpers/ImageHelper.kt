@@ -13,8 +13,9 @@ import java.io.IOException
 //this is to open other document to select picture
 fun showImagePicker(parent: Activity, id: Int) {
     val intent = Intent()
-    intent.type = "image/*"
+    intent.type = "image/*" //let us pick any ind of image
     intent.action = Intent.ACTION_OPEN_DOCUMENT
+    intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE,true)
     intent.addCategory(Intent.CATEGORY_OPENABLE)
     val chooser = Intent.createChooser(intent, R.string.select_site_image.toString())
     parent.startActivityForResult(chooser, id)

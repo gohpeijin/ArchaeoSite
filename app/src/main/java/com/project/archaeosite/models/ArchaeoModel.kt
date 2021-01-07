@@ -1,5 +1,6 @@
 package com.project.archaeosite.models
 
+import android.graphics.Bitmap
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 //import kotlinx.parcelize.Parcelize
@@ -11,7 +12,7 @@ data class ArchaeoModel(
     var id: Long = 0,
     var title: String = "",
     var description: String="",
-    var image: String = "",
+    var image: MutableList<String> = arrayListOf(),
     var lat: Double = 0.0,
     var lng: Double = 0.0,
     var zoom: Float = 0f
