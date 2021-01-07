@@ -1,5 +1,6 @@
 package com.project.archaeosite.activities
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -34,7 +35,8 @@ class SiteActivity : AppCompatActivity(), AnkoLogger {
             text_Site_Description.setText(site.description)
             button_Add_Site.setText("Save Site")
            // ImageSelected.setImageBitmap(readImageFromPath(this,site.image))
-            ImageSelected.setImageBitmap(readImageFromPath(this, site.image!!.get(0)))
+            if(site.image.isNotEmpty())
+                ImageSelected.setImageBitmap(readImageFromPath(this, site.image.get(0)))
             item_delete.setVisibility(View.VISIBLE)
         }
 
@@ -68,7 +70,7 @@ class SiteActivity : AppCompatActivity(), AnkoLogger {
             if(imageposition<site.image.size-1)
             {
                 imageposition++
-                ImageSelected.setImageBitmap(readImageFromPath(this, site.image!!.get(imageposition)))
+                ImageSelected.setImageBitmap(readImageFromPath(this, site.image.get(imageposition)))
             }
             else
             {
@@ -79,7 +81,7 @@ class SiteActivity : AppCompatActivity(), AnkoLogger {
             if(imageposition>0)
             {
                 imageposition--
-                ImageSelected.setImageBitmap(readImageFromPath(this, site.image!!.get(imageposition)))
+                ImageSelected.setImageBitmap(readImageFromPath(this, site.image.get(imageposition)))
             }
             else
             {
@@ -100,20 +102,26 @@ class SiteActivity : AppCompatActivity(), AnkoLogger {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
             IMAGE_REQUEST -> {
-                if(data!!.clipData!=null){
-                    val count=data.clipData!!.itemCount
-                    for(i in 0 until count){
-                      val imageUri=data.clipData!!.getItemAt(i).uri
-                        site.image!!.add(imageUri.toString())
+                if(resultCode== Activity.RESULT_OK){ //to prevent the app stopping when no image selected
+                    if(data!!.clipData!=null){
+                        val count=data.clipData!!.itemCount
+                        if (count>4) //only up to 4images can be selected
+                            toast("You can only select maximum 4 image. Please select again")
+                        else{
+                            site.image.clear()
+                            for(i in 0 until count){
+                                val imageUri=data.clipData!!.getItemAt(i).uri
+                                site.image.add(imageUri.toString())
+                            }
+                            ImageSelected.setImageBitmap(readImageFromPath(this, site.image.get(0)))
+                        }
                     }
-                        ImageSelected.setImageBitmap(readImageFromPath(this, site.image!!.get(0)))
+                    else{
+                        site.image.clear()
+                        site.image.add(data.getData().toString())
+                        ImageSelected.setImageBitmap(readImage(this, resultCode, data))
+                    }
                 }
-                else{
-                    site.image!!.add(data.getData().toString())
-                    ImageSelected.setImageBitmap(readImage(this, resultCode, data))
-
-                }
-
             }
         }
     }

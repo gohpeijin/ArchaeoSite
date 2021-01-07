@@ -19,9 +19,8 @@ class SitesAdapter constructor(private var sites: List<ArchaeoModel>, private va
         fun bind(site: ArchaeoModel,listener: SitesListener) {
             itemView.siteName.text = site.title
             itemView.siteDescription.text = site.description
-            itemView.imageIcon.setImageBitmap(readImageFromPath(itemView.context,
-                site.image!!.get(0)
-            ))
+            if(site.image.isNotEmpty())
+                itemView.imageIcon.setImageBitmap(readImageFromPath(itemView.context, site.image.get(0)))
             itemView.setOnClickListener(){
                 listener.onSiteClick(site)
             }
