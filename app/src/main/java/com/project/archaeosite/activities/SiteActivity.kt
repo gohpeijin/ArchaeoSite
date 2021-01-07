@@ -18,11 +18,14 @@ class SiteActivity : AppCompatActivity(), AnkoLogger {
         setContentView(R.layout.activity_site)
 
         app = application as MainApp
+        var edit=false
 
         if (intent.hasExtra("site_edit")) {
+            edit=true
             site = intent.extras?.getParcelable<ArchaeoModel>("site_edit")!!
             text_Site_Name.setText(site.title)
             text_Site_Description.setText(site.description)
+            button_Add_Site.setText("Save Site")
         }
 
         button_Add_Site.setOnClickListener(){
@@ -32,7 +35,12 @@ class SiteActivity : AppCompatActivity(), AnkoLogger {
                 toast ("Please Enter a site name")
             }
             else {
-                app.sites.create(site.copy())
+                if(edit){
+                    app.sites.update(site.copy())
+                }
+                else{
+                    app.sites.create(site.copy())
+                }
                 setResult(AppCompatActivity.RESULT_OK)
                 finish()
             }
