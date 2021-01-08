@@ -60,7 +60,8 @@ class SiteJSONImplement : SiteInterface, AnkoLogger {
     }
 
     override fun findById(id: Long): ArchaeoModel? {
-        TODO("Not yet implemented")
+        var foundsite =sites.find { it.id ==id}
+        return foundsite
     }
 
     private fun serialize() {
