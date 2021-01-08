@@ -1,4 +1,4 @@
-package com.project.archaeosite.View.Site
+package com.project.archaeosite.view.site
 
 import android.app.Activity
 import android.content.Intent

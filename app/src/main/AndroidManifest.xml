@@ -31,9 +31,9 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".View.Site.SiteView" />
+        <activity android:name=".view.site.SiteView" />
 
-        <activity android:name=".activities.DisplayListsActivity" />
+        <activity android:name=".view.displayList.DisplayListView" />
     </application>
 
 </manifest>

@@ -1,52 +1,50 @@
-package com.project.archaeosite.activities
+package com.project.archaeosite.view.displayList
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.project.archaeosite.R
-import com.project.archaeosite.View.Site.SiteView
+import com.project.archaeosite.view.site.SiteView
+import com.project.archaeosite.activities.SitesAdapter
+import com.project.archaeosite.activities.SitesListener
+import com.project.archaeosite.activities.SitesMapsActivity
 import com.project.archaeosite.main.MainApp
 import com.project.archaeosite.models.ArchaeoModel
 import kotlinx.android.synthetic.main.activity_display_lists.*
-import kotlinx.android.synthetic.main.activity_sites_maps.*
 import org.jetbrains.anko.*
 
-class DisplayListsActivity : AppCompatActivity(),AnkoLogger,SitesListener{
-    lateinit var app: MainApp
+class DisplayListView : AppCompatActivity(),AnkoLogger, SitesListener {
+    lateinit var presenter: DisplayListPresenter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_display_lists)
-        app = application as MainApp
+
+        presenter= DisplayListPresenter(this)
 
         item_add.setOnClickListener(){
             info("Add icon pressed")
-            startActivityForResult<SiteView>(200)
+           presenter.doAddSite()
         }
         item_map.setOnClickListener {
-            startActivity<SitesMapsActivity>()
+           presenter.doShowSitesMap()
         }
 
         val layoutManager = LinearLayoutManager(this)
         recyclerview_sites.layoutManager = layoutManager
-        loadWholeSites()
+        recyclerview_sites.adapter = SitesAdapter(presenter.loadSitesList(),this)
+        recyclerview_sites.adapter?.notifyDataSetChanged()
+
     }
 
-    private fun loadWholeSites(){
-        showWholeSites(app.sites.findAll())
-    }
-    fun showWholeSites(lists: List<ArchaeoModel>){
-        recyclerview_sites.adapter = SitesAdapter(lists,this)
-        recyclerview_sites.adapter?.notifyDataSetChanged()
-    }
+
 
     override fun onSiteClick(site: ArchaeoModel) {
-        startActivityForResult(intentFor<SiteView>().putExtra("site_edit",site),0)
-        //passing the data of the selected site to another activity
+        presenter.doEditSite(site)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        loadWholeSites()
+        recyclerview_sites.adapter?.notifyDataSetChanged()
         super.onActivityResult(requestCode, resultCode, data)
     }
 }
