@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">ArchaeoSite</string>
     <string name="select_site_image">Select Site Image</string>
+    <string name="title_activity_map">Map</string>
 
 </resources>
