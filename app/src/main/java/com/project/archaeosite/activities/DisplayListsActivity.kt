@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.project.archaeosite.R
+import com.project.archaeosite.View.Site.SiteView
 import com.project.archaeosite.main.MainApp
 import com.project.archaeosite.models.ArchaeoModel
 import kotlinx.android.synthetic.main.activity_display_lists.*
@@ -22,7 +23,7 @@ class DisplayListsActivity : AppCompatActivity(),AnkoLogger,SitesListener{
 
         item_add.setOnClickListener(){
             info("Add icon pressed")
-            startActivityForResult<SiteActivity>(0)
+            startActivityForResult<SiteView>(0)
         }
 
         val layoutManager = LinearLayoutManager(this)
@@ -39,7 +40,7 @@ class DisplayListsActivity : AppCompatActivity(),AnkoLogger,SitesListener{
     }
 
     override fun onSiteClick(site: ArchaeoModel) {
-        startActivityForResult(intentFor<SiteActivity>().putExtra("site_edit",site),0)
+        startActivityForResult(intentFor<SiteView>().putExtra("site_edit",site),0)
         //passing the data of the selected site to another activity
     }
 

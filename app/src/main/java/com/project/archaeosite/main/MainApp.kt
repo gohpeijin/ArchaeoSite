@@ -1,7 +1,7 @@
 package com.project.archaeosite.main
 
 import android.app.Application
-import com.project.archaeosite.models.SiteImplement
+import com.project.archaeosite.models.SiteMemImplement
 import com.project.archaeosite.models.SiteInterface
 import com.project.archaeosite.models.SiteJSONImplement
 import org.jetbrains.anko.AnkoLogger

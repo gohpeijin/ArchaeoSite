@@ -27,7 +27,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.SiteActivity" />
+        <activity android:name=".View.Site.SiteView" />
 
         <activity android:name=".activities.DisplayListsActivity"/>
     </application>
