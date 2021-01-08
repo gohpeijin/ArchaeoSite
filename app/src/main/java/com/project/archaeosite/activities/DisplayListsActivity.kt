@@ -8,10 +8,8 @@ import com.project.archaeosite.R
 import com.project.archaeosite.main.MainApp
 import com.project.archaeosite.models.ArchaeoModel
 import kotlinx.android.synthetic.main.activity_display_lists.*
-import org.jetbrains.anko.AnkoLogger
-import org.jetbrains.anko.info
-import org.jetbrains.anko.intentFor
-import org.jetbrains.anko.startActivityForResult
+import kotlinx.android.synthetic.main.activity_sites_maps.*
+import org.jetbrains.anko.*
 
 class DisplayListsActivity : AppCompatActivity(),AnkoLogger,SitesListener{
     lateinit var app: MainApp
@@ -22,7 +20,10 @@ class DisplayListsActivity : AppCompatActivity(),AnkoLogger,SitesListener{
 
         item_add.setOnClickListener(){
             info("Add icon pressed")
-            startActivityForResult<SiteActivity>(0)
+            startActivityForResult<SiteActivity>(200)
+        }
+        item_map.setOnClickListener {
+            startActivity<SitesMapsActivity>()
         }
 
         val layoutManager = LinearLayoutManager(this)

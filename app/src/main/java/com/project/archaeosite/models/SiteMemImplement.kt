@@ -9,7 +9,7 @@ internal fun getId(): Long {
     return lastId++
 }
 
-class SiteImplement : SiteInterface, AnkoLogger {
+class SiteMemImplement : SiteInterface, AnkoLogger {
 
     val sites= ArrayList<ArchaeoModel>()
 
