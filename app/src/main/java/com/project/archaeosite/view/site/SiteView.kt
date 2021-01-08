@@ -24,7 +24,7 @@ class SiteView : AppCompatActivity(), AnkoLogger {
         presenter =SitePresenter(this)
 
         //region add & edit site name & description
-        button_Add_Site.setOnClickListener {
+        item_save.setOnClickListener {
             if(text_Site_Name.text.toString().isEmpty()){
                 toast ("Please Enter a site name")
             }
@@ -66,7 +66,7 @@ class SiteView : AppCompatActivity(), AnkoLogger {
        // if(this::presenter.isInitialized)
             if(editemode){
                 item_delete.visibility = View.VISIBLE
-                button_Add_Site.text = "Save Site"
+                item_save.text = "SAVE"
             }
     }
     //region read image activity & map activity
