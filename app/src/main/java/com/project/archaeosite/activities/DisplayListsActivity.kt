@@ -27,7 +27,15 @@ class DisplayListsActivity : AppCompatActivity(),AnkoLogger,SitesListener{
 
         val layoutManager = LinearLayoutManager(this)
         recyclerview_sites.layoutManager = layoutManager
-        recyclerview_sites.adapter = SitesAdapter(app.sites.findAll(),this)
+        loadWholeSites()
+    }
+
+    private fun loadWholeSites(){
+        showWholeSites(app.sites.findAll())
+    }
+    fun showWholeSites(lists: List<ArchaeoModel>){
+        recyclerview_sites.adapter = SitesAdapter(lists,this)
+        recyclerview_sites.adapter?.notifyDataSetChanged()
     }
 
     override fun onSiteClick(site: ArchaeoModel) {
@@ -36,8 +44,8 @@ class DisplayListsActivity : AppCompatActivity(),AnkoLogger,SitesListener{
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-     recyclerview_sites.adapter?.notifyDataSetChanged() //change to loadplacemark, lab A06
-    super.onActivityResult(requestCode, resultCode, data)
+        loadWholeSites()
+        super.onActivityResult(requestCode, resultCode, data)
     }
 }
 
