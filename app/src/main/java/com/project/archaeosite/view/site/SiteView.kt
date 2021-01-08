@@ -57,7 +57,7 @@ class SiteView : AppCompatActivity(), AnkoLogger {
         ImageSelected.setImageBitmap(readImageFromPath(this, site.image.get(num)))
     }
 
-    fun setListContent(site: ArchaeoModel,editemode: Boolean){
+    fun setSiteContent(site: ArchaeoModel, editemode: Boolean){
         text_Site_Name.setText(site.title)
         text_Site_Description.setText(site.description)
 

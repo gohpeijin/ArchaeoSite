@@ -28,7 +28,7 @@ class SitePresenter (val view: SiteView){
         if (view.intent.hasExtra("site_edit")) {
             edit=true
             site = view.intent.extras?.getParcelable<ArchaeoModel>("site_edit")!!
-            view.setListContent(site,edit)
+            view.setSiteContent(site,edit)
         }
     }
 
@@ -111,7 +111,8 @@ class SitePresenter (val view: SiteView){
                     } else {
                         site.image.clear()
                         site.image.add(data.data.toString())
-                        view.ImageSelected.setImageBitmap(readImageFromPath(view, site.image.get(0)))
+                        view.displayImageByPosition(site,imageposition)
+                        //view.ImageSelected.setImageBitmap(readImageFromPath(view, site.image.get(0)))
                        // view.setListContent(site,edit)
                     }
                 }

@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ArchaeoSite">
 
-        <activity android:name=".activities.SitesMapsActivity"
+        <activity android:name=".view.map.SiteMapView"
             android:label="@string/title_activity_site_maps"></activity>
 
         <meta-data

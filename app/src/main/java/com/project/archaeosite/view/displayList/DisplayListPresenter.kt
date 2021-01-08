@@ -1,6 +1,6 @@
 package com.project.archaeosite.view.displayList
 
-import com.project.archaeosite.activities.SitesMapsActivity
+import com.project.archaeosite.view.map.SiteMapView
 import com.project.archaeosite.view.site.SiteView
 import com.project.archaeosite.main.MainApp
 import com.project.archaeosite.models.ArchaeoModel
@@ -26,7 +26,7 @@ class DisplayListPresenter (val view:DisplayListView){
         //passing the data of the selected site to another activity
     }
     fun doShowSitesMap(){
-        view.startActivity<SitesMapsActivity>()
+        view.startActivity<SiteMapView>()
     }
 
 }

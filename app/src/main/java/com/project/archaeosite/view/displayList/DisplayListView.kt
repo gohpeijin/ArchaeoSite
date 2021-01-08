@@ -5,11 +5,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.project.archaeosite.R
-import com.project.archaeosite.view.site.SiteView
 import com.project.archaeosite.activities.SitesAdapter
 import com.project.archaeosite.activities.SitesListener
-import com.project.archaeosite.activities.SitesMapsActivity
-import com.project.archaeosite.main.MainApp
 import com.project.archaeosite.models.ArchaeoModel
 import kotlinx.android.synthetic.main.activity_display_lists.*
 import org.jetbrains.anko.*
