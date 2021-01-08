@@ -1,19 +1,19 @@
 package com.project.archaeosite.view.site
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import com.project.archaeosite.R
 import com.project.archaeosite.helpers.readImageFromPath
 import com.project.archaeosite.models.ArchaeoModel
+import com.project.archaeosite.view.base.BaseView
 import kotlinx.android.synthetic.main.activity_site.*
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.toast
 
-class SiteView : AppCompatActivity(), AnkoLogger {
+class SiteView : BaseView(), AnkoLogger {
 
-    lateinit var presenter: SitePresenter
+   lateinit var presenter: SitePresenter
     var site = ArchaeoModel()
 
 
@@ -21,7 +21,7 @@ class SiteView : AppCompatActivity(), AnkoLogger {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_site)
 
-        presenter =SitePresenter(this)
+        presenter = initPresenter (SitePresenter(this)) as SitePresenter
 
         //region add & edit site name & description
         item_save.setOnClickListener {
@@ -53,18 +53,18 @@ class SiteView : AppCompatActivity(), AnkoLogger {
         //endregion
     }
 
-    fun displayImageByPosition(site: ArchaeoModel,num: Int){
+    override fun displayImageByPosition(site: ArchaeoModel,num: Int){
         ImageSelected.setImageBitmap(readImageFromPath(this, site.image.get(num)))
     }
 
-    fun setSiteContent(site: ArchaeoModel, editemode: Boolean){
+    override fun setSiteContent(site: ArchaeoModel, editmode: Boolean){
         text_Site_Name.setText(site.title)
         text_Site_Description.setText(site.description)
 
         if(site.image.isNotEmpty())
             ImageSelected.setImageBitmap(readImageFromPath(this, site.image.get(0)))
        // if(this::presenter.isInitialized)
-            if(editemode){
+            if(editmode){
                 item_delete.visibility = View.VISIBLE
                 item_save.text = "SAVE"
             }
@@ -74,7 +74,7 @@ class SiteView : AppCompatActivity(), AnkoLogger {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-            presenter.doActivityResult(requestCode, resultCode, data)
+            presenter.doActivityResult(requestCode, resultCode, data!!)
 
     }
     //endregion
