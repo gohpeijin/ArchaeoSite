@@ -2,7 +2,7 @@ package com.project.archaeosite.view.site
 
 import android.app.Activity
 import android.content.Intent
-import com.project.archaeosite.activities.MapActivity
+import com.project.archaeosite.view.location.EditLocationView
 import com.project.archaeosite.helpers.readImageFromPath
 import com.project.archaeosite.helpers.showImagePicker
 import com.project.archaeosite.main.MainApp
@@ -86,7 +86,7 @@ class SitePresenter (val view: SiteView){
             location.lng = site.lng
             location.zoom = site.zoom
         }
-        view.startActivityForResult(view.intentFor<MapActivity>().putExtra("location", location), LOCATION_REQUEST)
+        view.startActivityForResult(view.intentFor<EditLocationView>().putExtra("location", location), LOCATION_REQUEST)
     }
 
     fun doActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
