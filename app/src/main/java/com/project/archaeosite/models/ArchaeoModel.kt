@@ -21,6 +21,15 @@ data class ArchaeoModel(
 //We would like to include the location into our model, so we can record the latitude/longitude the user selects
 //We are still keeping Location model for use with the MapsActivity
 @Parcelize
-data class Location(var lat: Double = 0.0,
-                    var lng: Double = 0.0,
-                    var zoom: Float = 0f) : Parcelable
+data class Location(
+    var lat: Double = 0.0,
+    var lng: Double = 0.0,
+    var zoom: Float = 0f
+) : Parcelable
+
+@Parcelize
+data class ArchaeoUser(
+    var username: String = "",
+    var email: String = "",
+    var password: String = ""
+) : Parcelable
