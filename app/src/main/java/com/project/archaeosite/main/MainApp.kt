@@ -9,8 +9,7 @@ import org.jetbrains.anko.info
 class MainApp : Application(), AnkoLogger {
 
    lateinit var sites:SiteInterface
-    //val sites = SiteImplement()
-    //val sites = ArrayList<ArchaeoModel>()
+
     override fun onCreate() {
         super.onCreate()
         sites=SiteImplement()

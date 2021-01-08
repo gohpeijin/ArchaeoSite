@@ -19,7 +19,7 @@
 
         <activity
             android:name=".activities.MapActivity"
-            android:label="@string/title_activity_map"></activity>
+            android:label="@string/title_activity_map"/>
         <activity android:name=".activities.SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,7 +28,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.SiteActivity" />
-        <activity android:name=".activities.DisplayListsActivity"></activity>
+
+        <activity android:name=".activities.DisplayListsActivity"/>
     </application>
 
 </manifest>

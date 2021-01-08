@@ -36,7 +36,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback,  GoogleMap.OnMarker
         map.setOnMarkerClickListener(this)
 
         val loc = LatLng(location.lat, location.lng)
-        val options = MarkerOptions().title("Sire").snippet("GPS : " + loc.toString()).draggable(true).position(loc)
+        val options = MarkerOptions().title("Site").snippet("GPS : " + loc.toString()).draggable(true).position(loc)
         map.addMarker(options)
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, location.zoom))
     }
