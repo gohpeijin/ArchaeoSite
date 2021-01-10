@@ -8,32 +8,33 @@ import com.project.archaeosite.R
 import com.project.archaeosite.activities.SitesAdapter
 import com.project.archaeosite.activities.SitesListener
 import com.project.archaeosite.models.ArchaeoModel
+import com.project.archaeosite.view.base.BaseView
+import com.project.archaeosite.view.site.SitePresenter
 import kotlinx.android.synthetic.main.activity_display_lists.*
 import org.jetbrains.anko.*
 
-class DisplayListView : AppCompatActivity(),AnkoLogger, SitesListener {
+class DisplayListView : BaseView(), AnkoLogger, SitesListener {
+
     lateinit var presenter: DisplayListPresenter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_display_lists)
 
-        presenter= DisplayListPresenter(this)
+        presenter = initPresenter (DisplayListPresenter (this)) as DisplayListPresenter
 
-        item_add.setOnClickListener(){
-            info("Add icon pressed")
-           presenter.doAddSite()
-        }
-        item_map.setOnClickListener {
-           presenter.doShowSitesMap()
-        }
+        item_add.setOnClickListener { presenter.doAddSite() }
+        item_map.setOnClickListener { presenter.doShowSitesMap() }
 
         val layoutManager = LinearLayoutManager(this)
         recyclerview_sites.layoutManager = layoutManager
-        recyclerview_sites.adapter = SitesAdapter(presenter.loadSitesList(),this)
-        recyclerview_sites.adapter?.notifyDataSetChanged()
-
+        presenter.loadSitesList()
     }
 
+    override fun showSites(sites: List<ArchaeoModel>) {
+        recyclerview_sites.adapter = SitesAdapter(sites,this)
+        recyclerview_sites.adapter?.notifyDataSetChanged()
+    }
 
 
     override fun onSiteClick(site: ArchaeoModel) {
@@ -41,7 +42,7 @@ class DisplayListView : AppCompatActivity(),AnkoLogger, SitesListener {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        recyclerview_sites.adapter?.notifyDataSetChanged()
+        presenter.loadSitesList()
         super.onActivityResult(requestCode, resultCode, data)
     }
 }

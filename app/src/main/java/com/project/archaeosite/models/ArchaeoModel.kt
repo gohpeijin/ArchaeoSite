@@ -1,12 +1,12 @@
 package com.project.archaeosite.models
 
-import android.graphics.Bitmap
+
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 //import kotlinx.parcelize.Parcelize
 
 
-//we need a unique way of identifying placemarks - this is usually via an id.
+//we need a unique way of identifying sites - this is usually via an id.
 @Parcelize
 data class ArchaeoModel(
     var id: Long = 0,

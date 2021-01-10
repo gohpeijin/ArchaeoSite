@@ -84,7 +84,7 @@ class SitePresenter (view: SiteView): BasePresenter(view) {
         }
     }
     fun doSetLocation() {
-        if (edit == false) {
+        if (!edit) {
             view?.navigateTo(VIEW.LOCATION, LOCATION_REQUEST, "location", defaultLocation)
         } else {
             view?.navigateTo(VIEW.LOCATION,

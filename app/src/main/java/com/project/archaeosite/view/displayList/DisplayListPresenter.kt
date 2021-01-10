@@ -1,32 +1,34 @@
 package com.project.archaeosite.view.displayList
 
-import com.project.archaeosite.view.map.SiteMapView
-import com.project.archaeosite.view.site.SiteView
-import com.project.archaeosite.main.MainApp
+
 import com.project.archaeosite.models.ArchaeoModel
+import com.project.archaeosite.view.base.BasePresenter
+import com.project.archaeosite.view.base.BaseView
+import com.project.archaeosite.view.base.VIEW
+import com.project.archaeosite.view.site.SiteView
 import org.jetbrains.anko.intentFor
-import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.startActivityForResult
 
-class DisplayListPresenter (val view:DisplayListView){
-    var app: MainApp
-    init {
-        app = view.application as MainApp
+class DisplayListPresenter (view: BaseView): BasePresenter(view){
+
+
+    fun loadSitesList(){
+        view?.showSites(app.sites.findAll())
     }
-
-    fun loadSitesList()=app.sites.findAll()
-
 
     fun doAddSite(){
-        view.startActivityForResult<SiteView>(0)
+       view?.navigateTo(VIEW.SITE)
+       // view?.startActivityForResult<SiteView>(0)
     }
 
+
     fun doEditSite(site:ArchaeoModel){
-        view.startActivityForResult(view.intentFor<SiteView>().putExtra("site_edit",site),0)
-        //passing the data of the selected site to another activity
+       view?.navigateTo(VIEW.SITE,0,"site_edit",site)
+       // view?.startActivityForResult(view?.intentFor<SiteView>()?.putExtra("site_edit",site),0)
+
     }
     fun doShowSitesMap(){
-        view.startActivity<SiteMapView>()
+        view?.navigateTo(VIEW.MAPS)
     }
 
 }
