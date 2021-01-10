@@ -24,10 +24,11 @@ class SiteView : BaseView(), AnkoLogger {
 
         presenter = initPresenter (SitePresenter(this)) as SitePresenter
 
-        mapView.onCreate(savedInstanceState);
+        mapView.onCreate(savedInstanceState)
         mapView.getMapAsync {
             map = it
             presenter.doConfigureMap(map)
+            it.setOnMapClickListener { presenter.doSetLocation() }
         }
 
         //region add & edit site name & description
@@ -51,10 +52,6 @@ class SiteView : BaseView(), AnkoLogger {
         button_previos_image.setOnClickListener{ presenter.doPreviousImage() }
         //endregion
 
-        //region map activity
-        button_Select_Location.setOnClickListener { presenter.doSetLocation() }
-        //endregion
-
         //region navigation
         item_back.setOnClickListener{ presenter.doCancel()}
         item_delete.setOnClickListener { presenter.doDelete()}
@@ -76,6 +73,9 @@ class SiteView : BaseView(), AnkoLogger {
                 item_delete.visibility = View.VISIBLE
                 item_save.text = "SAVE"
             }
+
+        lat.text = "%.6f".format(site.lat)
+        lng.text = "%.6f".format(site.lng)
     }
     //region read image activity & map activity
     //thing need to be added "change image" button and "add image" button will be shown in edit mode - on hold
@@ -84,7 +84,6 @@ class SiteView : BaseView(), AnkoLogger {
         super.onActivityResult(requestCode, resultCode, data)
         if(data!=null)
             presenter.doActivityResult(requestCode, resultCode, data)
-
     }
     //endregion
 

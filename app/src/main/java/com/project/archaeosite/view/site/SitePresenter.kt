@@ -41,17 +41,6 @@ class SitePresenter (view: SiteView): BasePresenter(view),AnkoLogger {
         } else {
             if (checkLocationPermissions(view)) {
                 doSetCurrentLocation()
-//                site.lat = defaultLocation.lat
-//                site.lng = defaultLocation.lng
-//            if (checkLocationPermissions(view)) {
-//               // doSetCurrentLocation()
-//                site.lat = 4.7642221
-//                site.lng = 100.9323094
-//            }
-//            else{
-//                site.lat = defaultLocation.lat
-//                site.lng = defaultLocation.lng
-//            }
             }
         }
     }
@@ -60,7 +49,7 @@ class SitePresenter (view: SiteView): BasePresenter(view),AnkoLogger {
         fun doSetCurrentLocation() {
             locationService.lastLocation.addOnSuccessListener {
                 locationUpdate(it.latitude, it.longitude)
-                info("Current Location: ${it.latitude} and  ${it.longitude}")
+               // info("Current Location: ${it.latitude} and  ${it.longitude}")
             }
         }
 
@@ -150,15 +139,6 @@ class SitePresenter (view: SiteView): BasePresenter(view),AnkoLogger {
                 "location",
                 Location(site.lat, site.lng, site.zoom)
             )
-//        if (!edit) {
-//            view?.navigateTo(VIEW.LOCATION, LOCATION_REQUEST, "location", defaultLocation)
-//        } else {
-//            view?.navigateTo(VIEW.LOCATION,
-//                    LOCATION_REQUEST,
-//                    "location",
-//                    Location(site.lat, site.lng, site.zoom)
-//            )
-//        }
         }
 
         override fun doActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
@@ -201,6 +181,7 @@ class SitePresenter (view: SiteView): BasePresenter(view),AnkoLogger {
                         site.lng = location.lng
                         site.zoom = location.zoom
                         locationUpdate(site.lat, site.lng)
+                        view?.setSiteContent(site,edit)
                     }
                 }
             }
