@@ -5,9 +5,7 @@ import com.project.archaeosite.models.ArchaeoModel
 import com.project.archaeosite.view.base.BasePresenter
 import com.project.archaeosite.view.base.BaseView
 import com.project.archaeosite.view.base.VIEW
-import com.project.archaeosite.view.site.SiteView
-import org.jetbrains.anko.intentFor
-import org.jetbrains.anko.startActivityForResult
+
 
 class DisplayListPresenter (view: BaseView): BasePresenter(view){
 

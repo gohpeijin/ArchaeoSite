@@ -2,6 +2,10 @@ package com.project.archaeosite.view.site
 
 import android.app.Activity
 import android.content.Intent
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import com.project.archaeosite.view.location.EditLocationView
 import com.project.archaeosite.helpers.readImageFromPath
 import com.project.archaeosite.helpers.showImagePicker
@@ -23,13 +27,34 @@ class SitePresenter (view: SiteView): BasePresenter(view) {
     var edit=false
     var defaultLocation = Location(52.245696, -7.139102, 15f)
     var imageposition=0
+    var map: GoogleMap? = null
 
-    init{
+    init {
         if (view.intent.hasExtra("site_edit")) {
-            edit=true
+            edit = true
             site = view.intent.extras?.getParcelable<ArchaeoModel>("site_edit")!!
-            view.setSiteContent(site,edit)
+            view.setSiteContent(site, edit)
+        } else {
+            site.lat = defaultLocation.lat
+            site.lng = defaultLocation.lng
+
         }
+    }
+
+    fun doConfigureMap(m: GoogleMap) {
+        map = m
+        locationUpdate( site.lat,  site.lng)
+    }
+    fun locationUpdate(lat: Double, lng: Double) {
+        site.lat = lat
+        site.lng = lng
+        site.zoom = 15f
+        map?.clear()
+        map?.uiSettings?.setZoomControlsEnabled(true)
+        val options = MarkerOptions().title(site.title).position(LatLng(site.lat, site.lng))
+        map?.addMarker(options)
+        map?.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(site.lat, site.lng), site.zoom))
+        //view?.setSiteContent(site)
     }
 
     fun doAddOrEdit (title: String, description:String){
@@ -121,7 +146,7 @@ class SitePresenter (view: SiteView): BasePresenter(view) {
                         imageposition=0
                         view?.displayImageByPosition(site,imageposition)
                         //view.ImageSelected.setImageBitmap(readImageFromPath(view, site.image.get(0)))
-                       // view.setListContent(site,edit)
+                       // view?.setSiteContent(site,edit)
                     }
                 }
             }
@@ -133,6 +158,7 @@ class SitePresenter (view: SiteView): BasePresenter(view) {
                     site.lat = location.lat
                     site.lng =location.lng
                     site.zoom = location.zoom
+                    locationUpdate(site.lat, site.lng)
                 }
             }
         }

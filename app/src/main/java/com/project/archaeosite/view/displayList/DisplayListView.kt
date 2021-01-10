@@ -1,7 +1,6 @@
 package com.project.archaeosite.view.displayList
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.project.archaeosite.R
@@ -9,7 +8,6 @@ import com.project.archaeosite.activities.SitesAdapter
 import com.project.archaeosite.activities.SitesListener
 import com.project.archaeosite.models.ArchaeoModel
 import com.project.archaeosite.view.base.BaseView
-import com.project.archaeosite.view.site.SitePresenter
 import kotlinx.android.synthetic.main.activity_display_lists.*
 import org.jetbrains.anko.*
 

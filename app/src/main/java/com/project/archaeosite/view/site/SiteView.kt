@@ -3,6 +3,7 @@ package com.project.archaeosite.view.site
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import com.google.android.gms.maps.GoogleMap
 import com.project.archaeosite.R
 import com.project.archaeosite.helpers.readImageFromPath
 import com.project.archaeosite.models.ArchaeoModel
@@ -15,13 +16,19 @@ class SiteView : BaseView(), AnkoLogger {
 
    lateinit var presenter: SitePresenter
     var site = ArchaeoModel()
-
+    lateinit var map: GoogleMap
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_site)
 
         presenter = initPresenter (SitePresenter(this)) as SitePresenter
+
+        mapView.onCreate(savedInstanceState);
+        mapView.getMapAsync {
+            map = it
+            presenter.doConfigureMap(map)
+        }
 
         //region add & edit site name & description
         item_save.setOnClickListener {
@@ -31,6 +38,7 @@ class SiteView : BaseView(), AnkoLogger {
             else {
                presenter.doAddOrEdit(text_Site_Name.text.toString(),text_Site_Description.text.toString())
             }
+
         }
         //endregion
 
@@ -77,6 +85,33 @@ class SiteView : BaseView(), AnkoLogger {
         if(data!=null)
             presenter.doActivityResult(requestCode, resultCode, data)
 
+    }
+    //endregion
+
+//region map
+    override fun onDestroy() {
+        super.onDestroy()
+        mapView.onDestroy()
+    }
+
+    override fun onLowMemory() {
+        super.onLowMemory()
+        mapView.onLowMemory()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        mapView.onPause()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mapView.onResume()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        mapView.onSaveInstanceState(outState)
     }
     //endregion
 }
