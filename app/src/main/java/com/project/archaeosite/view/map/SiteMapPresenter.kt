@@ -6,19 +6,16 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.project.archaeosite.main.MainApp
+import com.project.archaeosite.models.ArchaeoModel
+import com.project.archaeosite.view.base.BasePresenter
+import com.project.archaeosite.view.base.BaseView
 
-class SiteMapPresenter (val view: SiteMapView) {
-    var app: MainApp
+class SiteMapPresenter (view: BaseView) : BasePresenter(view)  {
 
-    init {
-        app = view.application as MainApp
-    }
-
-    fun doReadSiteLocationToMap(map: GoogleMap) {
+    fun doReadSiteLocationToMap(map: GoogleMap,sites :List<ArchaeoModel>) {
         map.uiSettings.setZoomControlsEnabled(true) //enable the zoom the plus and minus button
-        map.setOnMarkerClickListener(view)
 
-        app.sites.findAll().forEach {
+        sites.forEach {
             val loc = LatLng(it.lat, it.lng)
             val options = MarkerOptions().title(it.title).position(loc)
             map.addMarker(options).tag = it.id  //tag as id
@@ -30,8 +27,11 @@ class SiteMapPresenter (val view: SiteMapView) {
         val tag = marker.tag as Long //read tag id
         val site = app.sites.findById(tag)
         if (site!=null){
-            view.displaySiteContent(site)
+            view?.setSiteContent(site)
         }
+    }
 
+    fun loadSitesList() {
+        view?.showSites(app.sites.findAll())
     }
 }

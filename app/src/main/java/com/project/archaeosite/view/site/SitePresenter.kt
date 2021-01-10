@@ -110,6 +110,7 @@ class SitePresenter (view: SiteView): BasePresenter(view) {
                                 val imageUri = data.clipData!!.getItemAt(i).uri
                                 site.image.add(imageUri.toString())
                             }
+                            imageposition=0 //reset it to 0 if not when select multiple image and set the number to last image and select pic again will return index out of bound
                             view?.displayImageByPosition(site,imageposition)
                            // view.ImageSelected.setImageBitmap(readImageFromPath(view, site.image.get(0)))
                             //view.setListContent(site,edit)
@@ -117,6 +118,7 @@ class SitePresenter (view: SiteView): BasePresenter(view) {
                     } else {
                         site.image.clear()
                         site.image.add(data.data.toString())
+                        imageposition=0
                         view?.displayImageByPosition(site,imageposition)
                         //view.ImageSelected.setImageBitmap(readImageFromPath(view, site.image.get(0)))
                        // view.setListContent(site,edit)

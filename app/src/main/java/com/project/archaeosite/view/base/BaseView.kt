@@ -61,10 +61,12 @@ open abstract class BaseView() : AppCompatActivity(), AnkoLogger {
     }
 
     //Site
-    open fun setSiteContent(site: ArchaeoModel, editmode: Boolean) {}
+    //show placemark
+    open fun setSiteContent(site: ArchaeoModel, editmode: Boolean=false) {}
     open fun displayImageByPosition(site: ArchaeoModel,num: Int){}
 
     //Displaylist
+    //showplacemarks
     open fun showSites(sites: List<ArchaeoModel>) {}
     open fun showProgress() {}
     open fun hideProgress() {}

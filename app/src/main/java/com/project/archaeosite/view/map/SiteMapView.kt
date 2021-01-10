@@ -7,19 +7,25 @@ import com.google.android.gms.maps.model.Marker
 import com.project.archaeosite.R
 import com.project.archaeosite.helpers.readImageFromPath
 import com.project.archaeosite.models.ArchaeoModel
+import com.project.archaeosite.view.base.BaseView
 import kotlinx.android.synthetic.main.activity_sites_maps.*
 
-class SiteMapView : AppCompatActivity(),GoogleMap.OnMarkerClickListener {
+class SiteMapView : BaseView(),GoogleMap.OnMarkerClickListener {
 
     lateinit var presenter: SiteMapPresenter
+    lateinit var map : GoogleMap
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sites_maps)
 
+        presenter = initPresenter (SiteMapPresenter(this)) as SiteMapPresenter
+
         mapView.onCreate(savedInstanceState)
         mapView.getMapAsync {
-           presenter.doReadSiteLocationToMap(it)
+            map = it
+            map.setOnMarkerClickListener(this)
+            presenter.loadSitesList()
         }
 
         item_back_sitemaps.setOnClickListener() {
@@ -30,15 +36,19 @@ class SiteMapView : AppCompatActivity(),GoogleMap.OnMarkerClickListener {
         presenter.doMarkerSelected(marker)
         return true
     }
+    //to display site content
+    override fun setSiteContent(site: ArchaeoModel, editmode: Boolean) {
+        currentTitle.text = site.title
+        currentDescription.text = site.description
+        if(site.image.isNotEmpty())
+            currentImage.setImageBitmap(readImageFromPath(this, site.image.get(0)))
+        else
+            currentImage.setImageResource(android.R.color.transparent)
+    }
 
-   fun displaySiteContent(site:ArchaeoModel){
-       currentTitle.text = site.title
-       currentDescription.text = site.description
-       if(site.image.isNotEmpty())
-           currentImage.setImageBitmap(readImageFromPath(this, site.image.get(0)))
-       else
-           currentImage.setImageResource(android.R.color.transparent)
-   }
+    override fun showSites(sites: List<ArchaeoModel>) {
+        presenter.doReadSiteLocationToMap(map,sites)
+    }
     override fun onDestroy() {
         super.onDestroy()
         mapView.onDestroy()
