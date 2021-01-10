@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import com.project.archaeosite.R
+import com.project.archaeosite.view.displayList.DisplayListView
 
 class SplashScreen : AppCompatActivity() {
 
@@ -15,7 +16,7 @@ class SplashScreen : AppCompatActivity() {
         setContentView(R.layout.activity_splash_screen)
 
         Handler(Looper.getMainLooper()).postDelayed({
-            startActivity(Intent(this,DisplayListsActivity::class.java))
+            startActivity(Intent(this, DisplayListView::class.java))
             finish()
         }, 1000)
 

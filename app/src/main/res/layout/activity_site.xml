@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.project.archaeosite.activities.SiteActivity">
+    tools:context="com.project.archaeosite.view.site.SiteView">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -42,6 +43,7 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/back_arrow" />
 
+
                 <TextView
                     android:id="@+id/item_delete"
                     android:layout_width="wrap_content"
@@ -51,6 +53,18 @@
                     android:textColor="@color/white"
                     android:textStyle="bold"
                     android:visibility="invisible"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/item_save"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/item_save"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:text="ADD"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -109,26 +123,6 @@
                 app:srcCompat="@mipmap/ic_launcher"
                 />
 
-            <Button
-                android:id="@+id/button_Select_Location"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="Select Location"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/ImageSelected" />
-
-            <Button
-                android:id="@+id/button_Add_Site"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="Add Site"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.473"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/button_Select_Location" />
 
             <ImageButton
                 android:id="@+id/button_previos_image"
@@ -151,6 +145,28 @@
                 app:layout_constraintTop_toBottomOf="@+id/button_Select_Image"
                 app:srcCompat="@android:drawable/ic_media_play" />
 
+            <Button
+                android:id="@+id/button_Select_Location"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Select Location"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ImageSelected" />
+
+            <com.google.android.gms.maps.MapView
+                android:id="@+id/mapView"
+                android:layout_width="363dp"
+                android:layout_height="162dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginBottom="32dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/button_Select_Location" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </RelativeLayout>

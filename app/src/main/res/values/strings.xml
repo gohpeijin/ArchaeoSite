@@ -2,5 +2,9 @@
     <string name="app_name">ArchaeoSite</string>
     <string name="select_site_image">Select Site Image</string>
     <string name="title_activity_map">Map</string>
+    <string name="title_activity_site_maps">SiteMaps</string>
+    <string name="siteDescription">Site Description</string>
+    <string name="siteName">Site Name</string>
+    <string name="sitePicture">Site Image</string>
 
 </resources>
