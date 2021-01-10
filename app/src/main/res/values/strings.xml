@@ -6,5 +6,7 @@
     <string name="siteDescription">Site Description</string>
     <string name="siteName">Site Name</string>
     <string name="sitePicture">Site Image</string>
+    <string name="title_activity_site">Site</string>
+    <string name="title_activity_site_list">Sites</string>
 
 </resources>

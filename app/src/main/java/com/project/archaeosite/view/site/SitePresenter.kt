@@ -4,12 +4,15 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.project.archaeosite.helpers.checkLocationPermissions
+import com.project.archaeosite.helpers.createDefaultLocationRequest
 import com.project.archaeosite.helpers.isPermissionGranted
 import com.project.archaeosite.helpers.showImagePicker
 import com.project.archaeosite.models.ArchaeoModel
@@ -32,6 +35,7 @@ class SitePresenter (view: SiteView): BasePresenter(view),AnkoLogger {
     var map: GoogleMap? = null
 
     var locationService: FusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(view)
+    val locationRequest = createDefaultLocationRequest()
 
     init {
         if (view.intent.hasExtra("site_edit")) {
@@ -42,6 +46,24 @@ class SitePresenter (view: SiteView): BasePresenter(view),AnkoLogger {
             if (checkLocationPermissions(view)) {
                 doSetCurrentLocation()
             }
+        }
+    }
+
+    //defines a callback - to be triggered when we turn location updates
+    //checks to see if we are in edit mode - if not, it is assumed we would like live location updates to commence.
+
+    @SuppressLint("MissingPermission")
+    fun doResartLocationUpdates() {
+        var locationCallback = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult?) {
+                if (locationResult != null && locationResult.locations != null) {
+                    val l = locationResult.locations.last()
+                    locationUpdate(l.latitude, l.longitude)
+                }
+            }
+        }
+        if (!edit) {
+            locationService.requestLocationUpdates(locationRequest, locationCallback, null)
         }
     }
 

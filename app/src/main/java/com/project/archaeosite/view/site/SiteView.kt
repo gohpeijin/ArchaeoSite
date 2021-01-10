@@ -63,8 +63,8 @@ class SiteView : BaseView(), AnkoLogger {
     }
 
     override fun setSiteContent(site: ArchaeoModel, editmode: Boolean){
-        text_Site_Name.setText(site.title)
-        text_Site_Description.setText(site.description)
+        if ( text_Site_Name.text.isEmpty())  text_Site_Name.setText(site.title)
+        if (text_Site_Description.text.isEmpty()) text_Site_Description.setText(site.description)
 
         if(site.image.isNotEmpty())
             ImageSelected.setImageBitmap(readImageFromPath(this, site.image.get(0)))
@@ -106,6 +106,7 @@ class SiteView : BaseView(), AnkoLogger {
     override fun onResume() {
         super.onResume()
         mapView.onResume()
+        presenter.doResartLocationUpdates()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
