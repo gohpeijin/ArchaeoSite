@@ -74,7 +74,8 @@ class SiteView : BaseView(), AnkoLogger {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-            presenter.doActivityResult(requestCode, resultCode, data!!)
+        if(data!=null)
+            presenter.doActivityResult(requestCode, resultCode, data)
 
     }
     //endregion

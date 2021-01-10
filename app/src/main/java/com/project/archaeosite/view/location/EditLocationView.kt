@@ -14,8 +14,9 @@ import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.project.archaeosite.R
 import com.project.archaeosite.models.Location
+import com.project.archaeosite.view.base.BaseView
 
-class EditLocationView : AppCompatActivity(),  GoogleMap.OnMarkerDragListener,GoogleMap.OnMarkerClickListener  {
+class EditLocationView : BaseView(),  GoogleMap.OnMarkerDragListener,GoogleMap.OnMarkerClickListener  {
 
 
     lateinit var map: GoogleMap
