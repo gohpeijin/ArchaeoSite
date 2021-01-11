@@ -1,5 +1,6 @@
 package com.project.archaeosite.view.site
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -24,10 +25,13 @@ class SiteView : BaseView(), AnkoLogger {
 
         presenter = initPresenter (SitePresenter(this)) as SitePresenter
 
-        mapView.onCreate(savedInstanceState);
+        super.init(mytoolbar, true)
+
+        mapView.onCreate(savedInstanceState)
         mapView.getMapAsync {
             map = it
             presenter.doConfigureMap(map)
+            it.setOnMapClickListener { presenter.doSetLocation() }
         }
 
         //region add & edit site name & description
@@ -51,10 +55,6 @@ class SiteView : BaseView(), AnkoLogger {
         button_previos_image.setOnClickListener{ presenter.doPreviousImage() }
         //endregion
 
-        //region map activity
-        button_Select_Location.setOnClickListener { presenter.doSetLocation() }
-        //endregion
-
         //region navigation
         item_back.setOnClickListener{ presenter.doCancel()}
         item_delete.setOnClickListener { presenter.doDelete()}
@@ -65,9 +65,10 @@ class SiteView : BaseView(), AnkoLogger {
         ImageSelected.setImageBitmap(readImageFromPath(this, site.image.get(num)))
     }
 
+    @SuppressLint("SetTextI18n")
     override fun setSiteContent(site: ArchaeoModel, editmode: Boolean){
-        text_Site_Name.setText(site.title)
-        text_Site_Description.setText(site.description)
+        if ( text_Site_Name.text.isEmpty())  text_Site_Name.setText(site.title)
+        if (text_Site_Description.text.isEmpty()) text_Site_Description.setText(site.description)
 
         if(site.image.isNotEmpty())
             ImageSelected.setImageBitmap(readImageFromPath(this, site.image.get(0)))
@@ -75,7 +76,11 @@ class SiteView : BaseView(), AnkoLogger {
             if(editmode){
                 item_delete.visibility = View.VISIBLE
                 item_save.text = "SAVE"
+                item_back.visibility=View.INVISIBLE
             }
+
+        lat.text = "%.6f".format(site.lat)
+        lng.text = "%.6f".format(site.lng)
     }
     //region read image activity & map activity
     //thing need to be added "change image" button and "add image" button will be shown in edit mode - on hold
@@ -84,7 +89,6 @@ class SiteView : BaseView(), AnkoLogger {
         super.onActivityResult(requestCode, resultCode, data)
         if(data!=null)
             presenter.doActivityResult(requestCode, resultCode, data)
-
     }
     //endregion
 
@@ -107,6 +111,7 @@ class SiteView : BaseView(), AnkoLogger {
     override fun onResume() {
         super.onResume()
         mapView.onResume()
+        presenter.doResartLocationUpdates()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

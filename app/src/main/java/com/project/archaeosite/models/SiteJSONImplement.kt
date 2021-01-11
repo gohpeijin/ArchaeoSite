@@ -8,7 +8,7 @@ import com.project.archaeosite.helpers.*
 import org.jetbrains.anko.AnkoLogger
 import java.util.*
 
-val JSON_FILE = "placemarks.json"
+val JSON_FILE = "sites.json"
 val gsonBuilder = GsonBuilder().setPrettyPrinting().create()
 val listType = object : TypeToken<java.util.ArrayList<ArchaeoModel>>() {}.type
 
