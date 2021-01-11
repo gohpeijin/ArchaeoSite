@@ -36,5 +36,7 @@ class DisplayListPresenter (view: BaseView): BasePresenter(view){
     fun doShowSitesMap(){
         view?.navigateTo(VIEW.MAPS)
     }
-
+    fun doLogout(){
+        view?.navigateTo(VIEW.LOGIN)
+    }
 }

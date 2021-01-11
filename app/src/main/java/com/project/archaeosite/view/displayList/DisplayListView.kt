@@ -23,6 +23,7 @@ class DisplayListView : BaseView(), AnkoLogger, SitesListener {
 
         item_add.setOnClickListener { presenter.doAddSite() }
         item_map.setOnClickListener { presenter.doShowSitesMap() }
+        item_logout.setOnClickListener { presenter.doLogout() }
 
         val layoutManager = LinearLayoutManager(this)
         recyclerview_sites.layoutManager = layoutManager
