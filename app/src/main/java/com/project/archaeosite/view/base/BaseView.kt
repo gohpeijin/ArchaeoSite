@@ -74,6 +74,7 @@ open abstract class BaseView() : AppCompatActivity(), AnkoLogger {
     //Displaylist
     //showplacemarks
     open fun showSites(sites: List<ArchaeoModel>) {}
+    open fun showLocation(latitude : Double, longitude : Double) {}
     open fun showProgress() {}
     open fun hideProgress() {}
 }
