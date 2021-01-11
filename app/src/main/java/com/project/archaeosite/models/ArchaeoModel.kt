@@ -2,6 +2,7 @@ package com.project.archaeosite.models
 
 
 import android.os.Parcelable
+import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverter
@@ -23,9 +24,23 @@ data class ArchaeoModel(
     var title: String = "",
     var description: String = "",
     var image: MutableList<String> = arrayListOf(),
+    @Embedded var location : Location = Location()
+): Parcelable
+
+
+@Parcelize
+data class Location(
     var lat: Double = 0.0,
     var lng: Double = 0.0,
     var zoom: Float = 0f
+) : Parcelable
+
+
+@Parcelize
+data class ArchaeoUser(
+    var username: String = "",
+    var email: String = "",
+    var password: String = ""
 ) : Parcelable
 class ImageConverter {
 
@@ -39,6 +54,7 @@ class ImageConverter {
         return stringList.joinToString(separator = ",")
     }
 }
+
 //class ImageConverter {
 //    companion object {
 //
@@ -57,17 +73,3 @@ class ImageConverter {
 //}
 //We would like to include the location into our model, so we can record the latitude/longitude the user selects
 //We are still keeping Location model for use with the MapsActivity
-@Parcelize
-data class Location(
-    var lat: Double = 0.0,
-    var lng: Double = 0.0,
-    var zoom: Float = 0f
-) : Parcelable
-
-
-@Parcelize
-data class ArchaeoUser(
-    var username: String = "",
-    var email: String = "",
-    var password: String = ""
-) : Parcelable

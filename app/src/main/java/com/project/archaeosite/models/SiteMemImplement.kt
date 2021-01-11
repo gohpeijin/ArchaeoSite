@@ -30,9 +30,7 @@ class SiteMemImplement : SiteInterface, AnkoLogger {
             foundsite.title = site.title
             foundsite.description = site.description
             foundsite.image = site.image
-            foundsite.lat = site.lat
-            foundsite.lng = site.lng
-            foundsite.zoom = site.zoom
+            foundsite.location = site.location
             displayAll()
         }
     }

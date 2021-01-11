@@ -9,6 +9,8 @@ import com.project.archaeosite.main.MainApp
 import com.project.archaeosite.models.ArchaeoModel
 import com.project.archaeosite.view.base.BasePresenter
 import com.project.archaeosite.view.base.BaseView
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.uiThread
 
 class SiteMapPresenter (view: BaseView) : BasePresenter(view)  {
 
@@ -16,22 +18,31 @@ class SiteMapPresenter (view: BaseView) : BasePresenter(view)  {
         map.uiSettings.setZoomControlsEnabled(true) //enable the zoom the plus and minus button
 
         sites.forEach {
-            val loc = LatLng(it.lat, it.lng)
+            val loc = LatLng(it.location.lat, it.location.lng)
             val options = MarkerOptions().title(it.title).position(loc)
             map.addMarker(options).tag = it.id  //tag as id
-            map.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, it.zoom))//enable app zoom in to the last added list
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, it.location.zoom))//enable app zoom in to the last added list
         }
     }
 
     fun doMarkerSelected (marker: Marker){
         val tag = marker.tag as Long //read tag id
-        val site = app.sites.findById(tag)
-        if (site!=null){
-            view?.setSiteContent(site)
+        doAsync {
+            val site = app.sites.findById(tag)
+            uiThread {
+                if (site!=null){
+                    view?.setSiteContent(site)
+                }
+            }
         }
     }
 
     fun loadSitesList() {
-        view?.showSites(app.sites.findAll())
+        doAsync {
+            val sites =app.sites.findAll()
+            uiThread {
+                view?.showSites(sites)
+            }
+        }
     }
 }

@@ -8,6 +8,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.project.archaeosite.R
 import com.project.archaeosite.helpers.readImageFromPath
 import com.project.archaeosite.models.ArchaeoModel
+import com.project.archaeosite.models.Location
 import com.project.archaeosite.view.base.BaseView
 import kotlinx.android.synthetic.main.activity_site.*
 import org.jetbrains.anko.AnkoLogger
@@ -79,8 +80,12 @@ class SiteView : BaseView(), AnkoLogger {
                 item_back.visibility=View.INVISIBLE
             }
 
-        lat.text = "%.6f".format(site.lat)
-        lng.text = "%.6f".format(site.lng)
+        this.showLocation(site.location)
+    }
+
+    override fun showLocation (location : Location) {
+        lat.text = "%.6f".format(location.lat)
+        lng.text = "%.6f".format(location.lng)
     }
     //region read image activity & map activity
     //thing need to be added "change image" button and "add image" button will be shown in edit mode - on hold

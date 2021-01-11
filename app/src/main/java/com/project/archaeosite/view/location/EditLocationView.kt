@@ -5,6 +5,7 @@ import android.os.Bundle
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.Marker
 import com.project.archaeosite.R
+import com.project.archaeosite.models.Location
 import com.project.archaeosite.view.base.BaseView
 import kotlinx.android.synthetic.main.activity_map.*
 import kotlinx.android.synthetic.main.activity_map.item_save
@@ -46,9 +47,9 @@ class EditLocationView : BaseView(),  GoogleMap.OnMarkerDragListener,GoogleMap.O
         lng.text = "%.6f".format(marker.position.longitude)
     }
 
-    override fun showLocation(latitude : Double, longitude : Double) {
-        lat.text = "%.6f".format(latitude)
-        lng.text = "%.6f".format(longitude)
+    override fun showLocation(location : Location) {
+        lat.text = "%.6f".format(location.lat)
+        lng.text = "%.6f".format(location.lng)
     }
 
     override fun onMarkerDragEnd(marker: Marker) {

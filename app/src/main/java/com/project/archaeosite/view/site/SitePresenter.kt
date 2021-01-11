@@ -21,9 +21,7 @@ import com.project.archaeosite.view.base.BasePresenter
 import com.project.archaeosite.view.base.IMAGE_REQUEST
 import com.project.archaeosite.view.base.LOCATION_REQUEST
 import com.project.archaeosite.view.base.VIEW
-import org.jetbrains.anko.AnkoLogger
-import org.jetbrains.anko.info
-import org.jetbrains.anko.toast
+import org.jetbrains.anko.*
 
 
 class SitePresenter (view: SiteView): BasePresenter(view),AnkoLogger {
@@ -58,7 +56,7 @@ class SitePresenter (view: SiteView): BasePresenter(view),AnkoLogger {
             override fun onLocationResult(locationResult: LocationResult?) {
                 if (locationResult != null && locationResult.locations != null) {
                     val l = locationResult.locations.last()
-                    locationUpdate(l.latitude, l.longitude)
+                    locationUpdate(Location(l.latitude, l.longitude))
                 }
             }
         }
@@ -70,7 +68,7 @@ class SitePresenter (view: SiteView): BasePresenter(view),AnkoLogger {
         @SuppressLint("MissingPermission")
         fun doSetCurrentLocation() {
             locationService.lastLocation.addOnSuccessListener {
-                locationUpdate(it.latitude, it.longitude)
+                locationUpdate(Location(it.latitude, it.longitude))
                // info("Current Location: ${it.latitude} and  ${it.longitude}")
             }
         }
@@ -80,28 +78,27 @@ class SitePresenter (view: SiteView): BasePresenter(view),AnkoLogger {
                 doSetCurrentLocation()
             } else {
                 // permissions denied, so use the default location
-                locationUpdate(defaultLocation.lat, defaultLocation.lng)
+                locationUpdate(defaultLocation)
             }
         }
 
 
         fun doConfigureMap(m: GoogleMap) {
             map = m
-            locationUpdate(site.lat, site.lng)
+            locationUpdate(site.location)
         }
 
-        fun locationUpdate(lat: Double, lng: Double) {
-            site.lat = lat
-            site.lng = lng
-            site.zoom = 15f
+        fun locationUpdate(location:Location) {
+            site.location =location
+            site.location.zoom = 15f
             map?.clear()
-            map?.uiSettings?.setZoomControlsEnabled(true)
-            val options = MarkerOptions().title(site.title).position(LatLng(site.lat, site.lng))
+            map?.uiSettings?.isZoomControlsEnabled = true
+            val options = MarkerOptions().title(site.title).position(LatLng(site.location.lat, site.location.lng))
             map?.addMarker(options)
             map?.moveCamera(
                 CameraUpdateFactory.newLatLngZoom(
-                    LatLng(site.lat, site.lng),
-                    site.zoom
+                    LatLng(site.location.lat, site.location.lng),
+                    site.location.zoom
                 )
             )
             //view?.setSiteContent(site)
@@ -110,22 +107,29 @@ class SitePresenter (view: SiteView): BasePresenter(view),AnkoLogger {
         fun doAddOrEdit(title: String, description: String) {
             site.title = title
             site.description = description
-            if (edit) {
-                app.sites.update(site)
-            } else {
-                app.sites.create(site)
+            doAsync {
+                if (edit) {
+                    app.sites.update(site)
+                } else {
+                    app.sites.create(site)
+                }
+                uiThread {
+                    view?.finish()
+                }
             }
-            view?.finish()
         }
-
 
         fun doCancel() {
             view?.finish()
         }
 
         fun doDelete() {
-            app.sites.delete(site)
-            view?.finish()
+            doAsync {
+                app.sites.delete(site)
+                uiThread {
+                    view?.finish()
+                }
+            }
         }
 
         fun doSelectImage() {
@@ -159,7 +163,7 @@ class SitePresenter (view: SiteView): BasePresenter(view),AnkoLogger {
                 VIEW.LOCATION,
                 LOCATION_REQUEST,
                 "location",
-                Location(site.lat, site.lng, site.zoom)
+                Location(site.location.lat, site.location.lng, site.location.zoom)
             )
         }
 
@@ -168,7 +172,7 @@ class SitePresenter (view: SiteView): BasePresenter(view),AnkoLogger {
                 //region image activity
                 IMAGE_REQUEST -> {
                     if (resultCode == Activity.RESULT_OK) { //to prevent the app stopping when no image selected
-                        if (data!!.clipData != null) {
+                        if (data.clipData != null) {
                             val count = data.clipData!!.itemCount
                             if (count > 4) //only up to 4images can be selected
                                 view?.toast("You can only select maximum 4 image. Please select again")
@@ -199,10 +203,9 @@ class SitePresenter (view: SiteView): BasePresenter(view),AnkoLogger {
                 LOCATION_REQUEST -> {
                     if (data != null) {
                         val location = data.extras?.getParcelable<Location>("location")!!
-                        site.lat = location.lat
-                        site.lng = location.lng
-                        site.zoom = location.zoom
-                        locationUpdate(site.lat, site.lng)
+                        site.location = location
+                        locationUpdate(location)
+
                         view?.setSiteContent(site,edit)
                     }
                 }

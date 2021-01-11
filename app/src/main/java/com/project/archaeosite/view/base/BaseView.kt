@@ -5,6 +5,7 @@ import android.os.Parcelable
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.project.archaeosite.models.ArchaeoModel
+import com.project.archaeosite.models.Location
 import com.project.archaeosite.view.displayList.DisplayListView
 import com.project.archaeosite.view.location.EditLocationView
 import com.project.archaeosite.view.map.SiteMapView
@@ -74,7 +75,8 @@ open abstract class BaseView() : AppCompatActivity(), AnkoLogger {
     //Displaylist
     //showplacemarks
     open fun showSites(sites: List<ArchaeoModel>) {}
-    open fun showLocation(latitude : Double, longitude : Double) {}
+    open fun showLocation(location : Location) {}
+   // open fun showLocation(latitude : Double, longitude : Double) {}
     open fun showProgress() {}
     open fun hideProgress() {}
 }
