@@ -23,17 +23,18 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:titleTextColor="@color/white" />
+                app:titleTextColor="@color/white"
+                app:theme="@style/ThemeOverlay.AppCompat.Dark" />
 
-            <ImageView
-                android:id="@+id/item_back_sitemaps"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/mytoolbar"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/back_arrow" />
+<!--            <ImageView-->
+<!--                android:id="@+id/item_back_sitemaps"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="10dp"-->
+<!--                app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="@+id/mytoolbar"-->
+<!--                app:layout_constraintTop_toTopOf="parent"-->
+<!--                app:srcCompat="@drawable/back_arrow" />-->
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

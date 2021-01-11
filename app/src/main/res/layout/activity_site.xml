@@ -31,18 +31,30 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:titleTextColor="@color/white" />
+                    app:titleTextColor="@color/white"
+                    app:theme="@style/ThemeOverlay.AppCompat.Dark"/>
 
-                <ImageView
+<!--                <ImageView-->
+<!--                    android:id="@+id/item_back"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginStart="10dp"-->
+<!--                    app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                    app:layout_constraintStart_toStartOf="@+id/mytoolbar"-->
+<!--                    app:layout_constraintTop_toTopOf="parent"-->
+<!--                    app:srcCompat="@drawable/back_arrow" />-->
+
+                <TextView
                     android:id="@+id/item_back"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:text="CANCEL"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/mytoolbar"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/back_arrow" />
-
+                    app:layout_constraintEnd_toStartOf="@+id/item_save"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/item_delete"

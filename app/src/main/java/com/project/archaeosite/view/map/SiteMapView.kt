@@ -8,7 +8,10 @@ import com.project.archaeosite.R
 import com.project.archaeosite.helpers.readImageFromPath
 import com.project.archaeosite.models.ArchaeoModel
 import com.project.archaeosite.view.base.BaseView
+import kotlinx.android.synthetic.main.activity_site.*
 import kotlinx.android.synthetic.main.activity_sites_maps.*
+import kotlinx.android.synthetic.main.activity_sites_maps.mapView
+import kotlinx.android.synthetic.main.activity_sites_maps.mytoolbar
 
 class SiteMapView : BaseView(),GoogleMap.OnMarkerClickListener {
 
@@ -21,6 +24,8 @@ class SiteMapView : BaseView(),GoogleMap.OnMarkerClickListener {
 
         presenter = initPresenter (SiteMapPresenter(this)) as SiteMapPresenter
 
+        super.init(mytoolbar, true)
+
         mapView.onCreate(savedInstanceState)
         mapView.getMapAsync {
             map = it
@@ -28,9 +33,9 @@ class SiteMapView : BaseView(),GoogleMap.OnMarkerClickListener {
             presenter.loadSitesList()
         }
 
-        item_back_sitemaps.setOnClickListener() {
-            finish()
-        }
+//        item_back_sitemaps.setOnClickListener() {
+//            finish()
+//        }
     }
     override fun onMarkerClick(marker: Marker): Boolean {
         presenter.doMarkerSelected(marker)

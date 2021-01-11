@@ -3,6 +3,7 @@ package com.project.archaeosite.view.base
 import android.content.Intent
 import android.os.Parcelable
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import com.project.archaeosite.models.ArchaeoModel
 import com.project.archaeosite.view.displayList.DisplayListView
 import com.project.archaeosite.view.location.EditLocationView
@@ -42,6 +43,11 @@ open abstract class BaseView() : AppCompatActivity(), AnkoLogger {
         return presenter
     }
 
+    fun init(toolbar: Toolbar, upEnabled: Boolean) {
+        toolbar.title = title
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(upEnabled)
+    }
 
     override fun onDestroy() {
         basePresenter?.onDestroy()

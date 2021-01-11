@@ -1,5 +1,6 @@
 package com.project.archaeosite.view.site
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -23,6 +24,8 @@ class SiteView : BaseView(), AnkoLogger {
         setContentView(R.layout.activity_site)
 
         presenter = initPresenter (SitePresenter(this)) as SitePresenter
+
+        super.init(mytoolbar, true)
 
         mapView.onCreate(savedInstanceState)
         mapView.getMapAsync {
@@ -62,6 +65,7 @@ class SiteView : BaseView(), AnkoLogger {
         ImageSelected.setImageBitmap(readImageFromPath(this, site.image.get(num)))
     }
 
+    @SuppressLint("SetTextI18n")
     override fun setSiteContent(site: ArchaeoModel, editmode: Boolean){
         if ( text_Site_Name.text.isEmpty())  text_Site_Name.setText(site.title)
         if (text_Site_Description.text.isEmpty()) text_Site_Description.setText(site.description)
@@ -72,6 +76,7 @@ class SiteView : BaseView(), AnkoLogger {
             if(editmode){
                 item_delete.visibility = View.VISIBLE
                 item_save.text = "SAVE"
+                item_back.visibility=View.INVISIBLE
             }
 
         lat.text = "%.6f".format(site.lat)

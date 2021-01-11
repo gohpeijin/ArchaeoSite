@@ -7,6 +7,12 @@ import com.google.android.gms.maps.model.Marker
 import com.project.archaeosite.R
 import com.project.archaeosite.view.base.BaseView
 import kotlinx.android.synthetic.main.activity_map.*
+import kotlinx.android.synthetic.main.activity_map.item_save
+import kotlinx.android.synthetic.main.activity_map.lat
+import kotlinx.android.synthetic.main.activity_map.lng
+import kotlinx.android.synthetic.main.activity_map.mapView
+import kotlinx.android.synthetic.main.activity_map.mytoolbar
+import kotlinx.android.synthetic.main.activity_site.*
 
 class EditLocationView : BaseView(),  GoogleMap.OnMarkerDragListener,GoogleMap.OnMarkerClickListener  {
 
@@ -17,6 +23,8 @@ class EditLocationView : BaseView(),  GoogleMap.OnMarkerDragListener,GoogleMap.O
         setContentView(R.layout.activity_map)
 
         presenter = EditLocationPresenter(this)
+
+        super.init(mytoolbar, true)
 
         mapView.onCreate(savedInstanceState)
         mapView.getMapAsync{
