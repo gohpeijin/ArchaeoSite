@@ -39,6 +39,7 @@ class DisplayListPresenter (view: BaseView): BasePresenter(view){
     }
     fun doLogout() {
         FirebaseAuth.getInstance().signOut()
+        app.sites.clear()
         view?.navigateTo(VIEW.LOGIN)
     }
 }

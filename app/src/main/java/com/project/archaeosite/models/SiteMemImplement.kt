@@ -26,7 +26,6 @@ class SiteMemImplement : SiteInterface, AnkoLogger {
     override fun update(site: ArchaeoModel) {
         var foundsite =sites.find { it.id ==site.id}
         if (foundsite!=null){
-            foundsite.title=site.title
             foundsite.title = site.title
             foundsite.description = site.description
             foundsite.image = site.image
