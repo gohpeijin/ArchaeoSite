@@ -34,4 +34,8 @@ class SitesStoreRoom(val context: Context) : SiteInterface {
     override fun findById(id: Long): ArchaeoModel? {
         return dao.findById(id)
     }
+
+    override fun clear() {
+
+    }
 }

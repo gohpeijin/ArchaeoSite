@@ -16,15 +16,19 @@
         <activity android:name=".activities.SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".view.login.LoginView"
+            android:label="@string/title_activity_login"
+            android:launchMode="singleTop"/>
 
         <activity
             android:name=".view.displayList.DisplayListView"
             android:label="@string/title_activity_site_list"
             android:launchMode="singleTop" />
-
         <activity
             android:name=".view.site.SiteView"
             android:label="@string/title_activity_site">
@@ -32,7 +36,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".view.displayList.DisplayListView" />
         </activity>
-
         <activity
             android:name=".view.location.EditLocationView"
             android:label="@string/title_activity_map">
@@ -40,7 +43,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".view.site.SiteView" />
         </activity>
-
         <activity
             android:name=".view.map.SiteMapView"
             android:label="@string/title_activity_site_maps"
@@ -53,7 +55,6 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
-
     </application>
 
 </manifest>

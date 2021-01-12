@@ -9,6 +9,8 @@ import com.project.archaeosite.activities.SitesListener
 import com.project.archaeosite.models.ArchaeoModel
 import com.project.archaeosite.view.base.BaseView
 import kotlinx.android.synthetic.main.activity_display_lists.*
+import kotlinx.android.synthetic.main.activity_display_lists.mytoolbar
+import kotlinx.android.synthetic.main.activity_sites_maps.*
 import org.jetbrains.anko.*
 
 class DisplayListView : BaseView(), AnkoLogger, SitesListener {
@@ -21,8 +23,11 @@ class DisplayListView : BaseView(), AnkoLogger, SitesListener {
 
         presenter = initPresenter (DisplayListPresenter (this)) as DisplayListPresenter
 
+        super.init(mytoolbar, false)
+
         item_add.setOnClickListener { presenter.doAddSite() }
         item_map.setOnClickListener { presenter.doShowSitesMap() }
+        item_logout.setOnClickListener { presenter.doLogout() }
 
         val layoutManager = LinearLayoutManager(this)
         recyclerview_sites.layoutManager = layoutManager

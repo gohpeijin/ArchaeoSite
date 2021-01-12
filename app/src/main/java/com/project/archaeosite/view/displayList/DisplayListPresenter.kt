@@ -1,6 +1,7 @@
 package com.project.archaeosite.view.displayList
 
 
+import com.google.firebase.auth.FirebaseAuth
 import com.project.archaeosite.models.ArchaeoModel
 import com.project.archaeosite.view.base.BasePresenter
 import com.project.archaeosite.view.base.BaseView
@@ -36,5 +37,8 @@ class DisplayListPresenter (view: BaseView): BasePresenter(view){
     fun doShowSitesMap(){
         view?.navigateTo(VIEW.MAPS)
     }
-
+    fun doLogout() {
+        FirebaseAuth.getInstance().signOut()
+        view?.navigateTo(VIEW.LOGIN)
+    }
 }
