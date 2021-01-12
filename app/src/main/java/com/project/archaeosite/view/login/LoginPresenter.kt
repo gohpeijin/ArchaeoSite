@@ -23,7 +23,7 @@ class LoginPresenter(view: BaseView) : BasePresenter(view) {
         auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(view!!) { task ->
             if (task.isSuccessful) {
                 if (fireStore != null) {
-                    fireStore!!.fetchPlacemarks {
+                    fireStore!!.fetchSites {
                         view?.hideProgress()
                         view?.navigateTo(VIEW.LIST)
                     }
@@ -44,6 +44,10 @@ class LoginPresenter(view: BaseView) : BasePresenter(view) {
         view?.showProgress()
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(view!!) { task ->
             if (task.isSuccessful) {
+                fireStore!!.fetchSites {
+                    view?.hideProgress()
+                    view?.navigateTo(VIEW.LIST)
+                }
                 view?.hideProgress()
                 view?.navigateTo(VIEW.LIST)
             } else {

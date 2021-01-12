@@ -29,7 +29,6 @@ class SiteFireStore(val context: Context) : SiteInterface, AnkoLogger {
     override fun update(site: ArchaeoModel) {
         var foundsite =sites.find { it.id ==site.id}
         if (foundsite!=null){
-            foundsite.title=site.title
             foundsite.title = site.title
             foundsite.description = site.description
             foundsite.image = site.image
@@ -52,7 +51,7 @@ class SiteFireStore(val context: Context) : SiteInterface, AnkoLogger {
         sites.clear()
     }
 
-    fun fetchPlacemarks(sitesReady: () -> Unit) {
+    fun fetchSites(sitesReady: () -> Unit) {
         val valueEventListener = object : ValueEventListener {
             override fun onCancelled(dataSnapshot: DatabaseError) {
             }

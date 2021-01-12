@@ -31,6 +31,7 @@ class SitePresenter (view: SiteView): BasePresenter(view),AnkoLogger {
     var defaultLocation = Location(52.245696, -7.139102, 15f)
     var imageposition=0
     var map: GoogleMap? = null
+    var locationManualyChanged = false
 
     var locationService: FusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(view)
     val locationRequest = createDefaultLocationRequest()
@@ -56,7 +57,9 @@ class SitePresenter (view: SiteView): BasePresenter(view),AnkoLogger {
             override fun onLocationResult(locationResult: LocationResult?) {
                 if (locationResult != null && locationResult.locations != null) {
                     val l = locationResult.locations.last()
-                    locationUpdate(Location(l.latitude, l.longitude))
+                    if (!locationManualyChanged) {
+                        locationUpdate(Location(l.latitude, l.longitude))
+                    }
                 }
             }
         }
@@ -159,6 +162,7 @@ class SitePresenter (view: SiteView): BasePresenter(view),AnkoLogger {
         }
 
         fun doSetLocation() {
+            locationManualyChanged = true
             view?.navigateTo(
                 VIEW.LOCATION,
                 LOCATION_REQUEST,
