@@ -6,14 +6,7 @@ import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverter
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import kotlinx.android.parcel.Parcelize
-import java.lang.reflect.Type
-
-
-//import kotlinx.parcelize.Parcelize
-
 
 //we need a unique way of identifying sites - this is usually via an id.
 @Parcelize
@@ -21,6 +14,7 @@ import java.lang.reflect.Type
 data class ArchaeoModel(
     @PrimaryKey(autoGenerate = true)
     var id: Long = 0,
+    var fbId : String = "",
     var title: String = "",
     var description: String = "",
     var image: MutableList<String> = arrayListOf(),

@@ -8,5 +8,6 @@
     <string name="sitePicture">Site Image</string>
     <string name="title_activity_site">Site</string>
     <string name="title_activity_site_list">Sites</string>
+    <string name="title_activity_login">Login</string>
 
 </resources>

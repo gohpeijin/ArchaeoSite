@@ -4,10 +4,12 @@ import android.content.Intent
 import android.os.Parcelable
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import com.google.firebase.auth.FirebaseAuth
 import com.project.archaeosite.models.ArchaeoModel
 import com.project.archaeosite.models.Location
 import com.project.archaeosite.view.displayList.DisplayListView
 import com.project.archaeosite.view.location.EditLocationView
+import com.project.archaeosite.view.login.LoginView
 import com.project.archaeosite.view.map.SiteMapView
 import com.project.archaeosite.view.site.SiteView
 import org.jetbrains.anko.AnkoLogger
@@ -16,7 +18,7 @@ val IMAGE_REQUEST = 1
 val LOCATION_REQUEST = 2
 
 enum class VIEW {
-    LOCATION, SITE, MAPS, LIST
+    LOCATION, SITE, MAPS, LIST, LOGIN
 }
 
 
@@ -31,6 +33,7 @@ open abstract class BaseView() : AppCompatActivity(), AnkoLogger {
             VIEW.SITE -> intent = Intent(this,SiteView::class.java)
             VIEW.MAPS -> intent = Intent(this, SiteMapView::class.java)
             VIEW.LIST -> intent = Intent(this, DisplayListView::class.java)
+            VIEW.LOGIN -> intent = Intent(this, LoginView::class.java)
         }
         if (key != "") {
             intent.putExtra(key, value)
@@ -48,6 +51,10 @@ open abstract class BaseView() : AppCompatActivity(), AnkoLogger {
         toolbar.title = title
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(upEnabled)
+        val user = FirebaseAuth.getInstance().currentUser
+        if (user != null) {
+            toolbar.title = "${title}: ${user.email}"
+        }
     }
 
     override fun onDestroy() {
