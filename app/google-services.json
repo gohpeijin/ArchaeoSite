@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "22xxxxxx",
+    "project_id": "archaeologxxxx",
+    "storage_bucket": "archaeologxxxx.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:228672476371:android:21xxx3026",
+        "android_client_info": {
+          "package_name": "com.project.archaeosite"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "22867xxxx1-nh03xxxxxxxxxxkicapp5vf46mju.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzxxxxxxxxxxxG-zsABthv6SJ4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "2xxxxxxxxxxxxxxxxxjhi2okicapp5vf46mju.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

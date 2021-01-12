@@ -44,6 +44,10 @@ class SiteMemImplement : SiteInterface, AnkoLogger {
         return foundsite
     }
 
+    override fun clear() {
+        sites.clear()
+    }
+
     fun displayAll(){
         sites.forEach{info(it)}
     }

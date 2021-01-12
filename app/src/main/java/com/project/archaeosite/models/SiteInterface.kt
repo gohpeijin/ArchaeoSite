@@ -6,4 +6,5 @@ interface SiteInterface {
     fun update(site: ArchaeoModel) //use to up date the site for edit their values and display all the site on the logcat "logAll() fun"
     fun delete(site: ArchaeoModel) //way of deleting sites
     fun findById(id:Long) : ArchaeoModel? // this is to find the marker id then display it on map there the name and the description
+    fun clear()
 }
