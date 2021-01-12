@@ -1,17 +1,24 @@
 package com.project.archaeosite.models.firebase
 
 import android.content.Context
+import android.graphics.Bitmap
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
+import com.project.archaeosite.helpers.readImageFromPath
 import com.project.archaeosite.models.ArchaeoModel
 import com.project.archaeosite.models.SiteInterface
 import org.jetbrains.anko.AnkoLogger
+import java.io.ByteArrayOutputStream
+import java.io.File
 
 class SiteFireStore(val context: Context) : SiteInterface, AnkoLogger {
 
     val sites = ArrayList<ArchaeoModel>()
     lateinit var userId: String
     lateinit var db: DatabaseReference
+    lateinit var st: StorageReference
 
     override fun findAll(): List<ArchaeoModel> {
         return sites
@@ -23,11 +30,12 @@ class SiteFireStore(val context: Context) : SiteInterface, AnkoLogger {
             site.fbId = key
            sites.add(site)
             db.child("users").child(userId).child("sites").child(key).setValue(site)
+            updateImage(site)
         }
     }
 
     override fun update(site: ArchaeoModel) {
-        var foundsite =sites.find { it.id ==site.id}
+        var foundsite =sites.find { it.fbId ==site.fbId}
         if (foundsite!=null){
             foundsite.title = site.title
             foundsite.description = site.description
@@ -35,6 +43,9 @@ class SiteFireStore(val context: Context) : SiteInterface, AnkoLogger {
             foundsite.location = site.location
         }
         db.child("users").child(userId).child("sites").child(site.fbId).setValue(site)
+         if ((site.image[0].length) > 0 && (site.image[0][0] != 'h')) {
+            updateImage(site)
+       }
     }
 
     override fun delete(site: ArchaeoModel) {
@@ -50,6 +61,36 @@ class SiteFireStore(val context: Context) : SiteInterface, AnkoLogger {
     override fun clear() {
         sites.clear()
     }
+    fun updateImage(site: ArchaeoModel) {
+        if (site.image[0] !="") {
+            //This will be called whenever the user selects an image.
+            //This first part will load into a bitmap object the image the user as selected from the gallery:
+            val num=0
+            val fileName = File(site.image[0])
+            val imageName = fileName.name
+
+            var imageRef = st.child("$userId/$imageName")
+            val baos = ByteArrayOutputStream()
+            val bitmap = readImageFromPath(context, site.image[num])
+
+            bitmap?.let {
+                //Then, if the bitmap successfully loaded, we compress it to save on bandwidth and obtain a reference to the bits:
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+                val data = baos.toByteArray()
+                val uploadTask = imageRef.putBytes(data)
+                //Then we upload to the firebase storage service:
+                uploadTask.addOnFailureListener {
+                    println(it.message)
+                }.addOnSuccessListener { taskSnapshot ->
+                    //If the upload goes successfully:
+                    taskSnapshot.metadata!!.reference!!.downloadUrl.addOnSuccessListener {
+                        site.image[num] = it.toString()
+                        db.child("users").child(userId).child("sites").child(site.fbId).setValue(site)
+                    }
+                }
+            }
+        }
+    }
 
     fun fetchSites(sitesReady: () -> Unit) {
         val valueEventListener = object : ValueEventListener {
@@ -62,6 +103,7 @@ class SiteFireStore(val context: Context) : SiteInterface, AnkoLogger {
         }
         userId = FirebaseAuth.getInstance().currentUser!!.uid
         db = FirebaseDatabase.getInstance().reference
+        st = FirebaseStorage.getInstance().reference
         sites.clear()
         db.child("users").child(userId).child("sites").addListenerForSingleValueEvent(valueEventListener)
     }

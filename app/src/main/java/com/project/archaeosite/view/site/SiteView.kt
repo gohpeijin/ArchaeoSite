@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import com.bumptech.glide.Glide
 import com.google.android.gms.maps.GoogleMap
 import com.project.archaeosite.R
 import com.project.archaeosite.helpers.readImageFromPath
@@ -63,7 +64,8 @@ class SiteView : BaseView(), AnkoLogger {
     }
 
     override fun displayImageByPosition(site: ArchaeoModel,num: Int){
-        ImageSelected.setImageBitmap(readImageFromPath(this, site.image.get(num)))
+        Glide.with(this).load(site.image[num]).into( ImageSelected)
+        //ImageSelected.setImageBitmap(readImageFromPath(this, site.image.get(num)))
     }
 
     @SuppressLint("SetTextI18n")

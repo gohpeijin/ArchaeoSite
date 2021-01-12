@@ -2,6 +2,7 @@ package com.project.archaeosite.view.map
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.bumptech.glide.Glide
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.Marker
 import com.project.archaeosite.R
@@ -46,7 +47,7 @@ class SiteMapView : BaseView(),GoogleMap.OnMarkerClickListener {
         currentTitle.text = site.title
         currentDescription.text = site.description
         if(site.image.isNotEmpty())
-            currentImage.setImageBitmap(readImageFromPath(this, site.image.get(0)))
+            Glide.with(this).load(site.image[0]).into(currentImage)
         else
             currentImage.setImageResource(android.R.color.transparent)
     }
