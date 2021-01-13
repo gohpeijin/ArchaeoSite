@@ -85,7 +85,6 @@ class SitePresenter (view: SiteView): BasePresenter(view),AnkoLogger {
             }
         }
 
-
         fun doConfigureMap(m: GoogleMap) {
             map = m
             locationUpdate(site.location)

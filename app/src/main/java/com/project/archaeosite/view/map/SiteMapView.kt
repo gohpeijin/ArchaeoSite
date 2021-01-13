@@ -34,9 +34,6 @@ class SiteMapView : BaseView(),GoogleMap.OnMarkerClickListener {
             presenter.loadSitesList()
         }
 
-//        item_back_sitemaps.setOnClickListener() {
-//            finish()
-//        }
     }
     override fun onMarkerClick(marker: Marker): Boolean {
         presenter.doMarkerSelected(marker)

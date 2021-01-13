@@ -64,7 +64,7 @@ class SiteView : BaseView(), AnkoLogger {
     }
 
     override fun displayImageByPosition(site: ArchaeoModel,num: Int){
-        Glide.with(this).load(site.image[num]).into( ImageSelected)
+        Glide.with(this).load(site.image[num]).into(ImageSelected)
         //ImageSelected.setImageBitmap(readImageFromPath(this, site.image.get(num)))
     }
 
@@ -72,16 +72,15 @@ class SiteView : BaseView(), AnkoLogger {
     override fun setSiteContent(site: ArchaeoModel, editmode: Boolean){
         if ( text_Site_Name.text.isEmpty())  text_Site_Name.setText(site.title)
         if (text_Site_Description.text.isEmpty()) text_Site_Description.setText(site.description)
-
         if(site.image.isNotEmpty())
-            ImageSelected.setImageBitmap(readImageFromPath(this, site.image.get(0)))
+            Glide.with(this).load(site.image[0]).into(ImageSelected)
+           // ImageSelected.setImageBitmap(readImageFromPath(this, site.image.get(0)))
        // if(this::presenter.isInitialized)
             if(editmode){
                 item_delete.visibility = View.VISIBLE
                 item_save.text = "SAVE"
                 item_back.visibility=View.INVISIBLE
             }
-
         this.showLocation(site.location)
     }
 

@@ -62,30 +62,32 @@ class SiteFireStore(val context: Context) : SiteInterface, AnkoLogger {
         sites.clear()
     }
     fun updateImage(site: ArchaeoModel) {
-        if (site.image[0] !="") {
-            //This will be called whenever the user selects an image.
-            //This first part will load into a bitmap object the image the user as selected from the gallery:
-            val num=0
-            val fileName = File(site.image[0])
-            val imageName = fileName.name
+        val image_num= site.image.size
+        for (num in 0 until image_num){
+            if (site.image[num] !="") {
+                //This will be called whenever the user selects an image.
+                //This first part will load into a bitmap object the image the user as selected from the gallery:
+                val fileName = File(site.image[num])
+                val imageName = fileName.name
 
-            var imageRef = st.child("$userId/$imageName")
-            val baos = ByteArrayOutputStream()
-            val bitmap = readImageFromPath(context, site.image[num])
+                var imageRef = st.child("$userId/$imageName")
+                val baos = ByteArrayOutputStream()
+                val bitmap = readImageFromPath(context, site.image[num])
 
-            bitmap?.let {
-                //Then, if the bitmap successfully loaded, we compress it to save on bandwidth and obtain a reference to the bits:
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-                val data = baos.toByteArray()
-                val uploadTask = imageRef.putBytes(data)
-                //Then we upload to the firebase storage service:
-                uploadTask.addOnFailureListener {
-                    println(it.message)
-                }.addOnSuccessListener { taskSnapshot ->
-                    //If the upload goes successfully:
-                    taskSnapshot.metadata!!.reference!!.downloadUrl.addOnSuccessListener {
-                        site.image[num] = it.toString()
-                        db.child("users").child(userId).child("sites").child(site.fbId).setValue(site)
+                bitmap?.let {
+                    //Then, if the bitmap successfully loaded, we compress it to save on bandwidth and obtain a reference to the bits:
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+                    val data = baos.toByteArray()
+                    val uploadTask = imageRef.putBytes(data)
+                    //Then we upload to the firebase storage service:
+                    uploadTask.addOnFailureListener {
+                        println(it.message)
+                    }.addOnSuccessListener { taskSnapshot ->
+                        //If the upload goes successfully:
+                        taskSnapshot.metadata!!.reference!!.downloadUrl.addOnSuccessListener {
+                            site.image[num] = it.toString()
+                            db.child("users").child(userId).child("sites").child(site.fbId).setValue(site)
+                        }
                     }
                 }
             }
