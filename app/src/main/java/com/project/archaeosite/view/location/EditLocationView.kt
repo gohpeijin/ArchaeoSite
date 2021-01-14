@@ -1,19 +1,13 @@
 package com.project.archaeosite.view.location
 
 import android.os.Bundle
-
+import android.view.MenuItem
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.Marker
 import com.project.archaeosite.R
 import com.project.archaeosite.models.Location
 import com.project.archaeosite.view.base.BaseView
 import kotlinx.android.synthetic.main.activity_map.*
-import kotlinx.android.synthetic.main.activity_map.item_save
-import kotlinx.android.synthetic.main.activity_map.lat
-import kotlinx.android.synthetic.main.activity_map.lng
-import kotlinx.android.synthetic.main.activity_map.mapView
-import kotlinx.android.synthetic.main.activity_map.mytoolbar
-import kotlinx.android.synthetic.main.activity_site.*
 
 class EditLocationView : BaseView(),  GoogleMap.OnMarkerDragListener,GoogleMap.OnMarkerClickListener  {
 
@@ -47,13 +41,13 @@ class EditLocationView : BaseView(),  GoogleMap.OnMarkerDragListener,GoogleMap.O
         lng.text = "%.6f".format(marker.position.longitude)
     }
 
-    override fun showLocation(location : Location) {
+    override fun showLocation(location: Location) {
         lat.text = "%.6f".format(location.lat)
         lng.text = "%.6f".format(location.lng)
     }
 
     override fun onMarkerDragEnd(marker: Marker) {
-        presenter.doUpdateLocation(marker.position.latitude,marker.position.longitude)
+        presenter.doUpdateLocation(marker.position.latitude, marker.position.longitude)
     }
 
     override fun onMarkerClick(marker: Marker): Boolean {
@@ -84,6 +78,15 @@ class EditLocationView : BaseView(),  GoogleMap.OnMarkerDragListener,GoogleMap.O
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         mapView.onSaveInstanceState(outState)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val id: Int = item.itemId
+        if (id == android.R.id.home) {
+            presenter.doBack()
+            return true
+        }
+        return super.onOptionsItemSelected(item)
     }
 
 }
