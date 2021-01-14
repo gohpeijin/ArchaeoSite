@@ -13,6 +13,7 @@ import kotlinx.android.synthetic.main.activity_site.*
 import kotlinx.android.synthetic.main.activity_sites_maps.*
 import kotlinx.android.synthetic.main.activity_sites_maps.mapView
 import kotlinx.android.synthetic.main.activity_sites_maps.mytoolbar
+import org.jetbrains.anko.info
 
 class SiteMapView : BaseView(),GoogleMap.OnMarkerClickListener {
 
@@ -41,6 +42,7 @@ class SiteMapView : BaseView(),GoogleMap.OnMarkerClickListener {
     }
     //to display site content
     override fun setSiteContent(site: ArchaeoModel, editmode: Boolean) {
+        info(site)
         currentTitle.text = site.title
         currentDescription.text = site.description
         if(site.image.isNotEmpty())

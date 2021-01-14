@@ -54,7 +54,7 @@ class SiteFireStore(val context: Context) : SiteInterface, AnkoLogger {
     }
 
     override fun findById(id: Long): ArchaeoModel? {
-        val foundsite =sites.find { it.id ==id}
+        val foundsite =sites.find {  s -> s.id ==id}
         return foundsite
     }
 
