@@ -2,6 +2,7 @@ package com.project.archaeosite.view.map
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.bumptech.glide.Glide
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.Marker
 import com.project.archaeosite.R
@@ -12,6 +13,7 @@ import kotlinx.android.synthetic.main.activity_site.*
 import kotlinx.android.synthetic.main.activity_sites_maps.*
 import kotlinx.android.synthetic.main.activity_sites_maps.mapView
 import kotlinx.android.synthetic.main.activity_sites_maps.mytoolbar
+import org.jetbrains.anko.info
 
 class SiteMapView : BaseView(),GoogleMap.OnMarkerClickListener {
 
@@ -33,9 +35,6 @@ class SiteMapView : BaseView(),GoogleMap.OnMarkerClickListener {
             presenter.loadSitesList()
         }
 
-//        item_back_sitemaps.setOnClickListener() {
-//            finish()
-//        }
     }
     override fun onMarkerClick(marker: Marker): Boolean {
         presenter.doMarkerSelected(marker)
@@ -43,10 +42,11 @@ class SiteMapView : BaseView(),GoogleMap.OnMarkerClickListener {
     }
     //to display site content
     override fun setSiteContent(site: ArchaeoModel, editmode: Boolean) {
+        info(site)
         currentTitle.text = site.title
         currentDescription.text = site.description
         if(site.image.isNotEmpty())
-            currentImage.setImageBitmap(readImageFromPath(this, site.image.get(0)))
+            Glide.with(this).load(site.image[0]).into(currentImage)
         else
             currentImage.setImageResource(android.R.color.transparent)
     }

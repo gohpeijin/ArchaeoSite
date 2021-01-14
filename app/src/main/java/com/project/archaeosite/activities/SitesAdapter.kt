@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.project.archaeosite.R
 import com.project.archaeosite.helpers.readImageFromPath
 import com.project.archaeosite.models.ArchaeoModel
@@ -20,7 +21,7 @@ class SitesAdapter constructor(private var sites: List<ArchaeoModel>, private va
             itemView.siteName.text = site.title
             itemView.siteDescription.text = site.description
             if(site.image.isNotEmpty())
-                itemView.imageIcon.setImageBitmap(readImageFromPath(itemView.context, site.image.get(0)))
+                Glide.with(itemView.context).load(site.image.get(0)).into(itemView.imageIcon)
             itemView.setOnClickListener(){
                 listener.onSiteClick(site)
             }
