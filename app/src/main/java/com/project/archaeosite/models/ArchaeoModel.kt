@@ -30,12 +30,13 @@ data class Location(
 ) : Parcelable
 
 
-@Parcelize
-data class ArchaeoUser(
-    var username: String = "",
-    var email: String = "",
-    var password: String = ""
-) : Parcelable
+//@Parcelize
+//data class ArchaeoUser(
+//    var username: String = "",
+//    var email: String = "",
+//    var password: String = ""
+//) : Parcelable
+
 class ImageConverter {
 
     @TypeConverter

@@ -23,7 +23,7 @@ class EditLocationPresenter(view: BaseView) : BasePresenter(view) {
         val loc = LatLng(location.lat, location.lng)
         val options = MarkerOptions()
             .title("Placemark")
-            .snippet("GPS : " + loc.toString())
+            .snippet("GPS : $loc")
             .draggable(true)
             .position(loc)
         map.addMarker(options)
@@ -40,6 +40,9 @@ class EditLocationPresenter(view: BaseView) : BasePresenter(view) {
         val resultIntent = Intent()
         resultIntent.putExtra("location", location)
         view?.setResult(0, resultIntent)
+        view?.finish()
+    }
+    fun doBack(){
         view?.finish()
     }
 

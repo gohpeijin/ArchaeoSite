@@ -20,15 +20,16 @@ class SiteMapPresenter (view: BaseView) : BasePresenter(view)  {
         sites.forEach {
             val loc = LatLng(it.location.lat, it.location.lng)
             val options = MarkerOptions().title(it.title).position(loc)
-            map.addMarker(options).tag = it.id  //tag as id
+            map.addMarker(options).tag = it //tag as id
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, it.location.zoom))//enable app zoom in to the last added list
         }
     }
 
     fun doMarkerSelected (marker: Marker){
-        val tag = marker.tag as Long //read tag id
+        val site = marker.tag as ArchaeoModel
+        //val tag = marker.tag as Long //read tag id
         doAsync {
-            val site = app.sites.findById(tag)
+           // val site = app.sites.findById(tag)
             uiThread {
                 if (site!=null){
                     view?.setSiteContent(site)

@@ -39,7 +39,6 @@ class DisplayListView : BaseView(), AnkoLogger, SitesListener {
         recyclerview_sites.adapter?.notifyDataSetChanged()
     }
 
-
     override fun onSiteClick(site: ArchaeoModel) {
         presenter.doEditSite(site)
     }
