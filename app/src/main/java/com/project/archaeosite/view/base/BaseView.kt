@@ -11,6 +11,7 @@ import com.project.archaeosite.view.displayList.DisplayListView
 import com.project.archaeosite.view.location.EditLocationView
 import com.project.archaeosite.view.login.LoginView
 import com.project.archaeosite.view.map.SiteMapView
+import com.project.archaeosite.view.profile.UserProfileView
 import com.project.archaeosite.view.site.SiteView
 import kotlinx.android.synthetic.main.nav_header_main.*
 import org.jetbrains.anko.AnkoLogger
@@ -19,7 +20,7 @@ val IMAGE_REQUEST = 1
 val LOCATION_REQUEST = 2
 
 enum class VIEW {
-    LOCATION, SITE, MAPS, LIST, LOGIN
+    LOCATION, SITE, MAPS, LIST, LOGIN, PROFILE
 }
 
 
@@ -35,6 +36,7 @@ open abstract class BaseView() : AppCompatActivity(), AnkoLogger {
             VIEW.MAPS -> intent = Intent(this, SiteMapView::class.java)
             VIEW.LIST -> intent = Intent(this, DisplayListView::class.java)
             VIEW.LOGIN -> intent = Intent(this, LoginView::class.java)
+            VIEW.PROFILE -> intent = Intent(this, UserProfileView::class.java)
         }
         if (key != "") {
             intent.putExtra(key, value)

@@ -20,11 +20,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".view.login.LoginView"
+        <activity
+            android:name=".view.login.LoginView"
             android:label="@string/title_activity_login"
-            android:launchMode="singleTop"/>
-
+            android:launchMode="singleTop" />
         <activity
             android:name=".view.displayList.DisplayListView"
             android:label="@string/title_activity_site_list"
@@ -47,6 +46,13 @@
             android:name=".view.map.SiteMapView"
             android:label="@string/title_activity_site_maps"
             android:launchMode="singleTop">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".view.displayList.DisplayListView" />
+        </activity>
+
+        <activity android:name=".view.profile.UserProfileView"
+            android:label="@string/title_activity_profile">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".view.displayList.DisplayListView" />

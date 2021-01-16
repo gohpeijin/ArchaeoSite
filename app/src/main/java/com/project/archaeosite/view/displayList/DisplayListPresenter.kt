@@ -40,4 +40,7 @@ class DisplayListPresenter (view: BaseView): BasePresenter(view),AnkoLogger{
         app.sites.clear()
         view?.navigateTo(VIEW.LOGIN)
     }
+    fun doOpenProfile(){
+        view?.navigateTo(VIEW.PROFILE)
+    }
 }
