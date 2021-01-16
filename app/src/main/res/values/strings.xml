@@ -9,5 +9,13 @@
     <string name="title_activity_site">Site</string>
     <string name="title_activity_site_list">Sites</string>
     <string name="title_activity_login">Login</string>
+    <string name="menu_addSite">Add</string>
+    <string name="menu_showMap">Show Map</string>
+    <string name="menu_logout">Logout</string>
+
+
+    <string name="open">open</string>
+    <string name="close">close</string>
+    <string name="menu_home">Home</string>
 
 </resources>

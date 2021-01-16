@@ -12,6 +12,7 @@ import com.project.archaeosite.view.location.EditLocationView
 import com.project.archaeosite.view.login.LoginView
 import com.project.archaeosite.view.map.SiteMapView
 import com.project.archaeosite.view.site.SiteView
+import kotlinx.android.synthetic.main.nav_header_main.*
 import org.jetbrains.anko.AnkoLogger
 
 val IMAGE_REQUEST = 1
@@ -51,11 +52,13 @@ open abstract class BaseView() : AppCompatActivity(), AnkoLogger {
         toolbar.title = title
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(upEnabled)
-        val user = FirebaseAuth.getInstance().currentUser
-        if (user != null) {
-            toolbar.title = "${title}: ${user.email}"
-        }
+//        val user = FirebaseAuth.getInstance().currentUser
+//        if (user != null) {
+//            useremail.text =user.email
+//           // toolbar.title = "${title}: ${user.email}"
+//        }
     }
+
 
     override fun onDestroy() {
         basePresenter?.onDestroy()
