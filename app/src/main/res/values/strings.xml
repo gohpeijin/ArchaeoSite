@@ -10,7 +10,7 @@
     <string name="siteName">Site Name</string>
     <string name="sitePicture">Site Image</string>
     <string name="title_activity_site">Site</string>
-    <string name="title_activity_site_list">Sites</string>
+    <string name="title_activity_site_list">My Sites</string>
     <string name="title_activity_login">Login</string>
     <string name="menu_addSite">Add</string>
     <string name="menu_showMap">Show Map</string>
@@ -19,5 +19,7 @@
     <string name="menu_home">Home</string>
     <string name="menu_profile">Profile</string>
     <string name="title_activity_profile">Profile</string>
+    <string name="title_activity_hillfort">Hillfort</string>
+    <string name="hillfort">Hillfort Sites</string>
 
 </resources>

@@ -5,7 +5,7 @@
     android:id="@+id/drawer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.displayList.DisplayListView">
+    tools:context=".view.hillfort.HillfortView">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,12 +22,12 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:title="My Sites"
+            app:title="Hillfort"
             app:titleTextColor="@color/white"
             app:theme="@style/ThemeOverlay.AppCompat.Dark"/>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerview_sites"
+            android:id="@+id/recyclerview_hillfort"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scrollbars="vertical"
@@ -43,6 +43,4 @@
         android:clipToPadding="false"
         app:menu="@menu/main_menu"
         app:headerLayout="@layout/nav_header_main"/>
-
-
 </androidx.drawerlayout.widget.DrawerLayout>

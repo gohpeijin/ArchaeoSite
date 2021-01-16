@@ -24,10 +24,16 @@
             android:name=".view.login.LoginView"
             android:label="@string/title_activity_login"
             android:launchMode="singleTop" />
+
         <activity
             android:name=".view.displayList.DisplayListView"
             android:label="@string/title_activity_site_list"
             android:launchMode="singleTop" />
+
+        <activity android:name=".view.hillfort.HillfortView"
+            android:label="@string/title_activity_hillfort"
+            android:launchMode="singleTop" />
+
         <activity
             android:name=".view.site.SiteView"
             android:label="@string/title_activity_site">
@@ -35,6 +41,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".view.displayList.DisplayListView" />
         </activity>
+
         <activity
             android:name=".view.location.EditLocationView"
             android:label="@string/title_activity_map">
@@ -50,8 +57,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".view.displayList.DisplayListView" />
         </activity>
-
-        <activity android:name=".view.profile.UserProfileView"
+        <activity
+            android:name=".view.profile.UserProfileView"
             android:label="@string/title_activity_profile">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

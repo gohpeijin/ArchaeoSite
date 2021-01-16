@@ -7,7 +7,6 @@ import com.project.archaeosite.view.base.BaseView
 import com.project.archaeosite.view.base.VIEW
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.info
 import org.jetbrains.anko.uiThread
 
 class DisplayListPresenter (view: BaseView): BasePresenter(view),AnkoLogger{
@@ -42,5 +41,8 @@ class DisplayListPresenter (view: BaseView): BasePresenter(view),AnkoLogger{
     }
     fun doOpenProfile(){
         view?.navigateTo(VIEW.PROFILE)
+    }
+    fun doShowHillfort(){
+        view?.navigateTo(VIEW.HILLFORT)
     }
 }

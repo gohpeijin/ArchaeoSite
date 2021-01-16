@@ -6,6 +6,7 @@ import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverter
+import com.google.firebase.firestore.GeoPoint
 import kotlinx.android.parcel.Parcelize
 
 //we need a unique way of identifying sites - this is usually via an id.
@@ -29,6 +30,12 @@ data class Location(
     var zoom: Float = 0f
 ) : Parcelable
 
+
+data class HillfortModel(
+    var Title:String="",
+    var Image:String="",
+    var Location:GeoPoint?=null
+)
 
 //@Parcelize
 //data class ArchaeoUser(

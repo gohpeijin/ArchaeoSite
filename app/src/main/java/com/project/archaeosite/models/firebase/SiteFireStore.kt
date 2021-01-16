@@ -93,7 +93,6 @@ class SiteFireStore(val context: Context) : SiteInterface, AnkoLogger {
             }
         }
     }
-
     fun fetchSites(sitesReady: () -> Unit) {
         val valueEventListener = object : ValueEventListener {
             override fun onCancelled(dataSnapshot: DatabaseError) {

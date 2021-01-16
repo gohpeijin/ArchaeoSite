@@ -8,6 +8,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.project.archaeosite.models.ArchaeoModel
 import com.project.archaeosite.models.Location
 import com.project.archaeosite.view.displayList.DisplayListView
+import com.project.archaeosite.view.hillfort.HillfortView
 import com.project.archaeosite.view.location.EditLocationView
 import com.project.archaeosite.view.login.LoginView
 import com.project.archaeosite.view.map.SiteMapView
@@ -20,7 +21,7 @@ val IMAGE_REQUEST = 1
 val LOCATION_REQUEST = 2
 
 enum class VIEW {
-    LOCATION, SITE, MAPS, LIST, LOGIN, PROFILE
+    LOCATION, SITE, MAPS, LIST, LOGIN, PROFILE, HILLFORT
 }
 
 
@@ -37,6 +38,7 @@ open abstract class BaseView() : AppCompatActivity(), AnkoLogger {
             VIEW.LIST -> intent = Intent(this, DisplayListView::class.java)
             VIEW.LOGIN -> intent = Intent(this, LoginView::class.java)
             VIEW.PROFILE -> intent = Intent(this, UserProfileView::class.java)
+            VIEW.HILLFORT -> intent = Intent(this, HillfortView::class.java)
         }
         if (key != "") {
             intent.putExtra(key, value)
