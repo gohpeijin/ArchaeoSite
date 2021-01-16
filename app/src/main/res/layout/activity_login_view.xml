@@ -49,11 +49,11 @@
             android:inputType="textEmailAddress"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toEndOf="@+id/textView"
+            app:layout_constraintStart_toEndOf="@+id/useremail"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/useremail"
             android:layout_width="72dp"
             android:layout_height="23dp"
             android:layout_marginStart="16dp"
@@ -83,9 +83,9 @@
             android:text="Password"
             android:textAlignment="textEnd"
             app:layout_constraintBaseline_toBaselineOf="@+id/password"
-            app:layout_constraintEnd_toEndOf="@+id/textView"
+            app:layout_constraintEnd_toEndOf="@+id/useremail"
             app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="@+id/textView" />
+            app:layout_constraintStart_toStartOf="@+id/useremail" />
 
         <Button
             android:id="@+id/signUp"
