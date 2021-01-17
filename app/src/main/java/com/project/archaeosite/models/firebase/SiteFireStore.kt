@@ -2,6 +2,7 @@ package com.project.archaeosite.models.firebase
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.util.Log
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
@@ -11,6 +12,7 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.project.archaeosite.helpers.readImageFromPath
 import com.project.archaeosite.models.ArchaeoModel
+import com.project.archaeosite.models.HillfortModel
 import com.project.archaeosite.models.SiteInterface
 import org.jetbrains.anko.AnkoLogger
 import java.io.ByteArrayOutputStream
@@ -57,13 +59,14 @@ class SiteFireStore(val context: Context) : SiteInterface, AnkoLogger {
     }
 
     override fun findById(id: Long): ArchaeoModel? {
-        val foundsite =sites.find {  s -> s.id ==id}
+        val foundsite =sites.find { s -> s.id ==id}
         return foundsite
     }
 
     override fun clear() {
         sites.clear()
     }
+
     fun updateImage(site: ArchaeoModel) {
         val image_num= site.image.size
         for (num in 0 until image_num){
@@ -96,6 +99,7 @@ class SiteFireStore(val context: Context) : SiteInterface, AnkoLogger {
             }
         }
     }
+
     fun fetchSites(sitesReady: () -> Unit) {
         val valueEventListener = object : ValueEventListener {
             override fun onCancelled(dataSnapshot: DatabaseError) {
@@ -113,11 +117,29 @@ class SiteFireStore(val context: Context) : SiteInterface, AnkoLogger {
     }
 }
 
-
-class FirebaseRepo_Hillfort{
+class FirebaseRepo_Hillfort : AnkoLogger{
     val firebaseFirestore: FirebaseFirestore = FirebaseFirestore.getInstance()
+    var hillfortlist=ArrayList<HillfortModel>()
+    val hillfortlist2=ArrayList<HillfortModel>()
+    val TAG = "FireStore"
 
     fun getHillfortList(): Task<QuerySnapshot> {
         return firebaseFirestore.collection("Hillforts").get()
     }
+
+    fun loadHillfortData(myCallback: MyCallback){
+        getHillfortList().addOnCompleteListener {
+            if (it.isSuccessful) {
+                hillfortlist = it.result!!.toObjects(HillfortModel::class.java) as ArrayList<HillfortModel>
+                myCallback.onCallback( hillfortlist)
+            } else {
+                Log.d(TAG, "Error:${it.exception!!.message}")
+            }
+        }
+    }
+
+    interface MyCallback {
+        fun onCallback(hillfortlist: List<HillfortModel>)
+    }
+
 }

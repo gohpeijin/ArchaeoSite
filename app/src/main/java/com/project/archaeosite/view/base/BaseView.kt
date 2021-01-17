@@ -5,6 +5,7 @@ import android.os.Parcelable
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.project.archaeosite.models.ArchaeoModel
+import com.project.archaeosite.models.HillfortModel
 import com.project.archaeosite.models.Location
 import com.project.archaeosite.view.displayList.DisplayListView
 import com.project.archaeosite.view.hillfort.HillfortView
@@ -87,6 +88,7 @@ open abstract class BaseView() : AppCompatActivity(), AnkoLogger {
     //Displaylist
     open fun showSites(sites: List<ArchaeoModel>) {}
     open fun showLocation(location : Location) {}
+    open fun showHillfortList(hillfortList:List<HillfortModel>){}
    // open fun showLocation(latitude : Double, longitude : Double) {}
     open fun showProgress() {}
     open fun hideProgress() {}

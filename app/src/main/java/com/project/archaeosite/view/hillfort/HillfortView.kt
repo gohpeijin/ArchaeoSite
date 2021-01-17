@@ -1,7 +1,7 @@
 package com.project.archaeosite.view.hillfort
 
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
 import com.project.archaeosite.R
 import com.project.archaeosite.models.HillfortModel
-import com.project.archaeosite.models.firebase.FirebaseRepo_Hillfort
 import com.project.archaeosite.view.base.BaseView
 import kotlinx.android.synthetic.main.activity_hillfort_view.*
 import kotlinx.android.synthetic.main.activity_hillfort_view.drawer
@@ -21,12 +20,6 @@ import kotlinx.android.synthetic.main.nav_header_main.*
 class HillfortView :  BaseView() {
 
     lateinit var presenter: HillfortPresenter
-
-    val firebaseRepoHillfort: FirebaseRepo_Hillfort = FirebaseRepo_Hillfort()
-    var hillfortlist =ArrayList<HillfortModel>()
-
-    val TAG = "MyMessage"
-    val hillfortListAdapter:HillfortListAdapter=HillfortListAdapter(hillfortlist)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,25 +47,21 @@ class HillfortView :  BaseView() {
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        loadHillfortData()
         val layoutManager = LinearLayoutManager(this)
         recyclerview_hillfort.layoutManager= layoutManager
-        recyclerview_hillfort.adapter = hillfortListAdapter
+        presenter.loadHillfortList()
+
     }
 
-
-   private fun loadHillfortData(){
-        firebaseRepoHillfort.getHillfortList().addOnCompleteListener {
-            if(it.isSuccessful){
-                hillfortlist= it.result!!.toObjects(HillfortModel::class.java) as ArrayList<HillfortModel>
-                hillfortListAdapter.hillfortItems=hillfortlist
-                hillfortListAdapter.notifyDataSetChanged()
-            }else{
-                Log.d(TAG,"Error:${it.exception!!.message}")
-            }
-        }
+    override fun showHillfortList(hillfortList:List<HillfortModel>){
+        recyclerview_hillfort.adapter=HillfortListAdapter(hillfortList)
+        recyclerview_hillfort.adapter?.notifyDataSetChanged()
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        presenter.loadHillfortList()
+        super.onActivityResult(requestCode, resultCode, data)
+    }
     override fun onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START)

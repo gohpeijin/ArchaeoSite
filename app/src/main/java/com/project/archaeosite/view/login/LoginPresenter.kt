@@ -27,7 +27,7 @@ class LoginPresenter(view: BaseView) : BasePresenter(view) {
                         view?.hideProgress()
                         view?.navigateTo(VIEW.LIST)
                     }
-            }
+                }
                 else {
                     view?.hideProgress()
                     view?.navigateTo(VIEW.LIST)

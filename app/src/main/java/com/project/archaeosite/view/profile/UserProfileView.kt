@@ -3,6 +3,7 @@ package com.project.archaeosite.view.profile
 import android.os.Bundle
 import com.google.firebase.auth.FirebaseAuth
 import com.project.archaeosite.R
+import com.project.archaeosite.main.MainApp
 import com.project.archaeosite.view.base.BaseView
 import kotlinx.android.synthetic.main.activity_user_profile_view.*
 
@@ -21,8 +22,9 @@ class UserProfileView : BaseView() {
 
         val user = FirebaseAuth.getInstance().currentUser
         if (user != null) {
-            textView_useremail.text = "Email: " + user.email
+            textView_useremail.text = "Email: ${user.email}"
             //textView_password.text=user.updatePassw
         }
+        textView_totalsites.text="Total number of Sites: ${presenter.doComputeSite()}"
     }
 }
