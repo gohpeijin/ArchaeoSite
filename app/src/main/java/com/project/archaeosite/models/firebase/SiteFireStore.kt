@@ -2,8 +2,11 @@ package com.project.archaeosite.models.firebase
 
 import android.content.Context
 import android.graphics.Bitmap
+import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.project.archaeosite.helpers.readImageFromPath
@@ -107,5 +110,14 @@ class SiteFireStore(val context: Context) : SiteInterface, AnkoLogger {
         st = FirebaseStorage.getInstance().reference
         sites.clear()
         db.child("users").child(userId).child("sites").addListenerForSingleValueEvent(valueEventListener)
+    }
+}
+
+
+class FirebaseRepo_Hillfort{
+    val firebaseFirestore: FirebaseFirestore = FirebaseFirestore.getInstance()
+
+    fun getHillfortList(): Task<QuerySnapshot> {
+        return firebaseFirestore.collection("Hillforts").get()
     }
 }

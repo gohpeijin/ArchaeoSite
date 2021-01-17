@@ -1,32 +1,28 @@
 package com.project.archaeosite.view.hillfort
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.MenuItem
+import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.QuerySnapshot
 import com.project.archaeosite.R
 import com.project.archaeosite.models.HillfortModel
-import com.project.archaeosite.view.displayList.SitesAdapter
-import kotlinx.android.synthetic.main.activity_display_lists.*
+import com.project.archaeosite.models.firebase.FirebaseRepo_Hillfort
+import com.project.archaeosite.view.base.BaseView
 import kotlinx.android.synthetic.main.activity_hillfort_view.*
-import kotlinx.android.synthetic.main.card_hillfort.view.*
-import kotlinx.android.synthetic.main.card_hillfort.view.imageIcon
-import kotlinx.android.synthetic.main.card_hillfort.view.siteName
-import kotlinx.android.synthetic.main.card_sites.view.*
+import kotlinx.android.synthetic.main.activity_hillfort_view.drawer
+import kotlinx.android.synthetic.main.activity_hillfort_view.mytoolbar
+import kotlinx.android.synthetic.main.activity_hillfort_view.navigation_view
+import kotlinx.android.synthetic.main.nav_header_main.*
 
 
-class HillfortView : AppCompatActivity() {
+class HillfortView :  BaseView() {
 
-    val firebaseRepo:FirebaseRepo= FirebaseRepo()
+    lateinit var presenter: HillfortPresenter
+
+    val firebaseRepoHillfort: FirebaseRepo_Hillfort = FirebaseRepo_Hillfort()
     var hillfortlist =ArrayList<HillfortModel>()
 
     val TAG = "MyMessage"
@@ -36,17 +32,37 @@ class HillfortView : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_hillfort_view)
 
+        presenter = initPresenter (HillfortPresenter (this)) as HillfortPresenter
 
+        navigation_view.setCheckedItem(R.id.item_hillfort)
+        navigation_view.setNavigationItemSelectedListener{
+            when (it.itemId) {
+                R.id.item_add -> {presenter.doAddSite() }
+                R.id.item_map -> {presenter.doShowSitesMap() }
+                R.id.item_logout ->{presenter.doLogout() }
+                R.id.item_profile ->{presenter.doOpenProfile()}
+                R.id.item_home->{presenter.doDisplayList()}
+            }
+            true
+        }
 
-        loadPostData()
+        super.init(mytoolbar, false)
+
+        val drawerToggle = ActionBarDrawerToggle(this, drawer, R.string.open, R.string.close)
+        drawer.addDrawerListener(drawerToggle)
+        drawerToggle.syncState()
+
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        loadHillfortData()
         val layoutManager = LinearLayoutManager(this)
         recyclerview_hillfort.layoutManager= layoutManager
         recyclerview_hillfort.adapter = hillfortListAdapter
     }
 
 
-   private fun loadPostData(){
-        firebaseRepo.getPostList().addOnCompleteListener {
+   private fun loadHillfortData(){
+        firebaseRepoHillfort.getHillfortList().addOnCompleteListener {
             if(it.isSuccessful){
                 hillfortlist= it.result!!.toObjects(HillfortModel::class.java) as ArrayList<HillfortModel>
                 hillfortListAdapter.hillfortItems=hillfortlist
@@ -57,41 +73,28 @@ class HillfortView : AppCompatActivity() {
         }
     }
 
-}
-
-class FirebaseRepo{
-
-    val firebaseAuth: FirebaseAuth= FirebaseAuth.getInstance()
-    val firebaseFirestore:FirebaseFirestore= FirebaseFirestore.getInstance()
-
-    fun getPostList(): Task<QuerySnapshot> {
-        return firebaseFirestore.collection("Hillforts").get()
-    }
-}
-
-class HillfortListAdapter(var hillfortItems: List<HillfortModel>): RecyclerView.Adapter<RecyclerView.ViewHolder>(){
-
-   class MainHolder constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(hillfortmodel: HillfortModel) {
-           itemView.siteName.text=hillfortmodel.Title
-            Glide.with(itemView.context).load(hillfortmodel.Image).into(itemView.imageIcon)
-            itemView.siteLocation.text=hillfortmodel.Location.toString()
-            }
+    override fun onBackPressed() {
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START)
+        } else {
+            super.onBackPressed()
         }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val view = LayoutInflater.from(parent?.context).inflate(R.layout.card_hillfort, parent, false)
-        return MainHolder(view)
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        (holder as MainHolder).bind(hillfortItems[position])
-//        val hillfortmodel =hillfortItems[holder.adapterPosition]
-//        holder.bind(hillfortmodel)
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val user = FirebaseAuth.getInstance().currentUser
+        if (user != null) {
+            useremail.text = user.email
+        }
+        return when (item.itemId) {
+            android.R.id.home -> {
+                drawer.openDrawer(GravityCompat.START)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
-
-    override fun getItemCount(): Int {
-        return hillfortItems.size
-    }
-
 }
+
+
+
