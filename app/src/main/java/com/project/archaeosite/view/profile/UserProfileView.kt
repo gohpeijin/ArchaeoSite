@@ -28,6 +28,9 @@ class UserProfileView : BaseView() {
             //textView_password.text=user.updatePassw
         }
         textView_indisites.text="Individual Sites: ${presenter.doComputeIndiSite()}"
+        textView_indisites_visited.text="Individual Sites: ${presenter.doComputeIndiVisitedSite()}"
+
+        textView_numvisited.text="Total Number visited of Sites: ${presenter.doComputeIndiVisitedSite()}"
         presenter.doComputeHillfortSite()
     }
 

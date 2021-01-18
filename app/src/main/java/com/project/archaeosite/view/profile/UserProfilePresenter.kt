@@ -7,6 +7,7 @@ import com.project.archaeosite.view.base.BaseView
 
 class UserProfilePresenter (view: BaseView) : BasePresenter(view){
 
+
     fun doComputeIndiSite():Int{
         return app.sites.findAll().size
     }
@@ -17,6 +18,15 @@ class UserProfilePresenter (view: BaseView) : BasePresenter(view){
                view?.showHillfortList(hillfortlist)
             }
         })
+    }
+    fun doComputeIndiVisitedSite():Int{
+        var visited:Int=0
+        app.sites.findAll()
+        for (site in app.sites.findAll()){
+            if(site.visited)
+                visited++
+        }
+        return visited
     }
 
 }
