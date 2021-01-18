@@ -44,8 +44,11 @@ class SiteFireStore(val context: Context) : SiteInterface, AnkoLogger {
         if (foundsite!=null){
             foundsite.title = site.title
             foundsite.description = site.description
+            foundsite.additionalNote=site.additionalNote
             foundsite.image = site.image
             foundsite.location = site.location
+            foundsite.date=site.date
+            foundsite.visited=site.visited
         }
         db.child("users").child(userId).child("sites").child(site.fbId).setValue(site)
          if ((site.image[0].length) > 0 && (site.image[0][0] != 'h')) {
@@ -120,7 +123,6 @@ class SiteFireStore(val context: Context) : SiteInterface, AnkoLogger {
 class FirebaseRepo_Hillfort : AnkoLogger{
     val firebaseFirestore: FirebaseFirestore = FirebaseFirestore.getInstance()
     var hillfortlist=ArrayList<HillfortModel>()
-    val hillfortlist2=ArrayList<HillfortModel>()
     val TAG = "FireStore"
 
     fun getHillfortList(): Task<QuerySnapshot> {

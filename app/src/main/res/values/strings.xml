@@ -21,5 +21,7 @@
     <string name="title_activity_profile">Profile</string>
     <string name="title_activity_hillfort">Hillfort</string>
     <string name="hillfort">Hillfort Sites</string>
+    <string name="dateformat">dd/mm/yyyy</string>
+    <string name="fromAddtoSaveText">SAVE</string>
 
 </resources>

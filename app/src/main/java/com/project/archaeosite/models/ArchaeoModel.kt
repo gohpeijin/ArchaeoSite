@@ -8,6 +8,7 @@ import androidx.room.PrimaryKey
 import androidx.room.TypeConverter
 import com.google.firebase.firestore.GeoPoint
 import kotlinx.android.parcel.Parcelize
+import java.util.*
 
 //we need a unique way of identifying sites - this is usually via an id.
 @Parcelize
@@ -19,7 +20,10 @@ data class ArchaeoModel(
     var title: String = "",
     var description: String = "",
     var image: MutableList<String> = arrayListOf(),
-    @Embedded var location : Location = Location()
+    @Embedded var location : Location = Location(),
+    var additionalNote: String="",
+    var visited: Boolean=false,
+    @Embedded var date : Date=Date()
 ): Parcelable
 
 
@@ -30,6 +34,12 @@ data class Location(
     var zoom: Float = 0f
 ) : Parcelable
 
+@Parcelize
+data class Date(
+        var day: Int = 0,
+        var month: Int = 0,
+        var year: Int = 0
+) : Parcelable
 
 data class HillfortModel(
     var Title:String="",
