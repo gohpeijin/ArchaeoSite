@@ -7,6 +7,7 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
@@ -148,6 +149,19 @@ class FirebaseRepo_Hillfort : AnkoLogger{
             }
         }
 
+    }
+
+    fun updateHillfort(hillfort:HillfortModel){
+        firebaseFirestore.collection("Hillforts").document(hillfort.itemId).
+        update("userReaction",hillfort.userReaction).addOnCompleteListener {
+            if(it.isSuccessful){
+                Log.d(TAG, "Updated Hillfort Reaction")
+            }
+            else{
+                Log.d(TAG, "Error:${it.exception!!.message}")
+            }
+
+        }
     }
 
     interface MyCallback {

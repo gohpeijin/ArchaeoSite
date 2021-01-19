@@ -35,8 +35,6 @@ class HillfortListAdapter(var hillfortItems: List<HillfortModel>,private val lis
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         (holder as MainHolder).bind(hillfortItems[position],listener)
-//        val hillfortmodel =hillfortItems[holder.adapterPosition]
-//        holder.bind(hillfortmodel)
     }
 
     override fun getItemCount(): Int {

@@ -17,12 +17,10 @@ import kotlinx.android.synthetic.main.activity_hillfort_view.*
 import kotlinx.android.synthetic.main.activity_hillfort_view.drawer
 import kotlinx.android.synthetic.main.activity_hillfort_view.mytoolbar
 import kotlinx.android.synthetic.main.activity_hillfort_view.navigation_view
+import kotlinx.android.synthetic.main.activity_site.*
 import kotlinx.android.synthetic.main.card_hillfort.view.*
 import kotlinx.android.synthetic.main.dialog_hillfortsite.*
 import kotlinx.android.synthetic.main.nav_header_main.*
-import org.jetbrains.anko.AnkoLogger
-import org.jetbrains.anko.toast
-
 
 class HillfortView :  BaseView(), HillfortListener {
 
@@ -105,9 +103,13 @@ class HillfortView :  BaseView(), HillfortListener {
         Glide.with(this).load(hillfort.Image).into(mAlertDialog.imageView)
         mAlertDialog.dialog_Location.text=hillfort.Location.toString()
 
+        if(presenter.doCheckUserVisited(hillfort))  mAlertDialog.dialog_checkBox_Visited.isChecked=true
+
         mAlertDialog.dialog_button_Done.setOnClickListener {
             mAlertDialog.dismiss()
         }
+
+        mAlertDialog.dialog_checkBox_Visited.setOnClickListener { presenter.doVisitedCheckbox( mAlertDialog.dialog_checkBox_Visited.isChecked,hillfort) }
     }
 }
 
