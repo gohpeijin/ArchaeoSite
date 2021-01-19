@@ -8,8 +8,6 @@ import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
 import com.project.archaeosite.R
-import com.project.archaeosite.activities.SitesAdapter
-import com.project.archaeosite.activities.SitesListener
 import com.project.archaeosite.models.ArchaeoModel
 import com.project.archaeosite.view.base.BaseView
 import kotlinx.android.synthetic.main.activity_display_lists.*
@@ -33,6 +31,8 @@ class DisplayListView : BaseView(), AnkoLogger, SitesListener {
                 R.id.item_add -> {presenter.doAddSite() }
                 R.id.item_map -> {presenter.doShowSitesMap() }
                 R.id.item_logout ->{presenter.doLogout() }
+                R.id.item_profile ->{presenter.doOpenProfile()}
+                R.id.item_hillfort->{presenter.doShowHillfort()}
                 }
             true
         }
@@ -55,6 +55,12 @@ class DisplayListView : BaseView(), AnkoLogger, SitesListener {
         recyclerview_sites.adapter?.notifyDataSetChanged()
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        presenter.loadSitesList()
+        super.onActivityResult(requestCode, resultCode, data)
+    }
+
+    //region menu
     override fun onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START)
@@ -76,15 +82,13 @@ class DisplayListView : BaseView(), AnkoLogger, SitesListener {
             else -> super.onOptionsItemSelected(item)
         }
     }
+    //endregion
 
     override fun onSiteClick(site: ArchaeoModel) {
         presenter.doEditSite(site)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        presenter.loadSitesList()
-        super.onActivityResult(requestCode, resultCode, data)
-    }
+
 }
 
 

@@ -2,7 +2,9 @@ package com.project.archaeosite.view.site
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.DatePickerDialog
 import android.content.Intent
+import android.widget.DatePicker
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationResult
@@ -22,6 +24,7 @@ import com.project.archaeosite.view.base.IMAGE_REQUEST
 import com.project.archaeosite.view.base.LOCATION_REQUEST
 import com.project.archaeosite.view.base.VIEW
 import org.jetbrains.anko.*
+import java.util.*
 
 
 class SitePresenter (view: SiteView): BasePresenter(view),AnkoLogger {
@@ -72,7 +75,6 @@ class SitePresenter (view: SiteView): BasePresenter(view),AnkoLogger {
         fun doSetCurrentLocation() {
             locationService.lastLocation.addOnSuccessListener {
                 locationUpdate(Location(it.latitude, it.longitude))
-               // info("Current Location: ${it.latitude} and  ${it.longitude}")
             }
         }
 
@@ -103,12 +105,12 @@ class SitePresenter (view: SiteView): BasePresenter(view),AnkoLogger {
                     site.location.zoom
                 )
             )
-            //view?.setSiteContent(site)
         }
 
-        fun doAddOrEdit(title: String, description: String) {
+        fun doAddOrEdit(title: String, description: String,additionalnote: String) {
             site.title = title
             site.description = description
+            site.additionalNote=additionalnote
             doAsync {
                 if (edit) {
                     app.sites.update(site)
@@ -138,7 +140,6 @@ class SitePresenter (view: SiteView): BasePresenter(view),AnkoLogger {
             view?.let {
                 showImagePicker(view!!, IMAGE_REQUEST)
             }
-
         }
 
         fun doNextImage() {
@@ -185,24 +186,20 @@ class SitePresenter (view: SiteView): BasePresenter(view),AnkoLogger {
                                     val imageUri = data.clipData!!.getItemAt(i).uri
                                     site.image.add(imageUri.toString())
                                 }
-                                imageposition =
-                                    0 //reset it to 0 if not when select multiple image and set the number to last image and select pic again will return index out of bound
+                                imageposition = 0 //reset it to 0 if not when select multiple image and set the number to last image and select pic again will return index out of bound
                                 view?.displayImageByPosition(site, imageposition)
-                                // view.ImageSelected.setImageBitmap(readImageFromPath(view, site.image.get(0)))
-                                //view.setListContent(site,edit)
+
                             }
                         } else {
                             site.image.clear()
                             site.image.add(data.data.toString())
                             imageposition = 0
                             view?.displayImageByPosition(site, imageposition)
-                            //view.ImageSelected.setImageBitmap(readImageFromPath(view, site.image.get(0)))
-                            // view?.setSiteContent(site,edit)
+
                         }
                     }
                 }
                 //endregion
-
                 LOCATION_REQUEST -> {
                     if (data != null) {
                         val location = data.extras?.getParcelable<Location>("location")!!
@@ -215,5 +212,15 @@ class SitePresenter (view: SiteView): BasePresenter(view),AnkoLogger {
             }
         }
 
+    fun doUpdateDate(year: Int, month: Int, dayOfMonth: Int){
+        site.date.day=dayOfMonth
+        site.date.month=month
+        site.date.year=year
     }
+
+    fun doVisitedCheckbox(checked: Boolean){
+        site.visited=checked
+    }
+
+}
 
