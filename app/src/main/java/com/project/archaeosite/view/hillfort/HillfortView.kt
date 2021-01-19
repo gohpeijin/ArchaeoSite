@@ -55,7 +55,6 @@ class HillfortView :  BaseView(), HillfortListener {
         val layoutManager = LinearLayoutManager(this)
         recyclerview_hillfort.layoutManager= layoutManager
         presenter.loadHillfortList()
-
     }
 
     override fun showHillfortList(hillfortList:List<HillfortModel>){
@@ -67,6 +66,7 @@ class HillfortView :  BaseView(), HillfortListener {
         presenter.loadHillfortList()
         super.onActivityResult(requestCode, resultCode, data)
     }
+    //region menu
     override fun onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START)
@@ -88,6 +88,7 @@ class HillfortView :  BaseView(), HillfortListener {
             else -> super.onOptionsItemSelected(item)
         }
     }
+    //endregion
 
     override fun onHillfortClick(hillfort: HillfortModel) {
         //Inflate the dialog with custom view
@@ -107,6 +108,7 @@ class HillfortView :  BaseView(), HillfortListener {
 
         mAlertDialog.dialog_button_Done.setOnClickListener {
             mAlertDialog.dismiss()
+            presenter.loadHillfortList()
         }
 
         mAlertDialog.dialog_checkBox_Visited.setOnClickListener { presenter.doVisitedCheckbox( mAlertDialog.dialog_checkBox_Visited.isChecked,hillfort) }

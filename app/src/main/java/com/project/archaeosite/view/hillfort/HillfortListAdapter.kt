@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.firebase.auth.FirebaseAuth
 import com.project.archaeosite.R
 import com.project.archaeosite.models.HillfortModel
 import kotlinx.android.synthetic.main.card_hillfort.view.*
@@ -17,10 +18,22 @@ class HillfortListAdapter(var hillfortItems: List<HillfortModel>,private val lis
 
     class MainHolder constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(hillfortmodel: HillfortModel,listener: HillfortListener) {
+            val user = FirebaseAuth.getInstance().currentUser
             itemView.siteName.text=hillfortmodel.Title
             Glide.with(itemView.context).load(hillfortmodel.Image).into(itemView.imageIcon)
             itemView.siteLocation.text=hillfortmodel.Location.toString()
-            itemView.siteid.text=hillfortmodel.itemId
+          //  itemView.siteid.text=hillfortmodel.itemId
+
+            var reacted=false
+            for (userReactions in  hillfortmodel.userReaction) {
+                if(userReactions.userID== user!!.uid ){
+                    reacted=userReactions.visited
+                }
+            }
+            if(reacted)
+                itemView.textView_Visited.text="Visited"
+            else
+                itemView.textView_Visited.text="Unvisited"
 
             itemView.setOnClickListener(){
                 listener.onHillfortClick(hillfortmodel)

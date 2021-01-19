@@ -55,6 +55,12 @@ class DisplayListView : BaseView(), AnkoLogger, SitesListener {
         recyclerview_sites.adapter?.notifyDataSetChanged()
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        presenter.loadSitesList()
+        super.onActivityResult(requestCode, resultCode, data)
+    }
+
+    //region menu
     override fun onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START)
@@ -76,15 +82,13 @@ class DisplayListView : BaseView(), AnkoLogger, SitesListener {
             else -> super.onOptionsItemSelected(item)
         }
     }
+    //endregion
 
     override fun onSiteClick(site: ArchaeoModel) {
         presenter.doEditSite(site)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        presenter.loadSitesList()
-        super.onActivityResult(requestCode, resultCode, data)
-    }
+
 }
 
 

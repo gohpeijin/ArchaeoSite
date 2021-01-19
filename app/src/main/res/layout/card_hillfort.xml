@@ -6,6 +6,17 @@
     android:layout_marginTop="5dp"
     android:layout_marginBottom="5dp"
     android:elevation="24dp">
+
+    <TextView
+        android:id="@+id/textView_Visited"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingRight="10sp"
+        android:text="Visited"
+        android:textAlignment="textEnd"
+        android:textSize="10sp"
+        android:textStyle="italic" />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -18,26 +29,29 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_marginEnd="16dp" />
+
         <TextView
             android:id="@+id/siteName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_toEndOf="@+id/imageIcon"
-            android:textSize="30sp" />
+            android:text="Title"
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/siteLocation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/siteName"
-            android:layout_toEndOf="@+id/imageIcon"/>
+            android:layout_toEndOf="@+id/imageIcon"
+            android:text="Location"/>
 
-        <TextView
-            android:id="@+id/siteid"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/imageIcon" />
+<!--        <TextView-->
+<!--            android:id="@+id/siteid"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_below="@id/imageIcon" />-->
 
     </RelativeLayout>
 </androidx.cardview.widget.CardView>
