@@ -11,21 +11,14 @@ class UserProfilePresenter (view: BaseView) : BasePresenter(view){
 
     val user = FirebaseAuth.getInstance().currentUser
 
-    fun doComputeIndiSite():Int{
-        return app.sites.findAll().size
-    }
-
     fun doGetUserMail():String{
         return user?.email?.toString() ?: "Invalid User"
     }
 
-    fun doComputeHillfortSite(){
-        app.hillfortlist.loadHillfortData(object: FirebaseRepo_Hillfort.MyCallback{
-            override fun onCallback(hillfortlist: List<HillfortModel>) {
-               view?.showHillfortList(hillfortlist)
-            }
-        })
+    fun doComputeIndiSite():Int{
+        return app.sites.findAll().size
     }
+
     fun doComputeIndiVisitedSite():Int{
         var visited:Int=0
         app.sites.findAll()
@@ -35,5 +28,29 @@ class UserProfilePresenter (view: BaseView) : BasePresenter(view){
         }
         return visited
     }
+
+    fun doLoadHillfortSite(){
+        app.hillfortlist.loadHillfortData(object: FirebaseRepo_Hillfort.MyCallback{
+            override fun onCallback(hillfortlist: List<HillfortModel>) {
+               view?.showHillfortList(hillfortlist)
+            }
+        })
+    }
+
+    fun doComputeHillfortSite(hillfortList: List<HillfortModel>):Int{
+        return hillfortList.size
+    }
+
+    fun doComputevisitedHillfort(hillfortList: List<HillfortModel>):Int{
+        var hillfortvisited:Int=0
+        for (site in hillfortList){
+            for (userReactions in site.userReaction)
+                if(userReactions.userID== user!!.uid &&userReactions.visited)
+                    hillfortvisited++
+        }
+        return hillfortvisited
+    }
+
+
 
 }
