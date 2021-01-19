@@ -3,6 +3,7 @@ package com.project.archaeosite.view.profile
 import com.google.firebase.auth.FirebaseAuth
 import com.project.archaeosite.models.HillfortModel
 import com.project.archaeosite.models.firebase.FirebaseRepo_Hillfort
+import com.project.archaeosite.models.firebase.SiteFireStore
 import com.project.archaeosite.view.base.BasePresenter
 import com.project.archaeosite.view.base.BaseView
 import kotlinx.android.synthetic.main.activity_user_profile_view.*
@@ -11,8 +12,14 @@ class UserProfilePresenter (view: BaseView) : BasePresenter(view){
 
     val user = FirebaseAuth.getInstance().currentUser
 
+    var fireStore = app.sites as SiteFireStore
+
     fun doGetUserMail():String{
         return user?.email?.toString() ?: "Invalid User"
+    }
+
+    fun doGetUserPassword(): String {
+        return fireStore.returnCurrentUser().password
     }
 
     fun doComputeIndiSite():Int{
@@ -50,6 +57,7 @@ class UserProfilePresenter (view: BaseView) : BasePresenter(view){
         }
         return hillfortvisited
     }
+
 
 
 

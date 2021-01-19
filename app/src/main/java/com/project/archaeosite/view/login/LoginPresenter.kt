@@ -1,6 +1,7 @@
 package com.project.archaeosite.view.login
 
 import com.google.firebase.auth.FirebaseAuth
+import com.project.archaeosite.models.ArchaeoUser
 import com.project.archaeosite.models.firebase.SiteFireStore
 import com.project.archaeosite.view.base.BasePresenter
 import com.project.archaeosite.view.base.BaseView
@@ -11,6 +12,7 @@ class LoginPresenter(view: BaseView) : BasePresenter(view) {
 
     var auth: FirebaseAuth = FirebaseAuth.getInstance()
     var fireStore: SiteFireStore? = null
+    var user= ArchaeoUser()
 
     init {
         if (app.sites is SiteFireStore) {
@@ -47,13 +49,18 @@ class LoginPresenter(view: BaseView) : BasePresenter(view) {
                 fireStore!!.fetchSites {
                     view?.hideProgress()
                     view?.navigateTo(VIEW.LIST)
+                    addUserdetail(email, password)
                 }
-                view?.hideProgress()
-                view?.navigateTo(VIEW.LIST)
             } else {
                 view?.hideProgress()
                 view?.toast("Sign Up Failed: ${task.exception?.message}")
             }
         }
+    }
+
+    fun addUserdetail(email: String, password: String){
+        user.email=email
+        user.password=password
+        fireStore!!.createUser(user)
     }
 }

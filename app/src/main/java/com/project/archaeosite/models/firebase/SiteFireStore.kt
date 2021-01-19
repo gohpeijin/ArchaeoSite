@@ -13,6 +13,7 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.project.archaeosite.helpers.readImageFromPath
 import com.project.archaeosite.models.ArchaeoModel
+import com.project.archaeosite.models.ArchaeoUser
 import com.project.archaeosite.models.HillfortModel
 import com.project.archaeosite.models.SiteInterface
 import org.jetbrains.anko.AnkoLogger
@@ -22,6 +23,7 @@ import java.io.File
 class SiteFireStore(val context: Context) : SiteInterface, AnkoLogger {
 
     val sites = ArrayList<ArchaeoModel>()
+    var currentuser= ArchaeoUser()
     lateinit var userId: String
     lateinit var db: DatabaseReference
     lateinit var st: StorageReference
@@ -106,20 +108,44 @@ class SiteFireStore(val context: Context) : SiteInterface, AnkoLogger {
 
     fun fetchSites(sitesReady: () -> Unit) {
         val valueEventListener = object : ValueEventListener {
-            override fun onCancelled(dataSnapshot: DatabaseError) {
-            }
+            override fun onCancelled(dataSnapshot: DatabaseError) {}
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 dataSnapshot!!.children.mapNotNullTo(sites) { it.getValue<ArchaeoModel>(ArchaeoModel::class.java) }
                 sitesReady()
             }
+        }
+        val valueEventListener1 = object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                for (ds in snapshot.children){
+                    currentuser= ds.getValue<ArchaeoUser>(ArchaeoUser::class.java)!!
+                }
+               // snapshot!!.children.mapNotNullTo(currentuser) {it.getValue<ArchaeoUser>(ArchaeoUser::class.java) }
+            }
+            override fun onCancelled(error: DatabaseError) {}
         }
         userId = FirebaseAuth.getInstance().currentUser!!.uid
         db = FirebaseDatabase.getInstance().reference
         st = FirebaseStorage.getInstance().reference
         sites.clear()
         db.child("users").child(userId).child("sites").addListenerForSingleValueEvent(valueEventListener)
+        db.child("users").child(userId).child("userdetails").addListenerForSingleValueEvent(valueEventListener1)
     }
+
+    fun createUser(user:ArchaeoUser){
+        val key = db.child("users").child(userId).child("userdetails").push().key
+        key?.let {
+            user.generatedId = key
+            db.child("users").child(userId).child("userdetails").child(key).setValue(user)
+        }
+    }
+
+    fun returnCurrentUser(): ArchaeoUser{
+        return currentuser
+    }
+
 }
+
+
 
 class FirebaseRepo_Hillfort : AnkoLogger{
     val firebaseFirestore: FirebaseFirestore = FirebaseFirestore.getInstance()

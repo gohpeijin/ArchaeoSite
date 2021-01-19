@@ -64,12 +64,14 @@ data class UserReaction(
 ){
     constructor() : this("",false,false,null)
 }
-//@Parcelize
-//data class ArchaeoUser(
-//    var username: String = "",
-//    var email: String = "",
-//    var password: String = ""
-//) : Parcelable
+@Parcelize
+data class ArchaeoUser(
+        var generatedId : String = "",
+    var username: String = "",
+    var email: String = "",
+    var password: String = ""
+
+) : Parcelable
 
 class ImageConverter {
 

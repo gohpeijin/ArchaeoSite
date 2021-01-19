@@ -11,6 +11,7 @@ class MainApp : Application(), AnkoLogger {
 
    lateinit var sites:SiteInterface
    lateinit var hillfortlist:FirebaseRepo_Hillfort
+
    // var hillfortlist =ArrayList<HillfortModel>()
 
     override fun onCreate() {
