@@ -1,5 +1,6 @@
 package com.project.archaeosite.view.location
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.MenuItem
 import com.google.android.gms.maps.GoogleMap
@@ -33,14 +34,15 @@ class EditLocationView : BaseView(),  GoogleMap.OnMarkerDragListener,GoogleMap.O
         }
     }
 
-
     override fun onMarkerDragStart(marker: Marker) {}
 
+    @SuppressLint("SetTextI18n")
     override fun onMarkerDrag(marker: Marker) {
         lat.text = "%.6f".format(marker.position.latitude)
         lng.text = "%.6f".format(marker.position.longitude)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun showLocation(location: Location) {
         lat.text = "%.6f".format(location.lat)
         lng.text = "%.6f".format(location.lng)
@@ -80,6 +82,7 @@ class EditLocationView : BaseView(),  GoogleMap.OnMarkerDragListener,GoogleMap.O
         mapView.onSaveInstanceState(outState)
     }
 
+    //do back but no clear the info of the site
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id: Int = item.itemId
         if (id == android.R.id.home) {

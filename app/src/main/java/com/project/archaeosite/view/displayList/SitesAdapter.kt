@@ -1,4 +1,4 @@
-package com.project.archaeosite.activities
+package com.project.archaeosite.view.displayList
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.project.archaeosite.R
-import com.project.archaeosite.helpers.readImageFromPath
 import com.project.archaeosite.models.ArchaeoModel
 import kotlinx.android.synthetic.main.card_sites.view.*
 

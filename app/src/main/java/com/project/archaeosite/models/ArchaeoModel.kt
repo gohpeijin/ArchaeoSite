@@ -6,7 +6,10 @@ import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverter
+import com.google.firebase.firestore.GeoPoint
 import kotlinx.android.parcel.Parcelize
+import kotlinx.android.parcel.RawValue
+
 
 //we need a unique way of identifying sites - this is usually via an id.
 @Parcelize
@@ -18,7 +21,10 @@ data class ArchaeoModel(
     var title: String = "",
     var description: String = "",
     var image: MutableList<String> = arrayListOf(),
-    @Embedded var location : Location = Location()
+    @Embedded var location : Location = Location(),
+    var additionalNote: String="",
+    var visited: Boolean=false,
+    @Embedded var date : Date=Date()
 ): Parcelable
 
 
@@ -29,13 +35,43 @@ data class Location(
     var zoom: Float = 0f
 ) : Parcelable
 
+@Parcelize
+data class Date(
+        var day: Int = 0,
+        var month: Int = 0,
+        var year: Int = 0
+) : Parcelable
 
-//@Parcelize
-//data class ArchaeoUser(
-//    var username: String = "",
-//    var email: String = "",
-//    var password: String = ""
-//) : Parcelable
+
+@Parcelize
+data class HillfortModel(
+        var itemId : String = "",
+        var Title:String="",
+        var Image:String="",
+        var Location:@RawValue GeoPoint?=null,
+
+//    var visited: MutableList<String> = arrayListOf(),
+//    var favourite: MutableList<String> = arrayListOf(),
+        var userReaction: @RawValue MutableList<UserReaction> = arrayListOf()
+): Parcelable
+
+data class UserReaction(
+        var userID:String,
+        var visited: Boolean,
+        var favourite:Boolean,
+        var rating: Int?
+
+){
+    constructor() : this("",false,false,null)
+}
+@Parcelize
+data class ArchaeoUser(
+        var generatedId : String = "",
+    var username: String = "",
+    var email: String = "",
+    var password: String = ""
+
+) : Parcelable
 
 class ImageConverter {
 
@@ -50,21 +86,3 @@ class ImageConverter {
     }
 }
 
-//class ImageConverter {
-//    companion object {
-//
-//        @TypeConverter
-//        fun fromString(value: String?): MutableList<String?>? {
-//            val listType: Type = object : TypeToken<MutableList<String?>?>() {}.type
-//            return Gson().fromJson(value, listType)
-//        }
-//
-//        @TypeConverter
-//        fun fromArrayList(list: MutableList<String?>?): String? {
-//            val gson = Gson()
-//            return gson.toJson(list)
-//        }
-//    }
-//}
-//We would like to include the location into our model, so we can record the latitude/longitude the user selects
-//We are still keeping Location model for use with the MapsActivity
