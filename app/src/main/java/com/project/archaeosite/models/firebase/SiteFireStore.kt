@@ -119,7 +119,6 @@ class SiteFireStore(val context: Context) : SiteInterface, AnkoLogger {
                 for (ds in snapshot.children){
                     currentuser= ds.getValue<ArchaeoUser>(ArchaeoUser::class.java)!!
                 }
-               // snapshot!!.children.mapNotNullTo(currentuser) {it.getValue<ArchaeoUser>(ArchaeoUser::class.java) }
             }
             override fun onCancelled(error: DatabaseError) {}
         }
@@ -142,10 +141,7 @@ class SiteFireStore(val context: Context) : SiteInterface, AnkoLogger {
     fun returnCurrentUser(): ArchaeoUser{
         return currentuser
     }
-
 }
-
-
 
 class FirebaseRepo_Hillfort : AnkoLogger{
     val firebaseFirestore: FirebaseFirestore = FirebaseFirestore.getInstance()
@@ -186,12 +182,10 @@ class FirebaseRepo_Hillfort : AnkoLogger{
             else{
                 Log.d(TAG, "Error:${it.exception!!.message}")
             }
-
         }
     }
 
     interface MyCallback {
         fun onCallback(hillfortlist: List<HillfortModel>)
     }
-
 }

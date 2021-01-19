@@ -20,8 +20,6 @@ class UserProfileView : BaseView() {
 
         super.init(mytoolbar, true)
 
-//            //textView_password.text=user.updatePassw
-
         textView_useremail.text = "Email: ${presenter.doGetUserMail()}"
         textView_password.text="Password: ${presenter.doGetUserPassword()}"
         textView_indisites.text="Individual Sites: ${presenter.doComputeIndiSite()}"
@@ -38,6 +36,4 @@ class UserProfileView : BaseView() {
         textView_hillfortsites_visited.text ="Hillfort Sites: ${presenter.doComputevisitedHillfort(hillfortList)}"
         textView_numvisited.text="Total Number visited of Sites: ${presenter.doComputeIndiVisitedSite()+presenter.doComputevisitedHillfort(hillfortList)}"
     }
-
-
 }

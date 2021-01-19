@@ -57,8 +57,4 @@ class UserProfilePresenter (view: BaseView) : BasePresenter(view){
         }
         return hillfortvisited
     }
-
-
-
-
 }

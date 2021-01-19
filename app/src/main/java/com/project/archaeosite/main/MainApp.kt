@@ -23,9 +23,5 @@ class MainApp : Application(), AnkoLogger {
         hillfortlist=FirebaseRepo_Hillfort()
 
         info("ArchaeoSite started")
-
-
     }
-
-
 }
