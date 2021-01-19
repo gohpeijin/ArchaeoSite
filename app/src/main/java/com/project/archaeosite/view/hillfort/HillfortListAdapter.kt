@@ -9,13 +9,22 @@ import com.project.archaeosite.R
 import com.project.archaeosite.models.HillfortModel
 import kotlinx.android.synthetic.main.card_hillfort.view.*
 
-class HillfortListAdapter(var hillfortItems: List<HillfortModel>): RecyclerView.Adapter<RecyclerView.ViewHolder>(){
+interface HillfortListener{
+    fun onHillfortClick(hillfort: HillfortModel)
+}
+
+class HillfortListAdapter(var hillfortItems: List<HillfortModel>,private val listener: HillfortListener): RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
     class MainHolder constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(hillfortmodel: HillfortModel) {
+        fun bind(hillfortmodel: HillfortModel,listener: HillfortListener) {
             itemView.siteName.text=hillfortmodel.Title
             Glide.with(itemView.context).load(hillfortmodel.Image).into(itemView.imageIcon)
             itemView.siteLocation.text=hillfortmodel.Location.toString()
+            itemView.siteid.text=hillfortmodel.itemId
+
+            itemView.setOnClickListener(){
+                listener.onHillfortClick(hillfortmodel)
+            }
         }
     }
 
@@ -25,7 +34,7 @@ class HillfortListAdapter(var hillfortItems: List<HillfortModel>): RecyclerView.
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        (holder as MainHolder).bind(hillfortItems[position])
+        (holder as MainHolder).bind(hillfortItems[position],listener)
 //        val hillfortmodel =hillfortItems[holder.adapterPosition]
 //        holder.bind(hillfortmodel)
     }

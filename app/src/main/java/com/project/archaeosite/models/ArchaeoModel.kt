@@ -8,7 +8,8 @@ import androidx.room.PrimaryKey
 import androidx.room.TypeConverter
 import com.google.firebase.firestore.GeoPoint
 import kotlinx.android.parcel.Parcelize
-import java.util.*
+import kotlinx.android.parcel.RawValue
+
 
 //we need a unique way of identifying sites - this is usually via an id.
 @Parcelize
@@ -41,12 +42,28 @@ data class Date(
         var year: Int = 0
 ) : Parcelable
 
-data class HillfortModel(
-    var Title:String="",
-    var Image:String="",
-    var Location:GeoPoint?=null
-)
 
+@Parcelize
+data class HillfortModel(
+        var itemId : String = "",
+        var Title:String="",
+        var Image:String="",
+        var Location:@RawValue GeoPoint?=null,
+
+//    var visited: MutableList<String> = arrayListOf(),
+//    var favourite: MutableList<String> = arrayListOf(),
+        var userReaction: @RawValue MutableList<UserReaction> = arrayListOf()
+): Parcelable
+
+data class UserReaction(
+        var userID:String,
+        var visited: Boolean,
+        var favourite:Boolean,
+        var rating: Int?
+
+){
+    constructor() : this("",false,false,null)
+}
 //@Parcelize
 //data class ArchaeoUser(
 //    var username: String = "",
@@ -67,21 +84,3 @@ class ImageConverter {
     }
 }
 
-//class ImageConverter {
-//    companion object {
-//
-//        @TypeConverter
-//        fun fromString(value: String?): MutableList<String?>? {
-//            val listType: Type = object : TypeToken<MutableList<String?>?>() {}.type
-//            return Gson().fromJson(value, listType)
-//        }
-//
-//        @TypeConverter
-//        fun fromArrayList(list: MutableList<String?>?): String? {
-//            val gson = Gson()
-//            return gson.toJson(list)
-//        }
-//    }
-//}
-//We would like to include the location into our model, so we can record the latitude/longitude the user selects
-//We are still keeping Location model for use with the MapsActivity

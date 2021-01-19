@@ -2,10 +2,13 @@ package com.project.archaeosite.view.hillfort
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AlertDialog
 import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.project.archaeosite.R
 import com.project.archaeosite.models.HillfortModel
@@ -14,10 +17,14 @@ import kotlinx.android.synthetic.main.activity_hillfort_view.*
 import kotlinx.android.synthetic.main.activity_hillfort_view.drawer
 import kotlinx.android.synthetic.main.activity_hillfort_view.mytoolbar
 import kotlinx.android.synthetic.main.activity_hillfort_view.navigation_view
+import kotlinx.android.synthetic.main.card_hillfort.view.*
+import kotlinx.android.synthetic.main.dialog_hillfortsite.*
 import kotlinx.android.synthetic.main.nav_header_main.*
+import org.jetbrains.anko.AnkoLogger
+import org.jetbrains.anko.toast
 
 
-class HillfortView :  BaseView() {
+class HillfortView :  BaseView(), HillfortListener {
 
     lateinit var presenter: HillfortPresenter
 
@@ -54,7 +61,7 @@ class HillfortView :  BaseView() {
     }
 
     override fun showHillfortList(hillfortList:List<HillfortModel>){
-        recyclerview_hillfort.adapter=HillfortListAdapter(hillfortList)
+        recyclerview_hillfort.adapter=HillfortListAdapter(hillfortList,this)
         recyclerview_hillfort.adapter?.notifyDataSetChanged()
     }
 
@@ -81,6 +88,25 @@ class HillfortView :  BaseView() {
                 true
             }
             else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    override fun onHillfortClick(hillfort: HillfortModel) {
+        //Inflate the dialog with custom view
+        val mDialogView = LayoutInflater.from(this).inflate(R.layout.dialog_hillfortsite, null)
+        //AlertDialogBuilder
+        val mBuilder = AlertDialog.Builder(this)
+                .setView(mDialogView)
+                .setTitle("Hillfort")
+        //show dialog
+        val  mAlertDialog = mBuilder.show()
+
+        mAlertDialog.dialog_Title.text="Title: "+ hillfort.Title
+        Glide.with(this).load(hillfort.Image).into(mAlertDialog.imageView)
+        mAlertDialog.dialog_Location.text=hillfort.Location.toString()
+
+        mAlertDialog.dialog_button_Done.setOnClickListener {
+            mAlertDialog.dismiss()
         }
     }
 }

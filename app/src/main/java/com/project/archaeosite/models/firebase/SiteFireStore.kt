@@ -132,12 +132,22 @@ class FirebaseRepo_Hillfort : AnkoLogger{
     fun loadHillfortData(myCallback: MyCallback){
         getHillfortList().addOnCompleteListener {
             if (it.isSuccessful) {
-                hillfortlist = it.result!!.toObjects(HillfortModel::class.java) as ArrayList<HillfortModel>
+                hillfortlist.clear()
+                for (document in it.result!!){
+                    val hillfort=document.toObject(HillfortModel::class.java)
+                    if (hillfort!=null){
+                        hillfort.itemId=document.id
+                        hillfortlist.add(hillfort)
+                    }
+                }
+                Log.d(TAG, hillfortlist.toString()) //test app
+               // hillfortlist = it.result!!.toObjects(HillfortModel::class.java) as ArrayList<HillfortModel>
                 myCallback.onCallback( hillfortlist)
             } else {
                 Log.d(TAG, "Error:${it.exception!!.message}")
             }
         }
+
     }
 
     interface MyCallback {
