@@ -1,37 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="5dp"
+    android:layout_marginTop="7dp"
     android:layout_marginBottom="5dp"
     android:elevation="24dp">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp">
+        android:paddingLeft="15dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="8dp"
+        android:paddingTop="2dp">
+
+        <TextView
+            android:id="@+id/textView_Visited"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:text="Visited"
+            android:textSize="10sp"
+            android:textStyle="italic" />
 
         <ImageView
             android:id="@+id/imageIcon"
             android:layout_width="64dp"
             android:layout_height="64dp"
+            android:layout_below="@+id/textView_Date"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="1dp"
+            android:layout_marginEnd="16dp"
+            android:scaleType="centerInside"
+            tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
+        <TextView
+            android:id="@+id/textView_Date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_marginEnd="16dp" />
+            android:text="dd/mm/yyyy"
+            android:textAlignment="textEnd"
+            android:textSize="10sp"
+            android:textStyle="italic" />
+
         <TextView
             android:id="@+id/siteName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_toEndOf="@+id/imageIcon"
-            android:textSize="30sp" />
+            android:layout_marginTop="17dp"
+            android:text="Title"
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/siteDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/siteName"
-            android:layout_toEndOf="@+id/imageIcon"/>
+            android:layout_toEndOf="@+id/imageIcon"
+            android:text="Description" />
 
+        <TextView
+            android:id="@+id/textView_Additionalnote"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="80dp"
+            android:text="*Addtional note"
+            android:textAlignment="textEnd"
+            android:textSize="8sp"
+            android:textStyle="italic" />
+
+        <TextView
+            android:id="@+id/textView_ImageCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/imageIcon"
+            android:text="*images number"
+            android:textSize="8sp"
+            android:textStyle="italic" />
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

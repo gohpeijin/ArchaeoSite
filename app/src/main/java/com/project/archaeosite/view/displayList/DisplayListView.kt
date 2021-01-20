@@ -32,9 +32,9 @@ class DisplayListView : BaseView(), AnkoLogger, SitesListener {
                 R.id.item_map -> {presenter.doShowSitesMap() }
                 R.id.item_logout ->{presenter.doLogout() }
                 R.id.item_profile ->{presenter.doOpenProfile()}
-                R.id.item_hillfort->{presenter.doShowHillfort()}
+                R.id.item_hillfort->{presenter.doShowHillfort() }
                 }
-            true
+            false
         }
 
         super.init(mytoolbar, false)
