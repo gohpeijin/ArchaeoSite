@@ -170,12 +170,13 @@
                             android:id="@+id/ImageSelected"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:adjustViewBounds="true"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="@+id/button_next_image"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintVertical_bias="1.0"
-                            app:srcCompat="@drawable/logo" />
+                            tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
                         <ImageButton
                             android:id="@+id/button_previos_image"
