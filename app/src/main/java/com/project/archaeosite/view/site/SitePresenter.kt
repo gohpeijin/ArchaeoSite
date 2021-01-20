@@ -110,7 +110,8 @@ class SitePresenter (view: SiteView): BasePresenter(view),AnkoLogger {
         fun doAddOrEdit(title: String, description: String,additionalnote: String) {
             site.title = title
             site.description = description
-            site.additionalNote=additionalnote
+            if (additionalnote.isBlank()) { site.additionalNote="" }
+            else site.additionalNote=additionalnote
             doAsync {
                 if (edit) {
                     app.sites.update(site)

@@ -83,6 +83,7 @@ open abstract class BaseView() : AppCompatActivity(), AnkoLogger {
 
     //Site
     open fun setSiteContent(site: ArchaeoModel, editmode: Boolean=false) {}
+    open fun setSiteContent(site: Any) {}
     open fun displayImageByPosition(site: ArchaeoModel,num: Int){}
 
     //Displaylist

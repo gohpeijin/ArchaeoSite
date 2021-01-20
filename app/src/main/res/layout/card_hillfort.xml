@@ -47,11 +47,5 @@
             android:layout_toEndOf="@+id/imageIcon"
             android:text="Location"/>
 
-<!--        <TextView-->
-<!--            android:id="@+id/siteid"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_below="@id/imageIcon" />-->
-
     </RelativeLayout>
 </androidx.cardview.widget.CardView>
