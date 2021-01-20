@@ -17,8 +17,6 @@ import kotlinx.android.synthetic.main.activity_hillfort_view.*
 import kotlinx.android.synthetic.main.activity_hillfort_view.drawer
 import kotlinx.android.synthetic.main.activity_hillfort_view.mytoolbar
 import kotlinx.android.synthetic.main.activity_hillfort_view.navigation_view
-import kotlinx.android.synthetic.main.activity_site.*
-import kotlinx.android.synthetic.main.card_hillfort.view.*
 import kotlinx.android.synthetic.main.dialog_hillfortsite.*
 import kotlinx.android.synthetic.main.nav_header_main.*
 
@@ -96,7 +94,7 @@ class HillfortView :  BaseView(), HillfortListener {
         //AlertDialogBuilder
         val mBuilder = AlertDialog.Builder(this)
                 .setView(mDialogView)
-                .setTitle("Hillfort")
+
         //show dialog
         val  mAlertDialog = mBuilder.show()
 
@@ -105,6 +103,7 @@ class HillfortView :  BaseView(), HillfortListener {
         mAlertDialog.dialog_Location.text=hillfort.Location.toString()
 
         if(presenter.doCheckUserVisited(hillfort))  mAlertDialog.dialog_checkBox_Visited.isChecked=true
+        if(presenter.doCheckUserFavourite(hillfort))   mAlertDialog.checkBox_favourite.isChecked=true
 
         mAlertDialog.dialog_button_Done.setOnClickListener {
             mAlertDialog.dismiss()
@@ -112,6 +111,7 @@ class HillfortView :  BaseView(), HillfortListener {
         }
 
         mAlertDialog.dialog_checkBox_Visited.setOnClickListener { presenter.doVisitedCheckbox( mAlertDialog.dialog_checkBox_Visited.isChecked,hillfort) }
+        mAlertDialog.checkBox_favourite.setOnClickListener { presenter.doFavourite( mAlertDialog.checkBox_favourite.isChecked,hillfort) }
     }
 }
 

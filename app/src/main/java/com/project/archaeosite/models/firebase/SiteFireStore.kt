@@ -163,7 +163,7 @@ class FirebaseRepo_Hillfort : AnkoLogger{
                         hillfortlist.add(hillfort)
                     }
                 }
-                Log.d(TAG, hillfortlist.toString()) //test app
+              //  Log.d(TAG, hillfortlist.toString()) //test app
                // hillfortlist = it.result!!.toObjects(HillfortModel::class.java) as ArrayList<HillfortModel>
                 myCallback.onCallback( hillfortlist)
             } else {

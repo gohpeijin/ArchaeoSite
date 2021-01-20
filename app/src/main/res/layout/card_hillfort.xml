@@ -1,34 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="5dp"
+    android:layout_marginTop="7dp"
     android:layout_marginBottom="5dp"
     android:elevation="24dp">
-
-    <TextView
-        android:id="@+id/textView_Visited"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingRight="10sp"
-        android:text="Visited"
-        android:textAlignment="textEnd"
-        android:textSize="10sp"
-        android:textStyle="italic" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp">
+        android:paddingLeft="5dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="8dp"
+        android:paddingTop="2dp">
+
+        <TextView
+            android:id="@+id/textView_Visited"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:text="Visited"
+            android:textSize="10sp"
+            android:textStyle="italic" />
+
+        <CheckBox
+            android:id="@+id/checkBox_favourite"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center"
+            android:button="@drawable/ic_baseline_favorite_24"
+            android:enabled="false"
+            android:theme="@style/checkBoxStyle"
+            android:elevation="1dp"/>
 
         <ImageView
             android:id="@+id/imageIcon"
             android:layout_width="64dp"
             android:layout_height="64dp"
             android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginEnd="16dp" />
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="16dp"
+            tools:srcCompat="@tools:sample/avatars" />
 
         <TextView
             android:id="@+id/siteName"
@@ -36,6 +52,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_toEndOf="@+id/imageIcon"
+            android:layout_marginTop="17dp"
             android:text="Title"
             android:textSize="20sp" />
 

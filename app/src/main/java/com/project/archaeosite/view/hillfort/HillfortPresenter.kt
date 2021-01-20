@@ -51,26 +51,68 @@ class HillfortPresenter(view: BaseView): BasePresenter(view),AnkoLogger {
     }
 
     fun doCheckUserVisited(hillfort: HillfortModel):Boolean{
-        var reacted:Boolean=false
+        var visited:Boolean=false
+        var reacted=false
         for (userReactions in  hillfort.userReaction) {
             if(userReactions.userID== user!!.uid ){
-                reacted=userReactions.visited
+                reacted=true
+                visited=userReactions.visited
             }
+            if(reacted)
+                break
         }
-        return reacted
+        return visited
     }
+
+    fun doCheckUserFavourite(hillfort: HillfortModel):Boolean{
+        var favourite:Boolean=false
+        var reacted=false
+        for (userReactions in  hillfort.userReaction) {
+            if(userReactions.userID== user!!.uid ){
+                reacted=true
+                favourite=userReactions.favourite
+            }
+            if(reacted)
+                break
+        }
+        return favourite
+    }
+
     fun doVisitedCheckbox(checked: Boolean,hillfort: HillfortModel) {
+        val indiReaction = UserReaction()
+        var reacted:Boolean=false //check user first react or has reacted before
+        for (userReactions in  hillfort.userReaction) {
+            if(userReactions.userID== user!!.uid ){ //user got made reaction before
+                userReactions.visited= checked  //change the state
+                indiReaction.favourite=userReactions.visited
+                reacted=true
+            }
+            if(reacted)
+                break
+        }
+        if (!reacted){ //if user never react to that post before, create the user obj in that post
+            indiReaction.userID=user!!.uid
+            indiReaction.visited=checked
+            hillfort.userReaction.add(indiReaction)
+        }
+
+        app.hillfortlist.updateHillfort(hillfort)
+    }
+
+    fun doFavourite(checked: Boolean,hillfort: HillfortModel){
         val indiReaction = UserReaction()
         var reacted:Boolean=false
         for (userReactions in  hillfort.userReaction) {
             if(userReactions.userID== user!!.uid ){
-                userReactions.visited= checked
+                userReactions.favourite= checked
                 reacted=true
             }
+            if(reacted)
+                break
         }
         if (!reacted){
             indiReaction.userID=user!!.uid
-            indiReaction.visited=checked
+            indiReaction.favourite=checked
             hillfort.userReaction.add(indiReaction)
         }
 

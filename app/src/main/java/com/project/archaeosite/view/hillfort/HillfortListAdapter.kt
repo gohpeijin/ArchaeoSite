@@ -27,13 +27,15 @@ class HillfortListAdapter(var hillfortItems: List<HillfortModel>,private val lis
             var reacted=false
             for (userReactions in  hillfortmodel.userReaction) {
                 if(userReactions.userID== user!!.uid ){
-                    reacted=userReactions.visited
+                    reacted=true
+                    if(userReactions.visited) itemView.textView_Visited.text="Visited"
+                    else itemView.textView_Visited.text="Unvisited"
+                    itemView.checkBox_favourite.isChecked = userReactions.favourite
                 }
+                if(reacted)
+                    break
             }
-            if(reacted)
-                itemView.textView_Visited.text="Visited"
-            else
-                itemView.textView_Visited.text="Unvisited"
+
 
             itemView.setOnClickListener(){
                 listener.onHillfortClick(hillfortmodel)
