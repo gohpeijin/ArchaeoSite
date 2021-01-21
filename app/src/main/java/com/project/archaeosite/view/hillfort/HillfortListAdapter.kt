@@ -20,7 +20,7 @@ interface HillfortListener{
     fun onHillfortClick(hillfort: HillfortModel)
 }
 
-class HillfortListAdapter(var hillfortItems: List<HillfortModel>, private val listener: HillfortListener): RecyclerView.Adapter<RecyclerView.ViewHolder>(), Filterable,AnkoLogger {
+class HillfortListAdapter(var hillfortItems: List<HillfortModel>, private val listener: HillfortListener): RecyclerView.Adapter<RecyclerView.ViewHolder>(), Filterable {
 
     var hillfortFilterList = ArrayList<HillfortModel>()
 
@@ -93,7 +93,6 @@ class HillfortListAdapter(var hillfortItems: List<HillfortModel>, private val li
             override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
                 hillfortFilterList = results?.values as ArrayList<HillfortModel>
                 notifyDataSetChanged()
-                info(hillfortFilterList)
             }
 
         }

@@ -26,15 +26,6 @@
             app:titleTextColor="@color/white"
             app:theme="@style/ThemeOverlay.AppCompat.Dark"/>
 
-        <androidx.appcompat.widget.SearchView
-            android:id="@+id/hillfort_search"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:textCursorDrawable="@null"
-            app:iconifiedByDefault="false"
-            app:queryBackground="@null" />
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerview_hillfort"
             android:layout_width="match_parent"
