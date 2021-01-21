@@ -20,7 +20,8 @@ interface HillfortListener{
     fun onHillfortClick(hillfort: HillfortModel)
 }
 
-class HillfortListAdapter(var hillfortItems: List<HillfortModel>, private val listener: HillfortListener): RecyclerView.Adapter<RecyclerView.ViewHolder>(), Filterable {
+class HillfortListAdapter(var hillfortItems: List<HillfortModel>, private val listener: HillfortListener
+): RecyclerView.Adapter<RecyclerView.ViewHolder>(), Filterable {
 
     var hillfortFilterList = ArrayList<HillfortModel>()
 

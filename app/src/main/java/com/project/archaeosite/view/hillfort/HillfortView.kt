@@ -6,9 +6,11 @@ import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.RatingBar
+import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
+import androidx.appcompat.widget.SearchView.SearchAutoComplete
 import androidx.core.view.GravityCompat
 import androidx.core.view.MenuItemCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,8 +20,13 @@ import com.project.archaeosite.R
 import com.project.archaeosite.models.HillfortModel
 import com.project.archaeosite.view.base.BaseView
 import kotlinx.android.synthetic.main.activity_hillfort_view.*
+import kotlinx.android.synthetic.main.activity_hillfort_view.drawer
+import kotlinx.android.synthetic.main.activity_hillfort_view.mytoolbar
+import kotlinx.android.synthetic.main.activity_hillfort_view.navigation_view
 import kotlinx.android.synthetic.main.dialog_hillfortsite.*
 import kotlinx.android.synthetic.main.nav_header_main.*
+import org.jetbrains.anko.info
+import java.lang.reflect.Field
 
 
 class HillfortView :  BaseView(), HillfortListener {
@@ -31,17 +38,22 @@ class HillfortView :  BaseView(), HillfortListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_hillfort_view)
 
+        //region initialize an empty list so before the hillforts list callback it wont crash when user search
+        adapter = HillfortListAdapter(mutableListOf(),this)
+        recyclerview_hillfort.adapter = adapter
+        //endregion
+
         presenter = initPresenter(HillfortPresenter(this)) as HillfortPresenter
 
         //region drawer
         navigation_view.setCheckedItem(R.id.item_hillfort)
         navigation_view.setNavigationItemSelectedListener{
             when (it.itemId) {
-                R.id.item_add -> {presenter.doAddSite()}
-                R.id.item_map -> {presenter.doShowSitesMap()}
-                R.id.item_logout -> {presenter.doLogout()}
-                R.id.item_profile -> {presenter.doOpenProfile()}
-                R.id.item_home -> {presenter.doDisplayList()}
+                R.id.item_add -> { presenter.doAddSite() }
+                R.id.item_map -> { presenter.doShowSitesMap() }
+                R.id.item_logout -> { presenter.doLogout() }
+                R.id.item_profile -> { presenter.doOpenProfile() }
+                R.id.item_home -> { presenter.doDisplayList() }
             }
             true
         }
@@ -68,6 +80,7 @@ class HillfortView :  BaseView(), HillfortListener {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        info("this is hillfort")
         presenter.loadHillfortList()
         super.onActivityResult(requestCode, resultCode, data)
     }
@@ -98,6 +111,16 @@ class HillfortView :  BaseView(), HillfortListener {
         menuInflater.inflate(R.menu.menu_search, menu)
         val searchViewItem = menu!!.findItem(R.id.search)
         val searchView = MenuItemCompat.getActionView(searchViewItem) as SearchView
+
+        val searchTextView: SearchAutoComplete = searchView.findViewById(R.id.search_src_text)
+        try {
+            val field: Field = TextView::class.java.getDeclaredField("mCursorDrawableRes")
+            field.isAccessible = true
+            field.set(searchTextView, R.drawable.cursor)
+        } catch (e: Exception) {
+            // Ignore exception
+        }
+
         searchView.queryHint="Search Hillfort..."
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {

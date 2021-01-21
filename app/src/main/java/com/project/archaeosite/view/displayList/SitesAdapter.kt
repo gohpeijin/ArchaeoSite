@@ -4,18 +4,27 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Filter
+import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.project.archaeosite.R
 import com.project.archaeosite.models.ArchaeoModel
-import kotlinx.android.synthetic.main.activity_site.*
 import kotlinx.android.synthetic.main.card_sites.view.*
+import java.util.*
+import kotlin.collections.ArrayList
 
 interface SitesListener{
     fun onSiteClick(site:ArchaeoModel)
 }
 class SitesAdapter constructor(private var sites: List<ArchaeoModel>, private val listener:SitesListener
-    ) : RecyclerView.Adapter<SitesAdapter.MainHolder>(){
+    ) : RecyclerView.Adapter<SitesAdapter.MainHolder>(), Filterable {
+
+    var siteFilterList = ArrayList<ArchaeoModel>()
+
+    init {
+        siteFilterList = sites as ArrayList<ArchaeoModel>
+    }
 
     inner class MainHolder constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
         @SuppressLint("SetTextI18n")
@@ -46,11 +55,40 @@ class SitesAdapter constructor(private var sites: List<ArchaeoModel>, private va
     }
 
     override fun onBindViewHolder(holder: MainHolder, position: Int) {
-        val site =sites[holder.adapterPosition]
+        val site = siteFilterList[holder.adapterPosition]
         holder.bind(site,listener)
     }
 
-    override fun getItemCount(): Int = sites.size
+    override fun getItemCount(): Int =  siteFilterList.size
+
+    override fun getFilter(): Filter {
+        return object : Filter() {
+            override fun performFiltering(constraint: CharSequence?): FilterResults {
+                val charSearch = constraint.toString()
+                if (charSearch.isEmpty()) {
+                    siteFilterList = sites as ArrayList<ArchaeoModel>
+                } else {
+                    val resultList = ArrayList<ArchaeoModel>()
+                    for (site in sites) {
+                        if (site.title.toLowerCase(Locale.ROOT).contains(charSearch.toLowerCase(Locale.ROOT))) {
+                            resultList.add(site)
+                        }
+                    }
+                    siteFilterList = resultList
+                }
+                val filterResults = FilterResults()
+                filterResults.values = siteFilterList
+                return filterResults
+            }
+
+            @Suppress("UNCHECKED_CAST")
+            override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
+                siteFilterList = results?.values as ArrayList<ArchaeoModel>
+                notifyDataSetChanged()
+            }
+
+        }
+    }
 
 
 }
