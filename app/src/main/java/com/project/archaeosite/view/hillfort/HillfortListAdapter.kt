@@ -22,7 +22,6 @@ class HillfortListAdapter(var hillfortItems: List<HillfortModel>,private val lis
             itemView.siteName.text=hillfortmodel.Title
             Glide.with(itemView.context).load(hillfortmodel.Image).into(itemView.imageIcon)
             itemView.siteLocation.text=hillfortmodel.Location.toString()
-          //  itemView.siteid.text=hillfortmodel.itemId
 
             var reacted=false
             for (userReactions in  hillfortmodel.userReaction) {
@@ -36,6 +35,8 @@ class HillfortListAdapter(var hillfortItems: List<HillfortModel>,private val lis
                     break
             }
 
+            if(!reacted)
+                itemView.textView_Visited.text="Unvisited"
 
             itemView.setOnClickListener(){
                 listener.onHillfortClick(hillfortmodel)

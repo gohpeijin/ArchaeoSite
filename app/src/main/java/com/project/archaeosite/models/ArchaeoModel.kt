@@ -59,10 +59,13 @@ data class UserReaction(
         var userID:String,
         var visited: Boolean,
         var favourite:Boolean,
-        var rating: Int?
+        var rating: Float?
 
 ){
     constructor() : this("",false,false,null)
+    constructor(userID: String) : this(){
+        this.userID=userID
+    }
 }
 @Parcelize
 data class ArchaeoUser(

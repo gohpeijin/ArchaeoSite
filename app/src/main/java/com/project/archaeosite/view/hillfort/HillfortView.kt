@@ -4,14 +4,17 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
+import android.widget.RatingBar
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.auth.User
 import com.project.archaeosite.R
 import com.project.archaeosite.models.HillfortModel
+import com.project.archaeosite.models.UserReaction
 import com.project.archaeosite.view.base.BaseView
 import kotlinx.android.synthetic.main.activity_hillfort_view.*
 import kotlinx.android.synthetic.main.activity_hillfort_view.drawer
@@ -19,6 +22,7 @@ import kotlinx.android.synthetic.main.activity_hillfort_view.mytoolbar
 import kotlinx.android.synthetic.main.activity_hillfort_view.navigation_view
 import kotlinx.android.synthetic.main.dialog_hillfortsite.*
 import kotlinx.android.synthetic.main.nav_header_main.*
+import org.jetbrains.anko.toast
 
 class HillfortView :  BaseView(), HillfortListener {
 
@@ -88,31 +92,58 @@ class HillfortView :  BaseView(), HillfortListener {
     }
     //endregion
 
+    //region specify Hillfort
+
+
     override fun onHillfortClick(hillfort: HillfortModel) {
         //Inflate the dialog with custom view
         val mDialogView = LayoutInflater.from(this).inflate(R.layout.dialog_hillfortsite, null)
         //AlertDialogBuilder
-        val mBuilder = AlertDialog.Builder(this)
-                .setView(mDialogView)
-
+        val mBuilder = AlertDialog.Builder(this).setView(mDialogView)
         //show dialog
-        val  mAlertDialog = mBuilder.show()
+        val  hillfortDialog = mBuilder.show()
 
-        mAlertDialog.dialog_Title.text="Title: "+ hillfort.Title
-        Glide.with(this).load(hillfort.Image).into(mAlertDialog.imageView)
-        mAlertDialog.dialog_Location.text=hillfort.Location.toString()
+        hillfortDialog.dialog_Title.text="Title: "+ hillfort.Title
+        Glide.with(this).load(hillfort.Image).into(hillfortDialog.imageView)
+        hillfortDialog.dialog_Location.text=hillfort.Location.toString()
 
-        if(presenter.doCheckUserVisited(hillfort))  mAlertDialog.dialog_checkBox_Visited.isChecked=true
-        if(presenter.doCheckUserFavourite(hillfort))   mAlertDialog.checkBox_favourite.isChecked=true
+        var specifyUserReaction = presenter.getIndiReactionModel(hillfort)
 
-        mAlertDialog.dialog_button_Done.setOnClickListener {
-            mAlertDialog.dismiss()
+        hillfortDialog.dialog_checkBox_Visited.isChecked=specifyUserReaction.visited
+        hillfortDialog.checkBox_favourite.isChecked=specifyUserReaction.favourite
+        if(specifyUserReaction.rating==null) hillfortDialog.ratingBar.rating=0F
+        else hillfortDialog.ratingBar.rating= specifyUserReaction.rating!!
+
+        hillfortDialog.ratingBarAvg.rating=presenter.doCalculateAvg(hillfort)
+        if (hillfortDialog.ratingBarAvg.rating==0F) hillfortDialog.textView_avgRating.text="(no rating)"
+        else hillfortDialog.textView_avgRating.text="(${hillfortDialog.ratingBarAvg.rating})"
+
+//        hillfortDialog.dialog_checkBox_Visited.isChecked=presenter.doCheckUserVisited(hillfort)
+//        hillfortDialog.checkBox_favourite.isChecked=presenter.doCheckUserFavourite(hillfort)
+//        hillfortDialog.ratingBar.rating= presenter.doCheckUserRating(hillfort)
+
+        hillfortDialog.dialog_button_Done.setOnClickListener {
+            hillfortDialog.dismiss()
             presenter.loadHillfortList()
         }
 
-        mAlertDialog.dialog_checkBox_Visited.setOnClickListener { presenter.doVisitedCheckbox( mAlertDialog.dialog_checkBox_Visited.isChecked,hillfort) }
-        mAlertDialog.checkBox_favourite.setOnClickListener { presenter.doFavourite( mAlertDialog.checkBox_favourite.isChecked,hillfort) }
+        hillfortDialog.dialog_checkBox_Visited.setOnClickListener { presenter.doVisitedCheckbox( hillfortDialog.dialog_checkBox_Visited.isChecked,hillfort) }
+        hillfortDialog.checkBox_favourite.setOnClickListener { presenter.doFavourite( hillfortDialog.checkBox_favourite.isChecked,hillfort) }
+
+        hillfortDialog.ratingBar.setOnRatingBarChangeListener { ratingBar: RatingBar?, rating: Float, fromUser: Boolean ->
+            presenter.doGetRating(rating,hillfort)
+            hillfortDialog.ratingBarAvg.rating=presenter.doCalculateAvg(hillfort)
+            if (hillfortDialog.ratingBarAvg.rating==0F)
+                hillfortDialog.textView_avgRating.text="(no rating)"
+            else
+                hillfortDialog.textView_avgRating.text="(${hillfortDialog.ratingBarAvg.rating})"
+        }
+
+
     }
+
+
+    //endregion
 }
 
 
