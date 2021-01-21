@@ -7,14 +7,13 @@ import android.view.MenuItem
 import android.widget.RatingBar
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.widget.SearchView
 import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.auth.User
 import com.project.archaeosite.R
 import com.project.archaeosite.models.HillfortModel
-import com.project.archaeosite.models.UserReaction
 import com.project.archaeosite.view.base.BaseView
 import kotlinx.android.synthetic.main.activity_hillfort_view.*
 import kotlinx.android.synthetic.main.activity_hillfort_view.drawer
@@ -22,11 +21,15 @@ import kotlinx.android.synthetic.main.activity_hillfort_view.mytoolbar
 import kotlinx.android.synthetic.main.activity_hillfort_view.navigation_view
 import kotlinx.android.synthetic.main.dialog_hillfortsite.*
 import kotlinx.android.synthetic.main.nav_header_main.*
+import org.jetbrains.anko.info
 import org.jetbrains.anko.toast
+
+
 
 class HillfortView :  BaseView(), HillfortListener {
 
     lateinit var presenter: HillfortPresenter
+    lateinit var adapter: HillfortListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +37,7 @@ class HillfortView :  BaseView(), HillfortListener {
 
         presenter = initPresenter (HillfortPresenter (this)) as HillfortPresenter
 
+        //region drawer
         navigation_view.setCheckedItem(R.id.item_hillfort)
         navigation_view.setNavigationItemSelectedListener{
             when (it.itemId) {
@@ -53,14 +57,28 @@ class HillfortView :  BaseView(), HillfortListener {
         drawerToggle.syncState()
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        //endregion
 
         val layoutManager = LinearLayoutManager(this)
         recyclerview_hillfort.layoutManager= layoutManager
         presenter.loadHillfortList()
+
+
+        hillfort_search.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+               adapter.filter.filter(newText)
+                return false
+            }
+        })
     }
 
     override fun showHillfortList(hillfortList:List<HillfortModel>){
-        recyclerview_hillfort.adapter=HillfortListAdapter(hillfortList,this)
+        adapter= HillfortListAdapter(hillfortList,this)
+        recyclerview_hillfort.adapter=adapter
         recyclerview_hillfort.adapter?.notifyDataSetChanged()
     }
 
@@ -93,8 +111,6 @@ class HillfortView :  BaseView(), HillfortListener {
     //endregion
 
     //region specify Hillfort
-
-
     override fun onHillfortClick(hillfort: HillfortModel) {
         //Inflate the dialog with custom view
         val mDialogView = LayoutInflater.from(this).inflate(R.layout.dialog_hillfortsite, null)
@@ -118,9 +134,6 @@ class HillfortView :  BaseView(), HillfortListener {
         if (hillfortDialog.ratingBarAvg.rating==0F) hillfortDialog.textView_avgRating.text="(no rating)"
         else hillfortDialog.textView_avgRating.text="(${hillfortDialog.ratingBarAvg.rating})"
 
-//        hillfortDialog.dialog_checkBox_Visited.isChecked=presenter.doCheckUserVisited(hillfort)
-//        hillfortDialog.checkBox_favourite.isChecked=presenter.doCheckUserFavourite(hillfort)
-//        hillfortDialog.ratingBar.rating= presenter.doCheckUserRating(hillfort)
 
         hillfortDialog.dialog_button_Done.setOnClickListener {
             hillfortDialog.dismiss()
@@ -138,11 +151,7 @@ class HillfortView :  BaseView(), HillfortListener {
             else
                 hillfortDialog.textView_avgRating.text="(${hillfortDialog.ratingBarAvg.rating})"
         }
-
-
     }
-
-
     //endregion
 }
 
