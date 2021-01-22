@@ -14,15 +14,13 @@ import androidx.appcompat.widget.SearchView.SearchAutoComplete
 import androidx.core.view.GravityCompat
 import androidx.core.view.MenuItemCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.project.archaeosite.R
 import com.project.archaeosite.models.HillfortModel
 import com.project.archaeosite.view.base.BaseView
 import kotlinx.android.synthetic.main.activity_hillfort_view.*
-import kotlinx.android.synthetic.main.activity_hillfort_view.drawer
-import kotlinx.android.synthetic.main.activity_hillfort_view.mytoolbar
-import kotlinx.android.synthetic.main.activity_hillfort_view.navigation_view
 import kotlinx.android.synthetic.main.dialog_hillfortsite.*
 import kotlinx.android.synthetic.main.nav_header_main.*
 import org.jetbrains.anko.info
@@ -39,7 +37,7 @@ class HillfortView :  BaseView(), HillfortListener {
         setContentView(R.layout.activity_hillfort_view)
 
         //region initialize an empty list so before the hillforts list callback it wont crash when user search
-        adapter = HillfortListAdapter(mutableListOf(),this)
+        adapter = HillfortListAdapter(mutableListOf(), this)
         recyclerview_hillfort.adapter = adapter
         //endregion
 
@@ -49,11 +47,21 @@ class HillfortView :  BaseView(), HillfortListener {
         navigation_view.setCheckedItem(R.id.item_hillfort)
         navigation_view.setNavigationItemSelectedListener{
             when (it.itemId) {
-                R.id.item_add -> { presenter.doAddSite() }
-                R.id.item_map -> { presenter.doShowSitesMap() }
-                R.id.item_logout -> { presenter.doLogout() }
-                R.id.item_profile -> { presenter.doOpenProfile() }
-                R.id.item_home -> { presenter.doDisplayList() }
+                R.id.item_add -> {
+                    presenter.doAddSite()
+                }
+                R.id.item_map -> {
+                    presenter.doShowSitesMap()
+                }
+                R.id.item_logout -> {
+                    presenter.doLogout()
+                }
+                R.id.item_profile -> {
+                    presenter.doOpenProfile()
+                }
+                R.id.item_home -> {
+                    presenter.doDisplayList()
+                }
             }
             true
         }
@@ -70,6 +78,19 @@ class HillfortView :  BaseView(), HillfortListener {
         val layoutManager = LinearLayoutManager(this)
         recyclerview_hillfort.layoutManager= layoutManager
         presenter.loadHillfortList()
+
+        //region interface for floating botton
+        recyclerview_hillfort.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                if (dy > 0) {
+                    floatingActionButton_fav.hide()
+                } else {
+                    floatingActionButton_fav.show()
+                }
+                super.onScrolled(recyclerView, dx, dy)
+            }
+        })
+        //endregion
 
     }
 
