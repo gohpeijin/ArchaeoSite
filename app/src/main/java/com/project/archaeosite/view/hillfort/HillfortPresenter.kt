@@ -2,13 +2,24 @@ package com.project.archaeosite.view.hillfort
 
 
 import android.R
+import android.app.Dialog
+import android.content.ActivityNotFoundException
+import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.view.View
+import android.view.Window
+import android.widget.Toast
+import androidx.core.content.ContextCompat.startActivity
+import androidx.core.content.FileProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.project.archaeosite.models.HillfortModel
 import com.project.archaeosite.models.UserReaction
 import com.project.archaeosite.models.firebase.FirebaseRepo_Hillfort
 import com.project.archaeosite.view.base.*
 import org.jetbrains.anko.*
+import java.io.File
+import java.io.FileOutputStream
 
 
 class HillfortPresenter(view: BaseView): BasePresenter(view),AnkoLogger {
@@ -137,52 +148,58 @@ class HillfortPresenter(view: BaseView): BasePresenter(view),AnkoLogger {
         app.hillfortlist.updateHillfort(hillfort)
     }
 
-    fun doShareSite(hillfort: HillfortModel) {
-//        val intent  = Intent()
-//        intent.action=Intent.ACTION_SEND
-//        intent.putExtra(Intent.EXTRA_TEXT,"testing")
-//        intent.type="text/plain"
-//
-//        view?.startActivity(Intent.createChooser(intent,"Please select app to share:"))
-
-
-//        val bm: Bitmap = screenShot(view?.contentView)!!
-//        val file: File = saveBitmap(bm, "mantis_image.png")!!
-//        Log.i("chase", "filepath: " + file.absolutePath)
-//        val uri: Uri = Uri.fromFile(File(file.absolutePath))
-//        val shareIntent = Intent()
-//        shareIntent.action = Intent.ACTION_SEND
-//        shareIntent.putExtra(Intent.EXTRA_TEXT, "Check out my app.")
-//        shareIntent.putExtra(Intent.EXTRA_STREAM, uri)
-//        shareIntent.type = "image/*"
-//        shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-//        view?.startActivity(Intent.createChooser(shareIntent, "share via"))
-
-
+    fun doShareSite(hillfort: HillfortModel,dialog: Dialog) {
+        val b: Bitmap = screenshot(dialog)!!
+        shareImage(store(b, "Hillfort.png")!!,hillfort)
     }
-//
-//    private fun screenShot(view: View?): Bitmap? {
-//        val bitmap = Bitmap.createBitmap(view!!.width, view.height, Bitmap.Config.ARGB_8888)
-//        val canvas = Canvas(bitmap)
-//        view.draw(canvas)
-//        return bitmap
-//    }
-//
-//    private fun saveBitmap(bm: Bitmap, fileName: String): File? {
-//        val path: String = Environment.getExternalStorageDirectory().absolutePath.toString() + "/Screenshots"
-//        val dir = File(path)
-//        if (!dir.exists()) dir.mkdirs()
-//        val file = File(dir, fileName)
-//        try {
-//            val fOut = FileOutputStream(file)
-//            bm.compress(Bitmap.CompressFormat.PNG, 90, fOut)
-//            fOut.flush()
-//            fOut.close()
-//        } catch (e: Exception) {
-//            e.printStackTrace()
-//        }
-//        return file
-//    }
+
+    fun screenshot(dialog: Dialog): Bitmap? {
+        val window: Window = dialog.window!!
+        val decorView: View = window.decorView
+        val bitmap = Bitmap.createBitmap(decorView.width, decorView.height, Bitmap.Config.ARGB_8888)
+        decorView.draw(Canvas(bitmap))
+        return bitmap
+    }
+
+
+    fun store(bm: Bitmap, fileName: String?) : File?{
+        val dirPath = view?.getExternalFilesDir(null)!!.absolutePath.toString() + "/Screenshots"
+        val dir = File(dirPath)
+        if (!dir.exists()) dir.mkdirs()
+        val file = File(dirPath, fileName)
+        info("FLAG1->" + dirPath)
+        info("FLAG1->" + dir)
+        info("FLAG1->" + file)
+
+        try {
+            val fOut = FileOutputStream(file)
+            bm.compress(Bitmap.CompressFormat.PNG, 85, fOut)
+            fOut.flush()
+            fOut.close()
+        } catch (e: java.lang.Exception) {
+            e.printStackTrace()
+        }
+        return file
+    }
+
+    fun shareImage(file: File,hillfort: HillfortModel) {
+        val uri = FileProvider.getUriForFile(
+            view!!,
+            view?.applicationContext?.packageName.toString() + ".provider",
+            file
+        )
+        val intent = Intent()
+        intent.action = Intent.ACTION_SEND
+        intent.type = "image/*"
+        intent.putExtra(Intent.EXTRA_SUBJECT, hillfort.Title)
+        intent.putExtra(Intent.EXTRA_STREAM, uri)
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        try {
+            view!!.startActivity(Intent.createChooser(intent, "Share Screenshot"))
+        } catch (e: ActivityNotFoundException) {
+            view?.toast("No App Available")
+        }
+    }
 
     //endregion
 }

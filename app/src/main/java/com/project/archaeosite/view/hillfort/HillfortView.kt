@@ -250,67 +250,11 @@ class HillfortView :  BaseView(), HillfortListener {
         }
 
         hillfortDialog.image_share.setOnClickListener {
-            presenter.doShareSite(hillfort)
+            presenter.doShareSite(hillfort,hillfortDialog)
 
-            val b: Bitmap = screenshot(hillfortDialog)!!
-            shareImage(store(b, "Hillfort.png")!!)
         }
     }
 
-    private fun screenshot(dialog: Dialog): Bitmap? {
-        val window: Window = dialog.window!!
-        val decorView: View = window.decorView
-        val bitmap = Bitmap.createBitmap(decorView.width, decorView.height, Bitmap.Config.ARGB_8888)
-        decorView.draw(Canvas(bitmap))
-        return bitmap
-    }
-
-
-    fun store(bm: Bitmap, fileName: String?) : File?{
-//        val dirPath: String =
-//            Environment.getExternalStorageDirectory().absolutePath.toString() + "/Screenshots"
-       val dirPath = getExternalFilesDir(null)!!.absolutePath.toString() + "/Screenshots"
-        val dir = File(dirPath)
-        if (!dir.exists()) dir.mkdirs()
-        val file = File(dirPath, fileName)
-        info("FLAG1->" + dirPath)
-        info("FLAG1->" + dir)
-        info("FLAG1->" + file)
-
-        try {
-            val fOut = FileOutputStream(file)
-            bm.compress(Bitmap.CompressFormat.PNG, 85, fOut)
-            fOut.flush()
-            fOut.close()
-        } catch (e: java.lang.Exception) {
-            e.printStackTrace()
-        }
-        return file
-    }
-
-    private fun shareImage(file: File) {
-       // val uri: Uri = Uri.fromFile(file)
-
-        val uri = FileProvider.getUriForFile(
-            this,
-            this.applicationContext.packageName.toString() + ".provider",
-            file
-        )
-        info("FLAG3->" + uri)
-        val intent = Intent()
-        intent.action = Intent.ACTION_SEND
-        intent.type = "image/*"
-        intent.putExtra(Intent.EXTRA_SUBJECT, "extra sub")
-        intent.putExtra(Intent.EXTRA_TEXT, "extra text")
-        intent.putExtra(Intent.EXTRA_STREAM, uri)
-        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-
-        try {
-            startActivity(Intent.createChooser(intent, "Share Screenshot"))
-        } catch (e: ActivityNotFoundException) {
-            Toast.makeText(this, "No App Available", Toast.LENGTH_SHORT).show()
-        }
-    }
 
     //endregion
 
