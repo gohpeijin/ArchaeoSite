@@ -1,34 +1,32 @@
 package com.project.archaeosite.view.hillfort
 
 
+import android.R
+import android.view.View
 import com.google.firebase.auth.FirebaseAuth
 import com.project.archaeosite.models.HillfortModel
 import com.project.archaeosite.models.UserReaction
 import com.project.archaeosite.models.firebase.FirebaseRepo_Hillfort
 import com.project.archaeosite.view.base.*
-import org.jetbrains.anko.AnkoLogger
-import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.info
-import org.jetbrains.anko.uiThread
+import org.jetbrains.anko.*
 
 
 class HillfortPresenter(view: BaseView): BasePresenter(view),AnkoLogger {
 
     //region listView
     fun loadHillfortList(int: Int){
-        app.hillfortlist.loadHillfortData(object: FirebaseRepo_Hillfort.MyCallback{
+        app.hillfortlist.loadHillfortData(object : FirebaseRepo_Hillfort.MyCallback {
             override fun onCallback(hillfortlist: List<HillfortModel>) {
                 doAsync {
                     uiThread {
-                        when(int)
-                        {
+                        when (int) {
                             HILLFORT_LIST -> view?.showHillfortList(hillfortlist)
-                            HILLFORT_FAV_LIST ->{
+                            HILLFORT_FAV_LIST -> {
                                 var hillfortFavList = ArrayList<HillfortModel>()
-                                for (hillfort in hillfortlist){
-                                    for(findfav in hillfort.userReaction){
-                                        if (findfav.userID == user!!.uid){
-                                            if(findfav.favourite){
+                                for (hillfort in hillfortlist) {
+                                    for (findfav in hillfort.userReaction) {
+                                        if (findfav.userID == user!!.uid) {
+                                            if (findfav.favourite) {
                                                 hillfortFavList.add(hillfort)
                                             }
                                         }
@@ -76,8 +74,8 @@ class HillfortPresenter(view: BaseView): BasePresenter(view),AnkoLogger {
         indiUserReaction = UserReaction(userID = user!!.uid)
         reacted=false
         info(indiUserReaction)
-        for ((i,userReactions) in hillfort.userReaction.withIndex()) {
-            if (userReactions.userID == user!!.uid) {
+        for ((i, userReactions) in hillfort.userReaction.withIndex()) {
+            if (userReactions.userID == user.uid) {
                 reacted = true
                 index=i
                 indiUserReaction = userReactions
@@ -101,7 +99,7 @@ class HillfortPresenter(view: BaseView): BasePresenter(view),AnkoLogger {
     }
 
 
-    fun doVisitedCheckbox(checked: Boolean,hillfort: HillfortModel) {
+    fun doVisitedCheckbox(checked: Boolean, hillfort: HillfortModel) {
         if(reacted)
             hillfort.userReaction[index!!].visited=checked
         else {
@@ -113,7 +111,7 @@ class HillfortPresenter(view: BaseView): BasePresenter(view),AnkoLogger {
         app.hillfortlist.updateHillfort(hillfort)
     }
 
-    fun doFavourite(checked: Boolean,hillfort: HillfortModel){
+    fun doFavourite(checked: Boolean, hillfort: HillfortModel){
         if(reacted)
             hillfort.userReaction[index!!].favourite=checked
         else {
@@ -138,6 +136,53 @@ class HillfortPresenter(view: BaseView): BasePresenter(view),AnkoLogger {
         }
         app.hillfortlist.updateHillfort(hillfort)
     }
+
+    fun doShareSite(hillfort: HillfortModel) {
+//        val intent  = Intent()
+//        intent.action=Intent.ACTION_SEND
+//        intent.putExtra(Intent.EXTRA_TEXT,"testing")
+//        intent.type="text/plain"
+//
+//        view?.startActivity(Intent.createChooser(intent,"Please select app to share:"))
+
+
+//        val bm: Bitmap = screenShot(view?.contentView)!!
+//        val file: File = saveBitmap(bm, "mantis_image.png")!!
+//        Log.i("chase", "filepath: " + file.absolutePath)
+//        val uri: Uri = Uri.fromFile(File(file.absolutePath))
+//        val shareIntent = Intent()
+//        shareIntent.action = Intent.ACTION_SEND
+//        shareIntent.putExtra(Intent.EXTRA_TEXT, "Check out my app.")
+//        shareIntent.putExtra(Intent.EXTRA_STREAM, uri)
+//        shareIntent.type = "image/*"
+//        shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+//        view?.startActivity(Intent.createChooser(shareIntent, "share via"))
+
+
+    }
+//
+//    private fun screenShot(view: View?): Bitmap? {
+//        val bitmap = Bitmap.createBitmap(view!!.width, view.height, Bitmap.Config.ARGB_8888)
+//        val canvas = Canvas(bitmap)
+//        view.draw(canvas)
+//        return bitmap
+//    }
+//
+//    private fun saveBitmap(bm: Bitmap, fileName: String): File? {
+//        val path: String = Environment.getExternalStorageDirectory().absolutePath.toString() + "/Screenshots"
+//        val dir = File(path)
+//        if (!dir.exists()) dir.mkdirs()
+//        val file = File(dir, fileName)
+//        try {
+//            val fOut = FileOutputStream(file)
+//            bm.compress(Bitmap.CompressFormat.PNG, 90, fOut)
+//            fOut.flush()
+//            fOut.close()
+//        } catch (e: Exception) {
+//            e.printStackTrace()
+//        }
+//        return file
+//    }
 
     //endregion
 }
