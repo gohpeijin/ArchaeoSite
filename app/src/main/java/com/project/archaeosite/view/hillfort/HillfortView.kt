@@ -251,11 +251,8 @@ class HillfortView :  BaseView(), HillfortListener {
 
         hillfortDialog.image_share.setOnClickListener {
             presenter.doShareSite(hillfort,hillfortDialog)
-
         }
     }
-
-
     //endregion
 
 }

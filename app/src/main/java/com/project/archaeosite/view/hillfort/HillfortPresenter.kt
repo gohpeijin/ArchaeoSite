@@ -161,7 +161,6 @@ class HillfortPresenter(view: BaseView): BasePresenter(view),AnkoLogger {
         return bitmap
     }
 
-
     fun store(bm: Bitmap, fileName: String?) : File?{
         val dirPath = view?.getExternalFilesDir(null)!!.absolutePath.toString() + "/Screenshots"
         val dir = File(dirPath)
@@ -196,6 +195,5 @@ class HillfortPresenter(view: BaseView): BasePresenter(view),AnkoLogger {
             view?.toast("No App Available")
         }
     }
-
     //endregion
 }
