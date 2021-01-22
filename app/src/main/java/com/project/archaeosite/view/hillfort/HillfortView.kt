@@ -1,6 +1,8 @@
 package com.project.archaeosite.view.hillfort
 
+import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
@@ -11,6 +13,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.SearchView.SearchAutoComplete
+import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.core.view.MenuItemCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,6 +23,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.project.archaeosite.R
 import com.project.archaeosite.models.HillfortModel
 import com.project.archaeosite.view.base.BaseView
+import com.project.archaeosite.view.base.HILLFORT_FAV_LIST
+import com.project.archaeosite.view.base.HILLFORT_LIST
 import kotlinx.android.synthetic.main.activity_hillfort_view.*
 import kotlinx.android.synthetic.main.dialog_hillfortsite.*
 import kotlinx.android.synthetic.main.nav_header_main.*
@@ -31,6 +36,7 @@ class HillfortView :  BaseView(), HillfortListener {
 
     lateinit var presenter: HillfortPresenter
     lateinit var adapter: HillfortListAdapter
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,7 +83,22 @@ class HillfortView :  BaseView(), HillfortListener {
 
         val layoutManager = LinearLayoutManager(this)
         recyclerview_hillfort.layoutManager= layoutManager
-        presenter.loadHillfortList()
+        presenter.loadHillfortList(HILLFORT_LIST)
+        var clicked =false
+        floatingActionButton_fav.setOnClickListener {
+            if(!clicked){
+                presenter.loadHillfortList(HILLFORT_FAV_LIST)
+                floatingActionButton_fav.backgroundTintList = ContextCompat.getColorStateList(this,R.color.fav_toggle_red)
+                info("FALSE")
+                clicked=true
+            }
+            else{
+                presenter.loadHillfortList(HILLFORT_LIST)
+                floatingActionButton_fav.backgroundTintList = ContextCompat.getColorStateList(this,R.color.fav_toggle_grey)
+                info("TRUE")
+                clicked=false
+            }
+        }
 
         //region interface for floating botton
         recyclerview_hillfort.addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -91,18 +112,18 @@ class HillfortView :  BaseView(), HillfortListener {
             }
         })
         //endregion
-
     }
 
     override fun showHillfortList(hillfortList: List<HillfortModel>){
         adapter= HillfortListAdapter(hillfortList, this)
         recyclerview_hillfort.adapter=adapter
         recyclerview_hillfort.adapter?.notifyDataSetChanged()
+        if(!searchhistory.isNullOrBlank())
+            adapter.filter.filter(searchhistory)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        info("this is hillfort")
-        presenter.loadHillfortList()
+        presenter.loadHillfortList(HILLFORT_LIST)
         super.onActivityResult(requestCode, resultCode, data)
     }
     //region menu
@@ -128,6 +149,7 @@ class HillfortView :  BaseView(), HillfortListener {
         }
     }
 
+    var searchhistory:String?=null
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_search, menu)
         val searchViewItem = menu!!.findItem(R.id.search)
@@ -147,8 +169,8 @@ class HillfortView :  BaseView(), HillfortListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return false
             }
-
             override fun onQueryTextChange(newText: String?): Boolean {
+                searchhistory=newText
                 adapter.filter.filter(newText)
                 return false
             }
@@ -159,6 +181,7 @@ class HillfortView :  BaseView(), HillfortListener {
     //endregion
 
     //region specify Hillfort
+    @SuppressLint("SetTextI18n")
     override fun onHillfortClick(hillfort: HillfortModel) {
         //Inflate the dialog with custom view
         val mDialogView = LayoutInflater.from(this).inflate(R.layout.dialog_hillfortsite, null)

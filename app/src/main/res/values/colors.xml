@@ -14,5 +14,6 @@
     <color name="UNCHECKEDCOLOR">#99757575</color>
     <color name="duskYellow">#FBC02D</color>
     <color name="lightGrey">#99757575</color>
-
+    <color name="fav_toggle_red">#61F43333</color>
+    <color name="fav_toggle_grey">#61A69999</color>
 </resources>

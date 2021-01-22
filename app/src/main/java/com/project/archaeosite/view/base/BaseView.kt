@@ -18,6 +18,8 @@ import org.jetbrains.anko.AnkoLogger
 
 val IMAGE_REQUEST = 1
 val LOCATION_REQUEST = 2
+val HILLFORT_LIST=1
+val HILLFORT_FAV_LIST =2
 
 enum class VIEW {
     LOCATION, SITE, MAPS, LIST, LOGIN, PROFILE, HILLFORT

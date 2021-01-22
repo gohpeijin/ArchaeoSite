@@ -2,13 +2,10 @@ package com.project.archaeosite.view.hillfort
 
 
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.auth.User
 import com.project.archaeosite.models.HillfortModel
 import com.project.archaeosite.models.UserReaction
 import com.project.archaeosite.models.firebase.FirebaseRepo_Hillfort
-import com.project.archaeosite.view.base.BasePresenter
-import com.project.archaeosite.view.base.BaseView
-import com.project.archaeosite.view.base.VIEW
+import com.project.archaeosite.view.base.*
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.info
@@ -18,12 +15,28 @@ import org.jetbrains.anko.uiThread
 class HillfortPresenter(view: BaseView): BasePresenter(view),AnkoLogger {
 
     //region listView
-    fun loadHillfortList(){
+    fun loadHillfortList(int: Int){
         app.hillfortlist.loadHillfortData(object: FirebaseRepo_Hillfort.MyCallback{
             override fun onCallback(hillfortlist: List<HillfortModel>) {
                 doAsync {
                     uiThread {
-                        view?.showHillfortList(hillfortlist)
+                        when(int)
+                        {
+                            HILLFORT_LIST -> view?.showHillfortList(hillfortlist)
+                            HILLFORT_FAV_LIST ->{
+                                var hillfortFavList = ArrayList<HillfortModel>()
+                                for (hillfort in hillfortlist){
+                                    for(findfav in hillfort.userReaction){
+                                        if (findfav.userID == user!!.uid){
+                                            if(findfav.favourite){
+                                                hillfortFavList.add(hillfort)
+                                            }
+                                        }
+                                    }
+                                }
+                                view?.showHillfortList(hillfortFavList)
+                            }
+                        }
                     }
                 }
             }

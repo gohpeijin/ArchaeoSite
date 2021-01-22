@@ -45,7 +45,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|right"
             android:layout_margin="16dp"
-            android:backgroundTint="#61F43333"
+            app:backgroundTint="@color/fav_toggle_grey"
             android:baselineAlignBottom="false"
             android:clickable="true"
             android:contextClickable="false"

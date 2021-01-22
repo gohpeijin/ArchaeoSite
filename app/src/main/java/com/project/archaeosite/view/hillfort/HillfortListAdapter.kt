@@ -25,6 +25,7 @@ class HillfortListAdapter(var hillfortItems: List<HillfortModel>, private val li
 
     var hillfortFilterList = ArrayList<HillfortModel>()
 
+
     init {
         hillfortFilterList = hillfortItems as ArrayList<HillfortModel>
     }
@@ -37,12 +38,14 @@ class HillfortListAdapter(var hillfortItems: List<HillfortModel>, private val li
             itemView.siteLocation.text=hillfortmodel.Location.toString()
 
             var reacted=false
+
             for (userReactions in  hillfortmodel.userReaction) {
                 if(userReactions.userID== user!!.uid ){
                     reacted=true
                     if(userReactions.visited) itemView.textView_Visited.text="Visited"
                     else itemView.textView_Visited.text="Unvisited"
                     itemView.checkBox_favourite.isChecked = userReactions.favourite
+
                 }
                 if(reacted)
                     break
@@ -98,5 +101,6 @@ class HillfortListAdapter(var hillfortItems: List<HillfortModel>, private val li
 
         }
     }
+
 
 }
