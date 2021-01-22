@@ -167,10 +167,6 @@ class HillfortPresenter(view: BaseView): BasePresenter(view),AnkoLogger {
         val dir = File(dirPath)
         if (!dir.exists()) dir.mkdirs()
         val file = File(dirPath, fileName)
-        info("FLAG1->" + dirPath)
-        info("FLAG1->" + dir)
-        info("FLAG1->" + file)
-
         try {
             val fOut = FileOutputStream(file)
             bm.compress(Bitmap.CompressFormat.PNG, 85, fOut)
