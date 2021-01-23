@@ -2,9 +2,7 @@ package com.project.archaeosite.view.site
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.app.DatePickerDialog
 import android.content.Intent
-import android.widget.DatePicker
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationResult
@@ -24,8 +22,6 @@ import com.project.archaeosite.view.base.IMAGE_REQUEST
 import com.project.archaeosite.view.base.LOCATION_REQUEST
 import com.project.archaeosite.view.base.VIEW
 import org.jetbrains.anko.*
-import java.util.*
-
 
 class SitePresenter (view: SiteView): BasePresenter(view),AnkoLogger {
 
@@ -50,10 +46,9 @@ class SitePresenter (view: SiteView): BasePresenter(view),AnkoLogger {
             }
         }
     }
-
+    //region location
     //defines a callback - to be triggered when we turn location updates
     //checks to see if we are in edit mode - if not, it is assumed we would like live location updates to commence.
-
     @SuppressLint("MissingPermission")
     fun doResartLocationUpdates() {
         var locationCallback = object : LocationCallback() {
@@ -85,6 +80,8 @@ class SitePresenter (view: SiteView): BasePresenter(view),AnkoLogger {
                 // permissions denied, so use the default location
                 locationUpdate(defaultLocation)
             }
+
+
         }
 
         fun doConfigureMap(m: GoogleMap) {
@@ -107,35 +104,20 @@ class SitePresenter (view: SiteView): BasePresenter(view),AnkoLogger {
             )
         }
 
-        fun doAddOrEdit(title: String, description: String,additionalnote: String) {
-            site.title = title
-            site.description = description
-            if (additionalnote.isBlank()) { site.additionalNote="" }
-            else site.additionalNote=additionalnote
-            doAsync {
-                if (edit) {
-                    app.sites.update(site)
-                } else {
-                    app.sites.create(site)
-                }
-                uiThread {
-                    view?.finish()
-                }
-            }
-        }
+    fun doSetLocation() {
+        locationManualyChanged = true
+        view?.navigateTo(
+            VIEW.LOCATION,
+            LOCATION_REQUEST,
+            "location",
+            Location(site.location.lat, site.location.lng, site.location.zoom)
+        )
+    }
+    //endregion
 
-        fun doCancel() {
-            view?.finish()
-        }
 
-        fun doDelete() {
-            doAsync {
-                app.sites.delete(site)
-                uiThread {
-                    view?.finish()
-                }
-            }
-        }
+    fun doTakePhoto() {
+    }
 
         fun doSelectImage() {
             view?.let {
@@ -162,15 +144,7 @@ class SitePresenter (view: SiteView): BasePresenter(view),AnkoLogger {
             }
         }
 
-        fun doSetLocation() {
-            locationManualyChanged = true
-            view?.navigateTo(
-                VIEW.LOCATION,
-                LOCATION_REQUEST,
-                "location",
-                Location(site.location.lat, site.location.lng, site.location.zoom)
-            )
-        }
+
 
         override fun doActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
             when (requestCode) {
@@ -213,6 +187,36 @@ class SitePresenter (view: SiteView): BasePresenter(view),AnkoLogger {
             }
         }
 
+    fun doAddOrEdit(title: String, description: String,additionalnote: String) {
+        site.title = title
+        site.description = description
+        if (additionalnote.isBlank()) { site.additionalNote="" }
+        else site.additionalNote=additionalnote
+        doAsync {
+            if (edit) {
+                app.sites.update(site)
+            } else {
+                app.sites.create(site)
+            }
+            uiThread {
+                view?.finish()
+            }
+        }
+    }
+
+    fun doCancel() {
+        view?.finish()
+    }
+
+    fun doDelete() {
+        doAsync {
+            app.sites.delete(site)
+            uiThread {
+                view?.finish()
+            }
+        }
+    }
+
     fun doUpdateDate(year: Int, month: Int, dayOfMonth: Int){
         site.date.day=dayOfMonth
         site.date.month=month
@@ -222,6 +226,8 @@ class SitePresenter (view: SiteView): BasePresenter(view),AnkoLogger {
     fun doVisitedCheckbox(checked: Boolean){
         site.visited=checked
     }
+
+
 
 }
 

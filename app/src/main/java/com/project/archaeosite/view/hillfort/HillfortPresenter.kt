@@ -174,15 +174,17 @@ class HillfortPresenter(view: BaseView): BasePresenter(view),AnkoLogger {
         } catch (e: java.lang.Exception) {
             e.printStackTrace()
         }
+        info("Test1"+file)
         return file
     }
 
     fun shareImage(file: File,hillfort: HillfortModel) {
         val uri = FileProvider.getUriForFile(
-            view!!,
-            view?.applicationContext?.packageName.toString() + ".provider",
+            view!!.applicationContext,
+            "com.project.archaeosite.provider",
             file
         )
+        info("Test2"+uri)
         val intent = Intent()
         intent.action = Intent.ACTION_SEND
         intent.type = "image/*"

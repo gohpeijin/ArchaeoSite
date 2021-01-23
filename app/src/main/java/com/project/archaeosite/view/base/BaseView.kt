@@ -18,6 +18,7 @@ import org.jetbrains.anko.AnkoLogger
 
 val IMAGE_REQUEST = 1
 val LOCATION_REQUEST = 2
+val REQUEST_IMAGE_CAPTURE = 3
 val HILLFORT_LIST=1
 val HILLFORT_FAV_LIST =2
 
