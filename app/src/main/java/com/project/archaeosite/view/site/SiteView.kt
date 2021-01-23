@@ -1,36 +1,20 @@
 package com.project.archaeosite.view.site
 
-import android.Manifest
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.ImageDecoder
-import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
-import android.provider.MediaStore
-import android.provider.MediaStore.Images.Media.getBitmap
 import android.view.View
 import android.widget.DatePicker
-import android.widget.Toast
-import androidx.core.content.ContextCompat
-import androidx.core.content.FileProvider
 import com.bumptech.glide.Glide
 import com.google.android.gms.maps.GoogleMap
 import com.project.archaeosite.R
-import com.project.archaeosite.helpers.storeImagetoSD
 import com.project.archaeosite.models.ArchaeoModel
 import com.project.archaeosite.models.Location
 import com.project.archaeosite.view.base.BaseView
-import com.project.archaeosite.view.base.REQUEST_IMAGE_CAPTURE
 import kotlinx.android.synthetic.main.activity_site.*
-import kotlinx.android.synthetic.main.dialog_hillfortsite.*
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.toast
-import java.io.File
-import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -39,13 +23,6 @@ class SiteView : BaseView(), AnkoLogger,DatePickerDialog.OnDateSetListener {
    lateinit var presenter: SitePresenter
     var site = ArchaeoModel()
     lateinit var map: GoogleMap
-
-
-    protected val SAVE_IMAGE_REQUEST_CODE: Int = 1999
-    protected val CAMERA_REQUEST_CODE: Int = 1998
-    protected val CAMERA_PERMISSION_REQUEST_CODE = 1997
-
-    private lateinit var currentPhotoPath: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,9 +51,7 @@ class SiteView : BaseView(), AnkoLogger,DatePickerDialog.OnDateSetListener {
         }
         //endregion
 
-        button_take_pic.setOnClickListener {
-            prepTakePhoto()
-            presenter.doTakePhoto() }
+        button_take_pic.setOnClickListener { presenter.doTakePhoto() }
 
         //region select imgae
         button_Select_Image.setOnClickListener{ presenter.doSelectImage() }
@@ -104,116 +79,14 @@ class SiteView : BaseView(), AnkoLogger,DatePickerDialog.OnDateSetListener {
         //endregion
     }
 
-    fun prepTakePhoto() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-            takePhoto()
-        } else {
-            val permissionRequest = arrayOf(Manifest.permission.CAMERA)
-            requestPermissions(permissionRequest,  CAMERA_PERMISSION_REQUEST_CODE)
 
-        }
-    }
-
-    fun takePhoto() {
-//        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also {
-//            takePictureIntent -> takePictureIntent.resolveActivity(this.packageManager).also {
-//            startActivityForResult(takePictureIntent, CAMERA_REQUEST_CODE) }
-//        }
-
-        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also{
-            takePictureIntent -> takePictureIntent.resolveActivity(this.packageManager)
-            if (takePictureIntent == null) {
-                Toast.makeText(this, "Unable to save photo", Toast.LENGTH_LONG).show()
-            } else {
-                // if we are here, we have a valid intent.
-                val photoFile:File = createImageFile()
-
-                photoFile.also {
-                    val photoURI = FileProvider.getUriForFile(this.applicationContext, "com.project.archaeosite.provider", it)
-
-                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-                    startActivityForResult(takePictureIntent, SAVE_IMAGE_REQUEST_CODE)
-                }
-            }
-        }
-
-
-    }
-
-
-    private fun createImageFile() : File {
-        // genererate a unique filename with date.
-        val timestamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
-        // get access to the directory where we can write pictures.
-        val storageDir: File? = this.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-        return File.createTempFile("Site${timestamp}", ".jpg", storageDir).apply {
-            currentPhotoPath = absolutePath
-        }
-    }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-        when (requestCode) {
-            CAMERA_PERMISSION_REQUEST_CODE -> {
-                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // permission granted, let's do stuff.
-                    takePhoto()
-                } else {
-                    toast("Unable to take photo without permission")
-                }
-            }
-            else -> {
-                super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-            }
-        }
-    }
     //region read image activity & map activity
     //thing need to be added "change image" button and "add image" button will be shown in edit mode - on hold
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == RESULT_OK) {
-//            if (requestCode == CAMERA_REQUEST_CODE)  {
-//                // now we can get the thumbnail
-//                val imageBitmap = data!!.extras!!.get("data") as Bitmap
-//                ImageSelected.setImageBitmap(imageBitmap)
-//                storeImagetoSD(this,imageBitmap,"Site","SiteFromCamera")
-//                 }
-
-            if (requestCode ==SAVE_IMAGE_REQUEST_CODE){
-                if (resultCode == RESULT_OK) {
-                    val file = File(currentPhotoPath)
-                    var bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, Uri.fromFile(file))
-                    if (bitmap != null) {
-                        ImageSelected.setImageBitmap(bitmap)
-                    }
-                }
-            }
-            }
-        if(data!=null)
             presenter.doActivityResult(requestCode, resultCode, data)
     }
     //endregion
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     override fun displayImageByPosition(site: ArchaeoModel, num: Int){
         Glide.with(this).load(site.image[num]).into(ImageSelected)
@@ -243,7 +116,6 @@ class SiteView : BaseView(), AnkoLogger,DatePickerDialog.OnDateSetListener {
         lat.text = "%.6f".format(location.lat)
         lng.text = "%.6f".format(location.lng)
     }
-
 
 //region map
     override fun onDestroy() {

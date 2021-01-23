@@ -18,7 +18,7 @@ import org.jetbrains.anko.AnkoLogger
 
 val IMAGE_REQUEST = 1
 val LOCATION_REQUEST = 2
-val REQUEST_IMAGE_CAPTURE = 3
+val SAVE_IMAGE_REQUEST_CODE = 3
 val HILLFORT_LIST=1
 val HILLFORT_FAV_LIST =2
 
@@ -75,9 +75,7 @@ open abstract class BaseView() : AppCompatActivity(), AnkoLogger {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (data != null) {
-            basePresenter?.doActivityResult(requestCode, resultCode, data!!)
-        }
+            basePresenter?.doActivityResult(requestCode, resultCode, data)
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
@@ -96,4 +94,5 @@ open abstract class BaseView() : AppCompatActivity(), AnkoLogger {
    // open fun showLocation(latitude : Double, longitude : Double) {}
     open fun showProgress() {}
     open fun hideProgress() {}
+
 }

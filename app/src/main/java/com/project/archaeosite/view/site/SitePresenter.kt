@@ -3,6 +3,9 @@ package com.project.archaeosite.view.site
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
+import android.net.Uri
+import android.provider.MediaStore
+import androidx.core.content.FileProvider
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationResult
@@ -11,17 +14,13 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import com.project.archaeosite.helpers.checkLocationPermissions
-import com.project.archaeosite.helpers.createDefaultLocationRequest
-import com.project.archaeosite.helpers.isPermissionGranted
-import com.project.archaeosite.helpers.showImagePicker
+import com.project.archaeosite.helpers.*
 import com.project.archaeosite.models.ArchaeoModel
 import com.project.archaeosite.models.Location
-import com.project.archaeosite.view.base.BasePresenter
-import com.project.archaeosite.view.base.IMAGE_REQUEST
-import com.project.archaeosite.view.base.LOCATION_REQUEST
-import com.project.archaeosite.view.base.VIEW
+import com.project.archaeosite.view.base.*
+import kotlinx.android.synthetic.main.activity_site.*
 import org.jetbrains.anko.*
+import java.io.File
 
 class SitePresenter (view: SiteView): BasePresenter(view),AnkoLogger {
 
@@ -81,7 +80,12 @@ class SitePresenter (view: SiteView): BasePresenter(view),AnkoLogger {
                 locationUpdate(defaultLocation)
             }
 
-
+            if(isCameraPermissionGranted(requestCode,grantResults)){
+                takephoto()
+            }
+            else {
+                view!!.toast("Unable to take photo without permission")
+            }
         }
 
         fun doConfigureMap(m: GoogleMap) {
@@ -117,6 +121,17 @@ class SitePresenter (view: SiteView): BasePresenter(view),AnkoLogger {
 
 
     fun doTakePhoto() {
+        if (checkCameraPermissions(view!!)) {
+           takephoto()
+        }
+    }
+
+    fun takephoto(){
+        view?.let{
+            showCamera(view!!,SAVE_IMAGE_REQUEST_CODE)
+        }
+        //view?.takePhoto()
+
     }
 
         fun doSelectImage() {
@@ -146,11 +161,11 @@ class SitePresenter (view: SiteView): BasePresenter(view),AnkoLogger {
 
 
 
-        override fun doActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+        override fun doActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
             when (requestCode) {
                 //region image activity
                 IMAGE_REQUEST -> {
-                    if (resultCode == Activity.RESULT_OK) { //to prevent the app stopping when no image selected
+                    if (resultCode == Activity.RESULT_OK &&data!=null) { //to prevent the app stopping when no image selected
                         if (data.clipData != null) {
                             val count = data.clipData!!.itemCount
                             if (count > 4) //only up to 4images can be selected
@@ -182,6 +197,27 @@ class SitePresenter (view: SiteView): BasePresenter(view),AnkoLogger {
                         locationUpdate(location)
 
                         view?.setSiteContent(site,edit)
+                    }
+                }
+
+                SAVE_IMAGE_REQUEST_CODE->{
+                    if (resultCode == Activity.RESULT_OK) {
+                    val file = File(currentPhotoPath)
+                        val uri = FileProvider.getUriForFile(
+                                view!!.applicationContext,
+                                "com.project.archaeosite.provider",
+                                file
+                        )
+                        site.image.clear()
+                        site.image.add(uri.toString())
+                        imageposition = 0
+                        view?.displayImageByPosition(site, imageposition)
+//                        imageposition = 0
+//                        view?.displayImageByPosition(site, imageposition)
+//                    var bitmap = MediaStore.Images.Media.getBitmap(view!!.contentResolver, Uri.fromFile(file))
+//                    if (bitmap != null) {
+//                        view!!.ImageSelected.setImageBitmap(bitmap)
+//                    }
                     }
                 }
             }
