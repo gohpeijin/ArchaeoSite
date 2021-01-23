@@ -37,7 +37,8 @@ class SiteMapView : BaseView(),GoogleMap.OnMarkerClickListener {
     }
     override fun onMarkerClick(marker: Marker): Boolean {
         presenter.doMarkerSelected(marker)
-        return true
+        map.uiSettings.isMapToolbarEnabled = true
+        return false
     }
     //to display site content
     override fun setSiteContent(site: Any) {

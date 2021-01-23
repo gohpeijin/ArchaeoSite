@@ -74,8 +74,6 @@ class DisplayListView : BaseView(), AnkoLogger, SitesListener {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         presenter.loadSitesList()
-//        info("testing" + searchhistory)
-//        adapter.filter.filter(searchhistory)
         super.onActivityResult(requestCode, resultCode, data)
     }
 
