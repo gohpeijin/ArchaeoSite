@@ -47,6 +47,7 @@ class NavigatorView : BaseView() ,OnMapReadyCallback {
     var builder: LocationSettingsRequest.Builder? = null
     val REQUEST_CHECK_SETTINGS = 102
     val CURRENT_LOCATION_REQUEST=123
+    var GOOGLE_API_KEY = ""
 
 //    var locationService: FusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
 //    val locationRequest = createDefaultLocationRequest()
@@ -56,6 +57,7 @@ class NavigatorView : BaseView() ,OnMapReadyCallback {
         setContentView(R.layout.activity_navigator_view)
 
         presenter = initPresenter(NavigatorPresenter(this)) as NavigatorPresenter
+        GOOGLE_API_KEY = resources.getString(R.string.google_maps_key)
 
         super.init(mytoolbar, true)
         mapView.onCreate(savedInstanceState)
@@ -118,9 +120,8 @@ class NavigatorView : BaseView() ,OnMapReadyCallback {
                    // map.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 18f))
                     Log.e("CONTINIOUSLOC: ", location.toString())
 
-                    val locdestination=LatLng(presenter.siteNavi.lat,presenter.siteNavi.lng)
-                    val url=getDirectionURL(loc,locdestination)
-                    Log.e("CONTINIOUSLOC: ", url)
+                    val locdestination=LatLng(presenter.siteNavi.lat, presenter.siteNavi.lng)
+                    val url=getDirectionURL(loc, locdestination)
                     GetDirection(url).execute()
                 }
 
@@ -177,14 +178,24 @@ class NavigatorView : BaseView() ,OnMapReadyCallback {
         }
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
         when (requestCode) {
             CURRENT_LOCATION_REQUEST -> {
                 if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
                     showPermissionAlert()
                 } else {
-                    if (ActivityCompat.checkSelfPermission(applicationContext, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
-                        && ActivityCompat.checkSelfPermission(applicationContext, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                    if (ActivityCompat.checkSelfPermission(
+                            applicationContext,
+                            Manifest.permission.ACCESS_FINE_LOCATION
+                        ) == PackageManager.PERMISSION_GRANTED
+                        && ActivityCompat.checkSelfPermission(
+                            applicationContext,
+                            Manifest.permission.ACCESS_COARSE_LOCATION
+                        ) == PackageManager.PERMISSION_GRANTED
                     ) {
                         fetchLastLocation()
                     }
@@ -253,12 +264,12 @@ class NavigatorView : BaseView() ,OnMapReadyCallback {
 
     fun getDirectionURL(origin: LatLng, dest: LatLng):String{
         return "https://maps.googleapis.com/maps/api/directions/json?origin=${origin.latitude},${origin.longitude}" +
-                "&destination=${dest.latitude},${dest.longitude}&key=${R.string.google_maps_key}"
+                "&destination=${dest.latitude},${dest.longitude}&key=${GOOGLE_API_KEY}"
 //        return "https://maps.googleapis.com/maps/api/directions/json?origin=" +
 //                "${origin.latitude},${origin.longitude}&destination=${dest.latitude},${dest.longitude}&sensor=false&mode=driving"
     }
 
-    private inner class GetDirection(val url : String) : AsyncTask<Void, Void, List<List<LatLng>>>() {
+    private inner class GetDirection(val url: String) : AsyncTask<Void, Void, List<List<LatLng>>>() {
         override fun doInBackground(vararg params: Void?): List<List<LatLng>> {
             val client = OkHttpClient()
             val request = Request.Builder().url(url).build()
@@ -323,7 +334,7 @@ class NavigatorView : BaseView() ,OnMapReadyCallback {
                 val dlng = if (result and 1 != 0) (result shr 1).inv() else result shr 1
                 lng += dlng
 
-                val latLng = LatLng((lat.toDouble() / 1E5),(lng.toDouble() / 1E5))
+                val latLng = LatLng((lat.toDouble() / 1E5), (lng.toDouble() / 1E5))
                 poly.add(latLng)
             }
 
