@@ -3,8 +3,6 @@ package com.project.archaeosite.view.site
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
-import android.net.Uri
-import android.provider.MediaStore
 import androidx.core.content.FileProvider
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
@@ -18,7 +16,6 @@ import com.project.archaeosite.helpers.*
 import com.project.archaeosite.models.ArchaeoModel
 import com.project.archaeosite.models.Location
 import com.project.archaeosite.view.base.*
-import kotlinx.android.synthetic.main.activity_site.*
 import org.jetbrains.anko.*
 import java.io.File
 
@@ -98,7 +95,9 @@ class SitePresenter (view: SiteView): BasePresenter(view),AnkoLogger {
             site.location.zoom = 15f
             map?.clear()
             map?.uiSettings?.isZoomControlsEnabled = true
-            val options = MarkerOptions().title(site.title).position(LatLng(site.location.lat, site.location.lng))
+            val options = MarkerOptions()
+                .title(site.title)
+                .position(LatLng(site.location.lat, site.location.lng))
             map?.addMarker(options)
             map?.moveCamera(
                 CameraUpdateFactory.newLatLngZoom(
@@ -212,12 +211,6 @@ class SitePresenter (view: SiteView): BasePresenter(view),AnkoLogger {
                         site.image.add(uri.toString())
                         imageposition = 0
                         view?.displayImageByPosition(site, imageposition)
-//                        imageposition = 0
-//                        view?.displayImageByPosition(site, imageposition)
-//                    var bitmap = MediaStore.Images.Media.getBitmap(view!!.contentResolver, Uri.fromFile(file))
-//                    if (bitmap != null) {
-//                        view!!.ImageSelected.setImageBitmap(bitmap)
-//                    }
                     }
                 }
             }

@@ -28,7 +28,7 @@ fun checkCameraPermissions(activity: Activity) : Boolean {
 }
 
 fun isCameraPermissionGranted(code: Int, grantResults: IntArray): Boolean {
-    var permissionGranted = false;
+    var permissionGranted = false
     if (code ==  CAMERA_PERMISSION_REQUEST_CODE) {
         when {
             grantResults.isEmpty() ->

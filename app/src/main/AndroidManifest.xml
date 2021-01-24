@@ -3,6 +3,7 @@
     package="com.project.archaeosite">
 
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -15,6 +16,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ArchaeoSite">
+
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -37,16 +39,14 @@
             android:name=".view.login.LoginView"
             android:label="@string/title_activity_login"
             android:launchMode="singleTop" />
-
         <activity
             android:name=".view.displayList.DisplayListView"
             android:label="@string/title_activity_site_list"
             android:launchMode="singleTop" />
-
-        <activity android:name=".view.hillfort.HillfortView"
+        <activity
+            android:name=".view.hillfort.HillfortView"
             android:label="@string/title_activity_hillfort"
             android:launchMode="singleTop" />
-
         <activity
             android:name=".view.site.SiteView"
             android:label="@string/title_activity_site">
@@ -54,7 +54,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".view.displayList.DisplayListView" />
         </activity>
-
         <activity
             android:name=".view.location.EditLocationView"
             android:label="@string/title_activity_map">
@@ -71,6 +70,13 @@
                 android:value=".view.displayList.DisplayListView" />
         </activity>
         <activity
+            android:name=".view.navigator.NavigatorView"
+            android:label="@string/title_activity_navigator">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".view.map.SiteMapView" />
+        </activity>
+        <activity
             android:name=".view.profile.UserProfileView"
             android:label="@string/title_activity_profile">
             <meta-data
@@ -81,6 +87,9 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
+
+        <meta-data android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
     </application>
 
 </manifest>

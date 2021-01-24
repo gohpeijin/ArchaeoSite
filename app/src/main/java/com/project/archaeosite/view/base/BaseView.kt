@@ -12,6 +12,7 @@ import com.project.archaeosite.view.hillfort.HillfortView
 import com.project.archaeosite.view.location.EditLocationView
 import com.project.archaeosite.view.login.LoginView
 import com.project.archaeosite.view.map.SiteMapView
+import com.project.archaeosite.view.navigator.NavigatorView
 import com.project.archaeosite.view.profile.UserProfileView
 import com.project.archaeosite.view.site.SiteView
 import org.jetbrains.anko.AnkoLogger
@@ -23,7 +24,7 @@ val HILLFORT_LIST=1
 val HILLFORT_FAV_LIST =2
 
 enum class VIEW {
-    LOCATION, SITE, MAPS, LIST, LOGIN, PROFILE, HILLFORT
+    LOCATION, SITE, MAPS, LIST, LOGIN, PROFILE, HILLFORT, NAVIGATOR
 }
 
 
@@ -41,7 +42,7 @@ open abstract class BaseView() : AppCompatActivity(), AnkoLogger {
             VIEW.LOGIN -> intent = Intent(this, LoginView::class.java)
             VIEW.PROFILE -> intent = Intent(this, UserProfileView::class.java)
             VIEW.HILLFORT -> intent = Intent(this, HillfortView::class.java)
-
+            VIEW.NAVIGATOR->intent = Intent(this, NavigatorView::class.java)
         }
         if (key != "") {
             intent.putExtra(key, value)

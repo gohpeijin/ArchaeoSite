@@ -34,10 +34,15 @@ class SiteMapView : BaseView(),GoogleMap.OnMarkerClickListener {
             presenter.doLoadHillfortSite()
         }
 
+        floatingActionButton_navi.setOnClickListener {
+            presenter.doNavigator()
+        }
     }
     override fun onMarkerClick(marker: Marker): Boolean {
         presenter.doMarkerSelected(marker)
-        return true
+        floatingActionButton_navi.visibility=View.VISIBLE
+        map.uiSettings.isMapToolbarEnabled = true
+        return false
     }
     //to display site content
     override fun setSiteContent(site: Any) {

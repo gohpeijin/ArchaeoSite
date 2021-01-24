@@ -1,7 +1,6 @@
 package com.project.archaeosite.view.hillfort
 
 
-import android.R
 import android.app.Dialog
 import android.content.ActivityNotFoundException
 import android.content.Intent
@@ -9,8 +8,6 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.view.View
 import android.view.Window
-import android.widget.Toast
-import androidx.core.content.ContextCompat.startActivity
 import androidx.core.content.FileProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.project.archaeosite.models.HillfortModel
