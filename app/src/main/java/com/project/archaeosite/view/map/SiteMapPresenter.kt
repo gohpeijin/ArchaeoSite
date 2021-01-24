@@ -1,6 +1,8 @@
 package com.project.archaeosite.view.map
 
 import android.os.Parcelable
+import android.view.View
+import com.bumptech.glide.Glide
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
@@ -8,18 +10,20 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.project.archaeosite.models.ArchaeoModel
+import com.project.archaeosite.models.ForNavigate
 import com.project.archaeosite.models.HillfortModel
 import com.project.archaeosite.models.firebase.FirebaseRepo_Hillfort
 import com.project.archaeosite.view.base.BasePresenter
 import com.project.archaeosite.view.base.BaseView
 import com.project.archaeosite.view.base.VIEW
 import kotlinx.android.parcel.RawValue
+import kotlinx.android.synthetic.main.activity_sites_maps.*
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 
 class SiteMapPresenter (view: BaseView) : BasePresenter(view)  {
 
-    lateinit var site : Parcelable
+    var siteNavi = ForNavigate()
 
     fun doReadSiteLocationToMap(map: GoogleMap,sites :List<ArchaeoModel>) {
         map.uiSettings.isZoomControlsEnabled = true //enable the zoom the plus and minus button
@@ -46,9 +50,18 @@ class SiteMapPresenter (view: BaseView) : BasePresenter(view)  {
     }
 
     fun doMarkerSelected (marker: Marker){
-            site = (marker.tag as Parcelable?)!!
-//        val site = marker.tag
+        val site = marker.tag
         marker.showInfoWindow()
+        if(site is ArchaeoModel){
+            siteNavi.lat=site.location.lat
+            siteNavi.lng=site.location.lng
+            siteNavi.title=site.title
+        }
+        else if(site is HillfortModel){
+            siteNavi.lat= site.Location!!.latitude
+            siteNavi.lng=site.Location!!.longitude
+            siteNavi.title=site.Title
+        }
         //val tag = marker.tag as Long //read tag id
         doAsync {
            // val site = app.sites.findById(tag)
@@ -78,7 +91,7 @@ class SiteMapPresenter (view: BaseView) : BasePresenter(view)  {
     }
 
     fun doNavigator(){
-        view?.navigateTo(VIEW.SITE,0,"site_navigate",site)
+        view?.navigateTo(VIEW.NAVIGATOR,0,"site_navigate",siteNavi)
     }
 
 }

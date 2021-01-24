@@ -34,9 +34,13 @@ class SiteMapView : BaseView(),GoogleMap.OnMarkerClickListener {
             presenter.doLoadHillfortSite()
         }
 
+        floatingActionButton_navi.setOnClickListener {
+            presenter.doNavigator()
+        }
     }
     override fun onMarkerClick(marker: Marker): Boolean {
         presenter.doMarkerSelected(marker)
+        floatingActionButton_navi.visibility=View.VISIBLE
         map.uiSettings.isMapToolbarEnabled = true
         return false
     }

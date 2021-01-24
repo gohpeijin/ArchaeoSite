@@ -27,6 +27,12 @@ data class ArchaeoModel(
     @Embedded var date : Date=Date()
 ): Parcelable
 
+@Parcelize
+data class ForNavigate(
+    var title: String = "",
+    var lat: Double = 0.0,
+    var lng: Double = 0.0,
+): Parcelable
 
 @Parcelize
 data class Location(

@@ -95,7 +95,9 @@ class SitePresenter (view: SiteView): BasePresenter(view),AnkoLogger {
             site.location.zoom = 15f
             map?.clear()
             map?.uiSettings?.isZoomControlsEnabled = true
-            val options = MarkerOptions().title(site.title).position(LatLng(site.location.lat, site.location.lng))
+            val options = MarkerOptions()
+                .title(site.title)
+                .position(LatLng(site.location.lat, site.location.lng))
             map?.addMarker(options)
             map?.moveCamera(
                 CameraUpdateFactory.newLatLngZoom(
