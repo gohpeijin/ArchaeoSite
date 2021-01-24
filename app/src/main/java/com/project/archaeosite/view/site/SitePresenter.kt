@@ -2,9 +2,10 @@ package com.project.archaeosite.view.site
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.app.DatePickerDialog
 import android.content.Intent
-import android.widget.DatePicker
+import android.net.Uri
+import android.provider.MediaStore
+import androidx.core.content.FileProvider
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationResult
@@ -13,19 +14,13 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import com.project.archaeosite.helpers.checkLocationPermissions
-import com.project.archaeosite.helpers.createDefaultLocationRequest
-import com.project.archaeosite.helpers.isPermissionGranted
-import com.project.archaeosite.helpers.showImagePicker
+import com.project.archaeosite.helpers.*
 import com.project.archaeosite.models.ArchaeoModel
 import com.project.archaeosite.models.Location
-import com.project.archaeosite.view.base.BasePresenter
-import com.project.archaeosite.view.base.IMAGE_REQUEST
-import com.project.archaeosite.view.base.LOCATION_REQUEST
-import com.project.archaeosite.view.base.VIEW
+import com.project.archaeosite.view.base.*
+import kotlinx.android.synthetic.main.activity_site.*
 import org.jetbrains.anko.*
-import java.util.*
-
+import java.io.File
 
 class SitePresenter (view: SiteView): BasePresenter(view),AnkoLogger {
 
@@ -50,10 +45,9 @@ class SitePresenter (view: SiteView): BasePresenter(view),AnkoLogger {
             }
         }
     }
-
+    //region location
     //defines a callback - to be triggered when we turn location updates
     //checks to see if we are in edit mode - if not, it is assumed we would like live location updates to commence.
-
     @SuppressLint("MissingPermission")
     fun doResartLocationUpdates() {
         var locationCallback = object : LocationCallback() {
@@ -85,6 +79,13 @@ class SitePresenter (view: SiteView): BasePresenter(view),AnkoLogger {
                 // permissions denied, so use the default location
                 locationUpdate(defaultLocation)
             }
+
+            if(isCameraPermissionGranted(requestCode,grantResults)){
+                takephoto()
+            }
+            else {
+                view!!.toast("Unable to take photo without permission")
+            }
         }
 
         fun doConfigureMap(m: GoogleMap) {
@@ -107,35 +108,31 @@ class SitePresenter (view: SiteView): BasePresenter(view),AnkoLogger {
             )
         }
 
-        fun doAddOrEdit(title: String, description: String,additionalnote: String) {
-            site.title = title
-            site.description = description
-            if (additionalnote.isBlank()) { site.additionalNote="" }
-            else site.additionalNote=additionalnote
-            doAsync {
-                if (edit) {
-                    app.sites.update(site)
-                } else {
-                    app.sites.create(site)
-                }
-                uiThread {
-                    view?.finish()
-                }
-            }
-        }
+    fun doSetLocation() {
+        locationManualyChanged = true
+        view?.navigateTo(
+            VIEW.LOCATION,
+            LOCATION_REQUEST,
+            "location",
+            Location(site.location.lat, site.location.lng, site.location.zoom)
+        )
+    }
+    //endregion
 
-        fun doCancel() {
-            view?.finish()
-        }
 
-        fun doDelete() {
-            doAsync {
-                app.sites.delete(site)
-                uiThread {
-                    view?.finish()
-                }
-            }
+    fun doTakePhoto() {
+        if (checkCameraPermissions(view!!)) {
+           takephoto()
         }
+    }
+
+    fun takephoto(){
+        view?.let{
+            showCamera(view!!,SAVE_IMAGE_REQUEST_CODE)
+        }
+        //view?.takePhoto()
+
+    }
 
         fun doSelectImage() {
             view?.let {
@@ -162,21 +159,13 @@ class SitePresenter (view: SiteView): BasePresenter(view),AnkoLogger {
             }
         }
 
-        fun doSetLocation() {
-            locationManualyChanged = true
-            view?.navigateTo(
-                VIEW.LOCATION,
-                LOCATION_REQUEST,
-                "location",
-                Location(site.location.lat, site.location.lng, site.location.zoom)
-            )
-        }
 
-        override fun doActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+
+        override fun doActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
             when (requestCode) {
                 //region image activity
                 IMAGE_REQUEST -> {
-                    if (resultCode == Activity.RESULT_OK) { //to prevent the app stopping when no image selected
+                    if (resultCode == Activity.RESULT_OK &&data!=null) { //to prevent the app stopping when no image selected
                         if (data.clipData != null) {
                             val count = data.clipData!!.itemCount
                             if (count > 4) //only up to 4images can be selected
@@ -210,8 +199,59 @@ class SitePresenter (view: SiteView): BasePresenter(view),AnkoLogger {
                         view?.setSiteContent(site,edit)
                     }
                 }
+
+                SAVE_IMAGE_REQUEST_CODE->{
+                    if (resultCode == Activity.RESULT_OK) {
+                    val file = File(currentPhotoPath)
+                        val uri = FileProvider.getUriForFile(
+                                view!!.applicationContext,
+                                "com.project.archaeosite.provider",
+                                file
+                        )
+                        site.image.clear()
+                        site.image.add(uri.toString())
+                        imageposition = 0
+                        view?.displayImageByPosition(site, imageposition)
+//                        imageposition = 0
+//                        view?.displayImageByPosition(site, imageposition)
+//                    var bitmap = MediaStore.Images.Media.getBitmap(view!!.contentResolver, Uri.fromFile(file))
+//                    if (bitmap != null) {
+//                        view!!.ImageSelected.setImageBitmap(bitmap)
+//                    }
+                    }
+                }
             }
         }
+
+    fun doAddOrEdit(title: String, description: String,additionalnote: String) {
+        site.title = title
+        site.description = description
+        if (additionalnote.isBlank()) { site.additionalNote="" }
+        else site.additionalNote=additionalnote
+        doAsync {
+            if (edit) {
+                app.sites.update(site)
+            } else {
+                app.sites.create(site)
+            }
+            uiThread {
+                view?.finish()
+            }
+        }
+    }
+
+    fun doCancel() {
+        view?.finish()
+    }
+
+    fun doDelete() {
+        doAsync {
+            app.sites.delete(site)
+            uiThread {
+                view?.finish()
+            }
+        }
+    }
 
     fun doUpdateDate(year: Int, month: Int, dayOfMonth: Int){
         site.date.day=dayOfMonth
@@ -222,6 +262,8 @@ class SitePresenter (view: SiteView): BasePresenter(view),AnkoLogger {
     fun doVisitedCheckbox(checked: Boolean){
         site.visited=checked
     }
+
+
 
 }
 

@@ -10,4 +10,10 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="background_selected">#A80097A7</color>
+    <color name="CHECKEDHIGHLIGHTCOLOR">#D0D32F2F</color>
+    <color name="UNCHECKEDCOLOR">#99757575</color>
+    <color name="duskYellow">#FBC02D</color>
+    <color name="lightGrey">#99757575</color>
+    <color name="fav_toggle_red">#61F43333</color>
+    <color name="fav_toggle_grey">#61A69999</color>
 </resources>

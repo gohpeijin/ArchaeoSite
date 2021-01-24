@@ -50,3 +50,6 @@ fun readImageFromPath(context: Context, path : String) : Bitmap? {
     }
     return bitmap
 }
+
+
+
