@@ -165,7 +165,7 @@ class FirebaseRepo_Hillfort : AnkoLogger{
                 }
               //  Log.d(TAG, hillfortlist.toString()) //test app
                // hillfortlist = it.result!!.toObjects(HillfortModel::class.java) as ArrayList<HillfortModel>
-                myCallback.onCallback( hillfortlist)
+                myCallback.onCallback(hillfortlist)
             } else {
                 Log.d(TAG, "Error:${it.exception!!.message}")
             }

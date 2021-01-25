@@ -18,18 +18,14 @@ class DisplayListPresenter (view: BaseView): BasePresenter(view),AnkoLogger{
                 view?.showSites(sites)
             }
         }
-       // app.sites.findAll()
     }
 
     fun doAddSite(){
        view?.navigateTo(VIEW.SITE)
-       // view?.startActivityForResult<SiteView>(0)
     }
 
     fun doEditSite(site:ArchaeoModel){
        view?.navigateTo(VIEW.SITE,0,"site_edit",site)
-       // view?.startActivityForResult(view?.intentFor<SiteView>()?.putExtra("site_edit",site),0)
-
     }
     fun doShowSitesMap(){
         view?.navigateTo(VIEW.MAPS)

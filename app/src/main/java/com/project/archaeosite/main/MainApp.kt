@@ -1,6 +1,7 @@
 package com.project.archaeosite.main
 
 import android.app.Application
+import com.google.firebase.database.FirebaseDatabase
 import com.project.archaeosite.models.SiteInterface
 import com.project.archaeosite.models.firebase.FirebaseRepo_Hillfort
 import com.project.archaeosite.models.firebase.SiteFireStore
@@ -12,13 +13,12 @@ class MainApp : Application(), AnkoLogger {
    lateinit var sites:SiteInterface
    lateinit var hillfortlist:FirebaseRepo_Hillfort
 
-   // var hillfortlist =ArrayList<HillfortModel>()
-
     override fun onCreate() {
         super.onCreate()
         //sites=SiteImplement()
         //sites= SiteJSONImplement(applicationContext)
        // sites = SitesStoreRoom(applicationContext)
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true)
         sites = SiteFireStore(applicationContext)
         hillfortlist=FirebaseRepo_Hillfort()
 

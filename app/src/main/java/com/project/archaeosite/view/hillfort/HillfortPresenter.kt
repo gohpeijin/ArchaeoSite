@@ -1,6 +1,5 @@
 package com.project.archaeosite.view.hillfort
 
-
 import android.app.Dialog
 import android.content.ActivityNotFoundException
 import android.content.Intent
@@ -18,13 +17,14 @@ import org.jetbrains.anko.*
 import java.io.File
 import java.io.FileOutputStream
 
-
 class HillfortPresenter(view: BaseView): BasePresenter(view),AnkoLogger {
 
     //region listView
     fun loadHillfortList(int: Int){
+        view!!.showProgress()
         app.hillfortlist.loadHillfortData(object : FirebaseRepo_Hillfort.MyCallback {
             override fun onCallback(hillfortlist: List<HillfortModel>) {
+                view!!.hideProgress()
                 doAsync {
                     uiThread {
                         when (int) {
