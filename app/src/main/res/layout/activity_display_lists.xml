@@ -7,24 +7,27 @@
     android:layout_height="match_parent"
     tools:context=".view.displayList.DisplayListView">
 
-    <LinearLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        tools:layout_editor_absoluteX="228dp"
-        tools:layout_editor_absoluteY="137dp">
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/mytoolbar"
+        android:orientation="vertical">
+        <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/teal_300"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:title="My Sites"
-            app:titleTextColor="@color/white"
-            app:theme="@style/ThemeOverlay.AppCompat.Dark"/>
+            android:fitsSystemWindows="true">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/mytoolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/teal_300"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:title="My Sites"
+                app:titleTextColor="@color/white"
+                app:theme="@style/ThemeOverlay.AppCompat.Dark"/>
+        </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerview_sites"
@@ -32,7 +35,28 @@
             android:layout_height="match_parent"
             android:scrollbars="vertical"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-    </LinearLayout>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/floatingActionButton_fav"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            android:layout_margin="16dp"
+            app:backgroundTint="@color/fav_toggle_grey"
+            android:baselineAlignBottom="false"
+            android:clickable="true"
+            android:contextClickable="false"
+            android:focusable="true"
+            android:foregroundGravity="top"
+            app:tint="#90FFFFFF"
+            app:borderWidth="0dp"
+            app:elevation="0dp"
+            app:fabSize="auto"
+            app:pressedTranslationZ="0dp"
+            app:srcCompat="@drawable/ic_baseline_favorite_24" />
+
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigation_view"
@@ -42,6 +66,4 @@
         android:clipToPadding="false"
         app:menu="@menu/main_menu"
         app:headerLayout="@layout/nav_header_main"/>
-
-
 </androidx.drawerlayout.widget.DrawerLayout>

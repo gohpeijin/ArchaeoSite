@@ -28,8 +28,8 @@ class HillfortPresenter(view: BaseView): BasePresenter(view),AnkoLogger {
                 doAsync {
                     uiThread {
                         when (int) {
-                            HILLFORT_LIST -> view?.showHillfortList(hillfortlist)
-                            HILLFORT_FAV_LIST -> {
+                            DISPLAY_ALL_LIST -> view?.showHillfortList(hillfortlist)
+                            DISPLAY_FAV_LIST -> {
                                 var hillfortFavList = ArrayList<HillfortModel>()
                                 for (hillfort in hillfortlist) {
                                     for (findfav in hillfort.userReaction) {

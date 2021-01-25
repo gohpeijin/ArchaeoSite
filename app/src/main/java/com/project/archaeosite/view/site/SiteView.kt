@@ -13,6 +13,7 @@ import com.project.archaeosite.models.ArchaeoModel
 import com.project.archaeosite.models.Location
 import com.project.archaeosite.view.base.BaseView
 import kotlinx.android.synthetic.main.activity_site.*
+import kotlinx.android.synthetic.main.dialog_individualsite.*
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.toast
 import java.util.*
@@ -73,9 +74,14 @@ class SiteView : BaseView(), AnkoLogger,DatePickerDialog.OnDateSetListener {
         }
         //endregion
 
-        //region visited checkbox
+        //region checkbox
         checkBox_visited.setOnClickListener { presenter.doVisitedCheckbox(checkBox_visited.isChecked) }
+        checkBox_favourite.setOnClickListener { presenter.doFavouriteCheckbox(checkBox_favourite.isChecked) }
         //endregion
+
+        ratingBar.setOnRatingBarChangeListener { ratingBar, rating, fromUser ->
+            presenter.doGetRating(rating)
+        }
     }
 
 
@@ -96,9 +102,16 @@ class SiteView : BaseView(), AnkoLogger,DatePickerDialog.OnDateSetListener {
         if ( text_Site_Name.text.isEmpty())  text_Site_Name.setText(site.title)
         if (text_Site_Description.text.isEmpty()) text_Site_Description.setText(site.description)
         if(text_AdditionalNote.text.isEmpty()) text_AdditionalNote.setText(site.additionalNote)
-        if(site.visited) checkBox_visited.isChecked=true
-        if(site.date.day==0&&site.date.month==0&&site.date.year==0) editTextDate.text = getString(R.string.dateformat)
+
+        checkBox_visited.isChecked=site.visited
+        checkBox_favourite.isChecked=site.favourite
+
+        if (site.rating == null) ratingBar.rating = 0F
+        else ratingBar.rating = site.rating!!
+
+        if(site.date.day==0&&site.date.month==0&&site.date.year==0) editTextDate.text = getString(R.string.dateInitialize)
         else editTextDate.text = "${site.date.day}/${site.date.month}/${site.date.year}"
+
         if(site.image.isNotEmpty())
             Glide.with(this).load(site.image[0]).into(ImageSelected)
        // if(this::presenter.isInitialized)
@@ -112,8 +125,8 @@ class SiteView : BaseView(), AnkoLogger,DatePickerDialog.OnDateSetListener {
 
     @SuppressLint("SetTextI18n")
     override fun showLocation (location : Location) {
-        lat.text = "%.6f".format(location.lat)
-        lng.text = "%.6f".format(location.lng)
+        lat.text = "latitude: "+ "%.6f".format(location.lat)
+        lng.text = "longitude: "+"%.6f".format(location.lng)
     }
 
 //region map

@@ -10,9 +10,7 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        tools:layout_editor_absoluteX="228dp"
-        tools:layout_editor_absoluteY="137dp">
+        android:orientation="vertical">
 
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
@@ -64,8 +62,6 @@
             app:fabSize="auto"
             app:pressedTranslationZ="0dp"
             app:srcCompat="@drawable/ic_baseline_favorite_24" />
-
-
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <com.google.android.material.navigation.NavigationView

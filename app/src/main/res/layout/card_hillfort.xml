@@ -41,6 +41,7 @@
             android:layout_width="64dp"
             android:layout_height="64dp"
             android:layout_alignParentStart="true"
+            android:background="#0C9C9292"
             android:layout_marginStart="10dp"
             android:layout_marginTop="12dp"
             android:layout_marginEnd="16dp"

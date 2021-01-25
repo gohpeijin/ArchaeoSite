@@ -11,6 +11,10 @@ import com.bumptech.glide.Glide
 import com.project.archaeosite.R
 import com.project.archaeosite.models.ArchaeoModel
 import kotlinx.android.synthetic.main.card_sites.view.*
+import kotlinx.android.synthetic.main.card_sites.view.checkBox_favourite
+import kotlinx.android.synthetic.main.card_sites.view.imageIcon
+import kotlinx.android.synthetic.main.card_sites.view.siteName
+import kotlinx.android.synthetic.main.card_sites.view.textView_Visited
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -31,17 +35,23 @@ class SitesAdapter constructor(private var sites: List<ArchaeoModel>, private va
         fun bind(site: ArchaeoModel, listener: SitesListener) {
             itemView.siteName.text = site.title
             itemView.siteDescription.text = site.description
+            itemView.checkBox_favourite.isChecked = site.favourite
+
             if(site.visited) itemView.textView_Visited.text="Visited"
             else itemView.textView_Visited.text="Unvisited"
-            if(site.additionalNote.isNotBlank()) itemView.textView_Additionalnote.visibility=View.VISIBLE
-            else itemView.textView_Additionalnote.visibility=View.INVISIBLE
+
+            if(site.additionalNote.isNotBlank()) itemView.dialog_textView_Additionalnote.visibility=View.VISIBLE
+            else itemView.dialog_textView_Additionalnote.visibility=View.INVISIBLE
             if(site.date.day==0&&site.date.month==0&&site.date.year==0) itemView.textView_Date.text = "No date"
             else itemView.textView_Date.text = "${site.date.day}/${site.date.month}/${site.date.year}"
             if(site.image.isNotEmpty()){
                 Glide.with(itemView.context).load(site.image.get(0)).into(itemView.imageIcon)
                 itemView.textView_ImageCount.text="${site.image.size} image(s)"
             }
-            else  itemView.textView_ImageCount.text="No image"
+            else {
+                itemView.textView_ImageCount.text="No image"
+                itemView.imageIcon.setImageResource(R.drawable.logo)
+            }
 
             itemView.setOnClickListener(){
                 listener.onSiteClick(site)

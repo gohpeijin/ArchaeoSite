@@ -1,21 +1,33 @@
 package com.project.archaeosite.view.displayList
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
+import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.core.view.MenuItemCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.project.archaeosite.R
 import com.project.archaeosite.models.ArchaeoModel
 import com.project.archaeosite.view.base.BaseView
+import com.project.archaeosite.view.base.DISPLAY_ALL_LIST
+import com.project.archaeosite.view.base.DISPLAY_FAV_LIST
 import kotlinx.android.synthetic.main.activity_display_lists.*
+import kotlinx.android.synthetic.main.activity_display_lists.drawer
+import kotlinx.android.synthetic.main.activity_display_lists.floatingActionButton_fav
 import kotlinx.android.synthetic.main.activity_display_lists.mytoolbar
+import kotlinx.android.synthetic.main.activity_display_lists.navigation_view
+import kotlinx.android.synthetic.main.dialog_individualsite.*
 import kotlinx.android.synthetic.main.nav_header_main.*
 import org.jetbrains.anko.*
 import java.lang.reflect.Field
@@ -29,7 +41,7 @@ class DisplayListView : BaseView(), AnkoLogger, SitesListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_display_lists)
 
-        //region initialize an empty list so before the hillforts list callback it wont crash when user search
+        //region initialize an empty list so when there is no site it wont crash when user search
         adapter= SitesAdapter(mutableListOf(),this)
         recyclerview_sites.adapter = adapter
         //endregion
@@ -61,7 +73,33 @@ class DisplayListView : BaseView(), AnkoLogger, SitesListener {
 
         val layoutManager = LinearLayoutManager(this)
         recyclerview_sites.layoutManager = layoutManager
-        presenter.loadSitesList()
+        presenter.loadSitesList(DISPLAY_ALL_LIST)
+
+        //region interface for floating botton
+        var clicked = false
+        floatingActionButton_fav.setOnClickListener {
+            if (!clicked) {
+                presenter.loadSitesList(DISPLAY_FAV_LIST)
+                floatingActionButton_fav.backgroundTintList = ContextCompat.getColorStateList(this, R.color.fav_toggle_red)
+                clicked = true
+            } else {
+                presenter.loadSitesList(DISPLAY_ALL_LIST)
+                floatingActionButton_fav.backgroundTintList = ContextCompat.getColorStateList(this, R.color.fav_toggle_grey)
+                clicked = false
+            }
+        }
+
+        recyclerview_sites.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                if (dy > 0) {
+                    floatingActionButton_fav.hide()
+                } else {
+                    floatingActionButton_fav.show()
+                }
+                super.onScrolled(recyclerView, dx, dy)
+            }
+        })
+        //endregion
     }
 
     override fun showSites(sites: List<ArchaeoModel>) {
@@ -73,7 +111,7 @@ class DisplayListView : BaseView(), AnkoLogger, SitesListener {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        presenter.loadSitesList()
+        presenter.loadSitesList(DISPLAY_ALL_LIST)
         super.onActivityResult(requestCode, resultCode, data)
     }
 
@@ -100,6 +138,7 @@ class DisplayListView : BaseView(), AnkoLogger, SitesListener {
         }
     }
 
+    var searchhistory:String?=null
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_search, menu)
         val searchViewItem = menu!!.findItem(R.id.search)
@@ -132,9 +171,52 @@ class DisplayListView : BaseView(), AnkoLogger, SitesListener {
     //endregion
 
 
-    var searchhistory:String?=null
+    @SuppressLint("SetTextI18n")
     override fun onSiteClick(site: ArchaeoModel) {
-        presenter.doEditSite(site)
+        //Inflate the dialog with custom view
+        val mDialogView = LayoutInflater.from(this).inflate(R.layout.dialog_individualsite, null)
+        //AlertDialogBuilder
+        val mBuilder = AlertDialog.Builder(this).setView(mDialogView)
+        //show dialog
+        val siteDialog = mBuilder.show()
+
+        //region set default text
+        siteDialog.dialog_Title.text = "Title: " + site.title
+        if(site.image.isNotEmpty())
+            Glide.with(this).load(site.image[0]).into(siteDialog.dialog_imageView)
+        else
+            siteDialog.dialog_imageView.setBackgroundResource(R.drawable.logo)
+
+        siteDialog.dialog_Location.text = site.location.toString()
+        siteDialog.dialog_textView_Description.text="Description: ${site.description}"
+        siteDialog.dialog_textView_Additionalnote.text="Addtional note: ${site.additionalNote}"
+        siteDialog.dialog_checkBox_Visited.isChecked = site.visited
+        siteDialog.dialog_checkBox_favourite.isChecked = site.favourite
+
+        if (site.rating == null) {
+            siteDialog.dialog_ratingBar.rating = 0F
+            siteDialog.dialog_textView_Rating.text = "(no rating)"
+        }
+        else {
+            siteDialog.dialog_ratingBar.rating = site.rating!!
+            siteDialog.dialog_textView_Rating.text = "(${siteDialog.dialog_ratingBar.rating})"
+        }
+
+        //endregion
+
+        siteDialog.dialog_button_Done.setOnClickListener {
+            siteDialog.dismiss()
+            recyclerview_sites.adapter?.notifyDataSetChanged()
+        }
+
+        siteDialog.image_share.setOnClickListener {
+            presenter.doShareSite(site,siteDialog)
+        }
+
+        siteDialog.image_edit.setOnClickListener {
+            presenter.doEditSite(site)
+        }
+
     }
 
 

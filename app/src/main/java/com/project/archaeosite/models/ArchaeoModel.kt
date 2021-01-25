@@ -24,7 +24,9 @@ data class ArchaeoModel(
     @Embedded var location : Location = Location(),
     var additionalNote: String="",
     var visited: Boolean=false,
-    @Embedded var date : Date=Date()
+    @Embedded var date : Date=Date(),
+    var favourite:Boolean = false,
+    var rating: Float? = null
 ): Parcelable
 
 @Parcelize

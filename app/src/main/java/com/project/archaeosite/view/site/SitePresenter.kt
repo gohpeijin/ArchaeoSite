@@ -14,6 +14,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.project.archaeosite.helpers.*
 import com.project.archaeosite.models.ArchaeoModel
+import com.project.archaeosite.models.HillfortModel
 import com.project.archaeosite.models.Location
 import com.project.archaeosite.view.base.*
 import org.jetbrains.anko.*
@@ -256,6 +257,16 @@ class SitePresenter (view: SiteView): BasePresenter(view),AnkoLogger {
         site.visited=checked
     }
 
+    fun doFavouriteCheckbox(checked: Boolean) {
+        site.favourite=checked
+    }
+
+    fun doGetRating(rating: Float) {
+        if(rating==0F)
+            site.rating=null
+        else
+            site.rating=rating
+    }
 
 
 }
