@@ -20,8 +20,7 @@ import java.util.*
 
 class SiteView : BaseView(), AnkoLogger,DatePickerDialog.OnDateSetListener {
 
-   lateinit var presenter: SitePresenter
-    var site = ArchaeoModel()
+    lateinit var presenter: SitePresenter
     lateinit var map: GoogleMap
 
     override fun onCreate(savedInstanceState: Bundle?) {

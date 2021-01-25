@@ -127,7 +127,7 @@ class SitePresenter (view: SiteView): BasePresenter(view),AnkoLogger {
 
     fun takephoto(){
         view?.let{
-            showCamera(view!!,SAVE_IMAGE_REQUEST_CODE)
+            showCamera(view!!,SAVE_IMAGE_REQUEST)
         }
         //view?.takePhoto()
 
@@ -199,7 +199,7 @@ class SitePresenter (view: SiteView): BasePresenter(view),AnkoLogger {
                     }
                 }
 
-                SAVE_IMAGE_REQUEST_CODE->{
+                SAVE_IMAGE_REQUEST->{
                     if (resultCode == Activity.RESULT_OK) {
                     val file = File(currentPhotoPath)
                         val uri = FileProvider.getUriForFile(
