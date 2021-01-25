@@ -1,24 +1,16 @@
 package com.project.archaeosite.view.hillfort
 
 import android.annotation.SuppressLint
-import android.app.Dialog
-import android.content.ActivityNotFoundException
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
 import android.view.*
 import android.widget.RatingBar
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.SearchView.SearchAutoComplete
 import androidx.core.content.ContextCompat
-import androidx.core.content.FileProvider
 import androidx.core.view.GravityCompat
 import androidx.core.view.MenuItemCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -31,12 +23,11 @@ import com.project.archaeosite.view.base.BaseView
 import com.project.archaeosite.view.base.HILLFORT_FAV_LIST
 import com.project.archaeosite.view.base.HILLFORT_LIST
 import kotlinx.android.synthetic.main.activity_hillfort_view.*
+import kotlinx.android.synthetic.main.activity_hillfort_view.mytoolbar
+import kotlinx.android.synthetic.main.activity_hillfort_view.progressBar
 import kotlinx.android.synthetic.main.dialog_hillfortsite.*
-import kotlinx.android.synthetic.main.nav_header_main.*
+import kotlinx.android.synthetic.main.nav_header_main.useremail
 import org.jetbrains.anko.info
-import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
 import java.lang.reflect.Field
 
 
@@ -138,6 +129,13 @@ class HillfortView :  BaseView(), HillfortListener {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         presenter.loadHillfortList(HILLFORT_LIST)
         super.onActivityResult(requestCode, resultCode, data)
+    }
+    override fun showProgress() {
+        progressBar.visibility = View.VISIBLE
+    }
+
+    override fun hideProgress() {
+        progressBar.visibility = View.GONE
     }
 
     //region menu
