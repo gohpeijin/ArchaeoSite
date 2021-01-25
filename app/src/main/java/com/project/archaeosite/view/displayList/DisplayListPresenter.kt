@@ -18,6 +18,8 @@ import java.io.FileOutputStream
 
 class DisplayListPresenter (view: BaseView): BasePresenter(view),AnkoLogger{
 
+    var imageposition=0
+
     fun loadSitesList(int: Int){
         doAsync {
             val sites = app.sites.findAll()
@@ -105,5 +107,24 @@ class DisplayListPresenter (view: BaseView): BasePresenter(view),AnkoLogger{
         } catch (e: ActivityNotFoundException) {
             view?.toast("No App Available")
         }
+    }
+
+
+    fun doNextImage(site: ArchaeoModel) :Int{
+        if (imageposition < site.image.size - 1) {
+            imageposition++
+        } else {
+            view?.toast("No more images")
+        }
+        return imageposition
+    }
+
+    fun doPreviousImage(site: ArchaeoModel) :Int{
+        if (imageposition > 0) {
+            imageposition--
+        } else {
+            view?.toast("Reach the first image")
+        }
+        return imageposition
     }
 }

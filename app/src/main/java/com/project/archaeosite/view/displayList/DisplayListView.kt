@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
@@ -27,6 +28,7 @@ import kotlinx.android.synthetic.main.activity_display_lists.drawer
 import kotlinx.android.synthetic.main.activity_display_lists.floatingActionButton_fav
 import kotlinx.android.synthetic.main.activity_display_lists.mytoolbar
 import kotlinx.android.synthetic.main.activity_display_lists.navigation_view
+import kotlinx.android.synthetic.main.activity_site.*
 import kotlinx.android.synthetic.main.dialog_individualsite.*
 import kotlinx.android.synthetic.main.nav_header_main.*
 import org.jetbrains.anko.*
@@ -182,10 +184,16 @@ class DisplayListView : BaseView(), AnkoLogger, SitesListener {
 
         //region set default text
         siteDialog.dialog_Title.text = "Title: " + site.title
-        if(site.image.isNotEmpty())
+
+        if(site.image.isNotEmpty()){
             Glide.with(this).load(site.image[0]).into(siteDialog.dialog_imageView)
-        else
-            siteDialog.dialog_imageView.setBackgroundResource(R.drawable.logo)
+        }
+        else siteDialog.dialog_imageView.setImageResource(R.drawable.no_image_available)
+
+        if(site.image.size==1||site.image.isEmpty()){
+            siteDialog.dialog_button_previos_image.visibility=View.INVISIBLE
+            siteDialog.dialog_button_next_image.visibility= View.INVISIBLE
+        }
 
         siteDialog.dialog_Location.text = site.location.toString()
         siteDialog.dialog_textView_Description.text="Description: ${site.description}"
@@ -209,17 +217,22 @@ class DisplayListView : BaseView(), AnkoLogger, SitesListener {
             recyclerview_sites.adapter?.notifyDataSetChanged()
         }
 
-        siteDialog.image_share.setOnClickListener {
-            presenter.doShareSite(site,siteDialog)
+        siteDialog.image_share.setOnClickListener { presenter.doShareSite(site,siteDialog) }
+        siteDialog.dialog_button_previos_image.setOnClickListener {
+            Glide.with(this).load(site.image[presenter.doPreviousImage(site)]).into(siteDialog.dialog_imageView)
+
+        }
+        siteDialog.dialog_button_next_image.setOnClickListener {
+            Glide.with(this).load(site.image[presenter.doNextImage(site)]).into(siteDialog.dialog_imageView)
+
         }
 
         siteDialog.image_edit.setOnClickListener {
-            presenter.doEditSite(site)
-        }
+            siteDialog.dismiss()
+            presenter.doEditSite(site) }
+
 
     }
-
-
 }
 
 

@@ -38,6 +38,7 @@ class SitePresenter (view: SiteView): BasePresenter(view),AnkoLogger {
             site = view.intent.extras?.getParcelable<ArchaeoModel>("site_edit")!!
             view.setSiteContent(site, edit)
         } else {
+            view?.hideVisibility()
             if (checkLocationPermissions(view)) {
                 doSetCurrentLocation()
             }
@@ -144,7 +145,6 @@ class SitePresenter (view: SiteView): BasePresenter(view),AnkoLogger {
             if (imageposition < site.image.size - 1) {
                 imageposition++
                 view?.displayImageByPosition(site, imageposition)
-                //ImageSelected.setImageBitmap(readImageFromPath(this, site.image.get(imageposition)))
             } else {
                 view?.toast("No more images")
             }
@@ -178,14 +178,14 @@ class SitePresenter (view: SiteView): BasePresenter(view),AnkoLogger {
                                 }
                                 imageposition = 0 //reset it to 0 if not when select multiple image and set the number to last image and select pic again will return index out of bound
                                 view?.displayImageByPosition(site, imageposition)
-
+                                view?.showVisiblility()
                             }
                         } else {
                             site.image.clear()
                             site.image.add(data.data.toString())
                             imageposition = 0
                             view?.displayImageByPosition(site, imageposition)
-
+                            view?.hideVisibility()
                         }
                     }
                 }
@@ -212,6 +212,7 @@ class SitePresenter (view: SiteView): BasePresenter(view),AnkoLogger {
                         site.image.add(uri.toString())
                         imageposition = 0
                         view?.displayImageByPosition(site, imageposition)
+                        view?.hideVisibility()
                     }
                 }
             }

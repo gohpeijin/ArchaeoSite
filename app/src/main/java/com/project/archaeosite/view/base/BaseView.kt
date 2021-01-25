@@ -100,4 +100,7 @@ open abstract class BaseView() : AppCompatActivity(), AnkoLogger {
 
     open fun checkLocationSetting(builder: LocationSettingsRequest.Builder) {}
 
+    open fun showVisiblility(){}
+    open fun hideVisibility(){}
+
 }

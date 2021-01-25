@@ -114,6 +114,9 @@ class SiteView : BaseView(), AnkoLogger,DatePickerDialog.OnDateSetListener {
 
         if(site.image.isNotEmpty())
             Glide.with(this).load(site.image[0]).into(ImageSelected)
+        if (site.image.size==1||site.image.isEmpty())
+            hideVisibility()
+
        // if(this::presenter.isInitialized)
             if(editmode){
                 item_delete.visibility = View.VISIBLE
@@ -121,6 +124,16 @@ class SiteView : BaseView(), AnkoLogger,DatePickerDialog.OnDateSetListener {
                 item_back.visibility=View.INVISIBLE
             }
         this.showLocation(site.location)
+    }
+
+    override fun showVisiblility() {
+        button_previos_image.visibility=View.VISIBLE
+        button_next_image.visibility=View.VISIBLE
+    }
+
+    override fun hideVisibility() {
+        button_previos_image.visibility=View.INVISIBLE
+        button_next_image.visibility=View.INVISIBLE
     }
 
     @SuppressLint("SetTextI18n")

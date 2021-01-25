@@ -45,12 +45,12 @@ class SitesAdapter constructor(private var sites: List<ArchaeoModel>, private va
             if(site.date.day==0&&site.date.month==0&&site.date.year==0) itemView.textView_Date.text = "No date"
             else itemView.textView_Date.text = "${site.date.day}/${site.date.month}/${site.date.year}"
             if(site.image.isNotEmpty()){
-                Glide.with(itemView.context).load(site.image.get(0)).into(itemView.imageIcon)
+                Glide.with(itemView.context).load(site.image[0]).into(itemView.imageIcon)
                 itemView.textView_ImageCount.text="${site.image.size} image(s)"
             }
             else {
                 itemView.textView_ImageCount.text="No image"
-                itemView.imageIcon.setImageResource(R.drawable.logo)
+                itemView.imageIcon.setImageResource(R.drawable.no_image_available)
             }
 
             itemView.setOnClickListener(){

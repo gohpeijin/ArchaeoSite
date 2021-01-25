@@ -104,15 +104,47 @@
                 android:hint="Title"
                 android:textSize="18sp" />
 
-            <ImageView
-                android:id="@+id/dialog_imageView"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="256dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="5dp"
-                android:background="#0C9C9292"
-                android:scaleType="fitCenter"
-                tools:srcCompat="@tools:sample/avatars" />
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/dialog_imageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="256dp"
+                    android:layout_gravity="center"
+                    android:background="#0C9C9292"
+                    android:scaleType="fitCenter"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:srcCompat="@tools:sample/avatars" />
+
+                <ImageButton
+                    android:id="@+id/dialog_button_previos_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="#00FFFFFF"
+                    android:rotation="180"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@android:drawable/ic_media_play" />
+
+                <ImageButton
+                    android:id="@+id/dialog_button_next_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="#00FFFFFF"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@android:drawable/ic_media_play" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
 
             <TextView
                 android:id="@+id/dialog_Location"
