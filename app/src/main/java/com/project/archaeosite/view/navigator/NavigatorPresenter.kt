@@ -8,6 +8,7 @@ import android.os.AsyncTask
 import android.os.Build
 import android.os.Looper
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.*
@@ -25,6 +26,7 @@ import com.project.archaeosite.view.base.UPDATE_LOCATION_REQUEST
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.jetbrains.anko.longToast
+import org.jetbrains.anko.toast
 
 class NavigatorPresenter(view: BaseView) : BasePresenter(view) {
 
@@ -70,8 +72,7 @@ class NavigatorPresenter(view: BaseView) : BasePresenter(view) {
         map!!.uiSettings.isCompassEnabled = true
         map!!.uiSettings.isMyLocationButtonEnabled=true
 
-       fusedLocationClient!!.lastLocation.addOnSuccessListener {
-           location ->
+       fusedLocationClient!!.lastLocation.addOnSuccessListener { location ->
             if (location != null) {
                 // Zoom to the user last location
                 val loc=LatLng(location.latitude, location.longitude)
@@ -177,22 +178,38 @@ class NavigatorPresenter(view: BaseView) : BasePresenter(view) {
         override fun doInBackground(vararg params: Void?): List<List<LatLng>> {
             val client = OkHttpClient()
             val request = Request.Builder().url(url).build()
+
             val response = client.newCall(request).execute()
+
             val data = response.body!!.string()
+
+            Log.d("GoogleMap", " data : $url")
             Log.d("GoogleMap", " data : $data")
+
+
+
             val result = ArrayList<List<LatLng>>()
             try {
                 val respObj = Gson().fromJson(data, GoogleMapDTO::class.java)
-
                 val path = ArrayList<LatLng>()
-
-                for (i in 0 until respObj.routes[0].legs[0].steps.size) {
-                    path.addAll(decodePolyline(respObj.routes[0].legs[0].steps[i].polyline.points))
+                if (respObj.routes.isNotEmpty()){
+                    for (i in 0 until respObj.routes[0].legs[0].steps.size) {
+                        path.addAll(decodePolyline(respObj.routes[0].legs[0].steps[i].polyline.points))
+                    }
+                    result.add(path)
                 }
-                result.add(path)
+                else {
+                    view!!.runOnUiThread(Runnable {
+                        view!!.toast("No route is found")
+                    })
+                }
+
             } catch (e: Exception) {
+                //view!!.longToast("The direction cannot be found.")
+                        Log.d("GoogleMap", " e : $e")
                 e.printStackTrace()
             }
+
             return result
         }
 
