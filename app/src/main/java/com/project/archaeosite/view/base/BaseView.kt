@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Parcelable
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import com.google.android.gms.location.LocationSettingsRequest
 import com.project.archaeosite.models.ArchaeoModel
 import com.project.archaeosite.models.HillfortModel
 import com.project.archaeosite.models.Location
@@ -12,15 +13,20 @@ import com.project.archaeosite.view.hillfort.HillfortView
 import com.project.archaeosite.view.location.EditLocationView
 import com.project.archaeosite.view.login.LoginView
 import com.project.archaeosite.view.map.SiteMapView
+import com.project.archaeosite.view.navigator.NavigatorView
 import com.project.archaeosite.view.profile.UserProfileView
 import com.project.archaeosite.view.site.SiteView
 import org.jetbrains.anko.AnkoLogger
 
 val IMAGE_REQUEST = 1
 val LOCATION_REQUEST = 2
+val SAVE_IMAGE_REQUEST = 3
+val UPDATE_LOCATION_REQUEST = 4
+val HILLFORT_LIST=1
+val HILLFORT_FAV_LIST =2
 
 enum class VIEW {
-    LOCATION, SITE, MAPS, LIST, LOGIN, PROFILE, HILLFORT
+    LOCATION, SITE, MAPS, LIST, LOGIN, PROFILE, HILLFORT, NAVIGATOR
 }
 
 
@@ -38,7 +44,7 @@ open abstract class BaseView() : AppCompatActivity(), AnkoLogger {
             VIEW.LOGIN -> intent = Intent(this, LoginView::class.java)
             VIEW.PROFILE -> intent = Intent(this, UserProfileView::class.java)
             VIEW.HILLFORT -> intent = Intent(this, HillfortView::class.java)
-
+            VIEW.NAVIGATOR->intent = Intent(this, NavigatorView::class.java)
         }
         if (key != "") {
             intent.putExtra(key, value)
@@ -72,9 +78,7 @@ open abstract class BaseView() : AppCompatActivity(), AnkoLogger {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (data != null) {
-            basePresenter?.doActivityResult(requestCode, resultCode, data!!)
-        }
+            basePresenter?.doActivityResult(requestCode, resultCode, data)
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
@@ -93,4 +97,7 @@ open abstract class BaseView() : AppCompatActivity(), AnkoLogger {
    // open fun showLocation(latitude : Double, longitude : Double) {}
     open fun showProgress() {}
     open fun hideProgress() {}
+
+    open fun checkLocationSetting(builder: LocationSettingsRequest.Builder) {}
+
 }

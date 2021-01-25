@@ -7,7 +7,7 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.FirebaseFirestoreSettings
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
@@ -149,7 +149,7 @@ class FirebaseRepo_Hillfort : AnkoLogger{
     val TAG = "FireStore"
 
     fun getHillfortList(): Task<QuerySnapshot> {
-        return firebaseFirestore.collection("Hillforts").get()
+        return firebaseFirestore.collection("Hillforts").orderBy("Title",Query.Direction.ASCENDING).get()
     }
 
     fun loadHillfortData(myCallback: MyCallback){
@@ -163,7 +163,7 @@ class FirebaseRepo_Hillfort : AnkoLogger{
                         hillfortlist.add(hillfort)
                     }
                 }
-                Log.d(TAG, hillfortlist.toString()) //test app
+              //  Log.d(TAG, hillfortlist.toString()) //test app
                // hillfortlist = it.result!!.toObjects(HillfortModel::class.java) as ArrayList<HillfortModel>
                 myCallback.onCallback( hillfortlist)
             } else {

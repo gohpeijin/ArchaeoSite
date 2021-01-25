@@ -153,7 +153,12 @@
                         android:hint="Additional Notes"
                         android:paddingTop="20dp"
                         android:textSize="14sp" />
-
+                    <Button
+                        android:id="@+id/button_take_pic"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="Take photo" />
                     <Button
                         android:id="@+id/button_Select_Image"
                         android:layout_width="match_parent"
@@ -168,7 +173,7 @@
 
                         <ImageView
                             android:id="@+id/ImageSelected"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:adjustViewBounds="true"
                             app:layout_constraintBottom_toBottomOf="parent"

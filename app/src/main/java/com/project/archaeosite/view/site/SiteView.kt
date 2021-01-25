@@ -17,10 +17,10 @@ import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.toast
 import java.util.*
 
+
 class SiteView : BaseView(), AnkoLogger,DatePickerDialog.OnDateSetListener {
 
-   lateinit var presenter: SitePresenter
-    var site = ArchaeoModel()
+    lateinit var presenter: SitePresenter
     lateinit var map: GoogleMap
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,6 +50,8 @@ class SiteView : BaseView(), AnkoLogger,DatePickerDialog.OnDateSetListener {
         }
         //endregion
 
+        button_take_pic.setOnClickListener { presenter.doTakePhoto() }
+
         //region select imgae
         button_Select_Image.setOnClickListener{ presenter.doSelectImage() }
         //endregion
@@ -76,7 +78,16 @@ class SiteView : BaseView(), AnkoLogger,DatePickerDialog.OnDateSetListener {
         //endregion
     }
 
-    override fun displayImageByPosition(site: ArchaeoModel,num: Int){
+
+    //region read image activity & map activity
+    //thing need to be added "change image" button and "add image" button will be shown in edit mode - on hold
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+            presenter.doActivityResult(requestCode, resultCode, data)
+    }
+    //endregion
+
+    override fun displayImageByPosition(site: ArchaeoModel, num: Int){
         Glide.with(this).load(site.image[num]).into(ImageSelected)
     }
 
@@ -104,14 +115,6 @@ class SiteView : BaseView(), AnkoLogger,DatePickerDialog.OnDateSetListener {
         lat.text = "%.6f".format(location.lat)
         lng.text = "%.6f".format(location.lng)
     }
-    //region read image activity & map activity
-    //thing need to be added "change image" button and "add image" button will be shown in edit mode - on hold
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if(data!=null)
-            presenter.doActivityResult(requestCode, resultCode, data)
-    }
-    //endregion
 
 //region map
     override fun onDestroy() {

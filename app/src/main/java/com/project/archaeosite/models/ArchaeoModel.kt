@@ -27,6 +27,12 @@ data class ArchaeoModel(
     @Embedded var date : Date=Date()
 ): Parcelable
 
+@Parcelize
+data class ForNavigate(
+    var title: String = "",
+    var lat: Double = 0.0,
+    var lng: Double = 0.0,
+): Parcelable
 
 @Parcelize
 data class Location(
@@ -59,10 +65,13 @@ data class UserReaction(
         var userID:String,
         var visited: Boolean,
         var favourite:Boolean,
-        var rating: Int?
+        var rating: Float?
 
 ){
     constructor() : this("",false,false,null)
+    constructor(userID: String) : this(){
+        this.userID=userID
+    }
 }
 @Parcelize
 data class ArchaeoUser(

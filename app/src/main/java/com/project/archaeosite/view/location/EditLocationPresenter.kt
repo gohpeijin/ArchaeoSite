@@ -1,6 +1,5 @@
 package com.project.archaeosite.view.location
 
-import android.app.Activity
 import android.content.Intent
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -22,7 +21,7 @@ class EditLocationPresenter(view: BaseView) : BasePresenter(view) {
     fun initialiseMap(map: GoogleMap) {
         val loc = LatLng(location.lat, location.lng)
         val options = MarkerOptions()
-            .title("Placemark")
+            .title("Site")
             .snippet("GPS : $loc")
             .draggable(true)
             .position(loc)
@@ -48,6 +47,6 @@ class EditLocationPresenter(view: BaseView) : BasePresenter(view) {
 
     fun doUpdateMarker(marker: Marker) {
         val loc = LatLng(location.lat, location.lng)
-        marker.setSnippet("GPS : " + loc.toString())
+        marker.snippet = "GPS : $loc"
     }
 }
