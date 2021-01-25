@@ -8,7 +8,6 @@ import android.os.AsyncTask
 import android.os.Build
 import android.os.Looper
 import android.util.Log
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.*
@@ -38,7 +37,6 @@ class NavigatorPresenter(view: BaseView) : BasePresenter(view) {
     var map: GoogleMap? = null
     val CURRENT_LOCATION_PERMISSION_REQUEST_CODE=123
     var builder: LocationSettingsRequest.Builder =LocationSettingsRequest.Builder().addLocationRequest(mLocationRequest!!)
-
 
     var mlocationCallback: LocationCallback? = null
 
@@ -116,7 +114,6 @@ class NavigatorPresenter(view: BaseView) : BasePresenter(view) {
 
                     GetDirection(getDirectionURL(loc, locdestination)).execute()
                 }
-
             }
         }
     }
@@ -155,9 +152,7 @@ class NavigatorPresenter(view: BaseView) : BasePresenter(view) {
         }
     }
 
-    fun stopLocationUpdates() {
-        fusedLocationClient!!.removeLocationUpdates(mlocationCallback)
-    }
+    fun stopLocationUpdates() { fusedLocationClient!!.removeLocationUpdates(mlocationCallback) }
 
     fun startLocationUpdates() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -178,15 +173,10 @@ class NavigatorPresenter(view: BaseView) : BasePresenter(view) {
         override fun doInBackground(vararg params: Void?): List<List<LatLng>> {
             val client = OkHttpClient()
             val request = Request.Builder().url(url).build()
-
             val response = client.newCall(request).execute()
-
             val data = response.body!!.string()
 
-            Log.d("GoogleMap", " data : $url")
             Log.d("GoogleMap", " data : $data")
-
-
 
             val result = ArrayList<List<LatLng>>()
             try {
@@ -199,9 +189,7 @@ class NavigatorPresenter(view: BaseView) : BasePresenter(view) {
                     result.add(path)
                 }
                 else {
-                    view!!.runOnUiThread(Runnable {
-                        view!!.toast("No route is found")
-                    })
+                    view!!.runOnUiThread(Runnable { view!!.toast("No route is found") })
                 }
 
             } catch (e: Exception) {

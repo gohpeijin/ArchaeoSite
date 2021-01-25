@@ -27,7 +27,6 @@ class NavigatorView : BaseView() ,OnMapReadyCallback {
     lateinit var presenter: NavigatorPresenter
     lateinit var map : GoogleMap
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_navigator_view)
@@ -47,7 +46,6 @@ class NavigatorView : BaseView() ,OnMapReadyCallback {
         checkLocationSetting(presenter.builder)
     }
 
-
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         presenter.doRequestPermissionsResult(requestCode, permissions, grantResults)
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
@@ -57,7 +55,6 @@ class NavigatorView : BaseView() ,OnMapReadyCallback {
         presenter.doActivityResult(requestCode, resultCode, data)
         super.onActivityResult(requestCode, resultCode, data)
     }
-
 
     override fun checkLocationSetting(builder: LocationSettingsRequest.Builder) {
         val client = LocationServices.getSettingsClient(this)
