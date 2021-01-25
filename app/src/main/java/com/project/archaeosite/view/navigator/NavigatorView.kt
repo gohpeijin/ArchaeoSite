@@ -70,7 +70,7 @@ class NavigatorView : BaseView() ,OnMapReadyCallback {
             if (e is ResolvableApiException) {
                 val builder1: AlertDialog.Builder = AlertDialog.Builder(this)
                 builder1.setTitle("Continious Location Request for navigation")
-                builder1.setMessage("This request is essential to get location update continiously")
+                builder1.setMessage("This request is essential to get location update continiously for navigation")
                 builder1.create()
                 builder1.setPositiveButton("OK",
                     DialogInterface.OnClickListener { dialog, which ->
@@ -81,7 +81,7 @@ class NavigatorView : BaseView() ,OnMapReadyCallback {
                         }
                     })
                 builder1.setNegativeButton("Cancel",
-                    DialogInterface.OnClickListener { dialog, which -> toast("Location update permission not granted") })
+                    DialogInterface.OnClickListener { dialog, which -> toast("Location update permission not granted,the navigator will stop updating...") })
                 builder1.show()
             }
         }

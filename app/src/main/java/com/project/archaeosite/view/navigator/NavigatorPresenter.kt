@@ -24,6 +24,7 @@ import com.project.archaeosite.view.base.BaseView
 import com.project.archaeosite.view.base.UPDATE_LOCATION_REQUEST
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import org.jetbrains.anko.longToast
 
 class NavigatorPresenter(view: BaseView) : BasePresenter(view) {
 
@@ -108,7 +109,7 @@ class NavigatorPresenter(view: BaseView) : BasePresenter(view) {
                     map?.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
 
                     // map.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 18f))
-                    Log.e("CONTINIOUSLOC: ", location.toString())
+                    Log.d("CONTINIOUSLOC: ", location.toString())
 
                     val locdestination=LatLng(siteNavi.lat, siteNavi.lng)
 
@@ -133,7 +134,7 @@ class NavigatorPresenter(view: BaseView) : BasePresenter(view) {
         when (requestCode) {
             CURRENT_LOCATION_PERMISSION_REQUEST_CODE -> {
                 if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
-                    showPermissionAlert()
+                    view!!.longToast("Permission must be granted for navigator, the navigator will stop updating...")
                 } else {
                     if (ActivityCompat.checkSelfPermission(view!!.applicationContext, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
                             && ActivityCompat.checkSelfPermission(view!!.applicationContext, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
@@ -147,8 +148,7 @@ class NavigatorPresenter(view: BaseView) : BasePresenter(view) {
 
     fun showPermissionAlert() {
         if (ActivityCompat.checkSelfPermission(view!!, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(view!!, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
-        {
+                && ActivityCompat.checkSelfPermission(view!!, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(view!!, arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION),
                     CURRENT_LOCATION_PERMISSION_REQUEST_CODE)
         }
