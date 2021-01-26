@@ -20,14 +20,13 @@ import com.google.firebase.auth.FirebaseAuth
 import com.project.archaeosite.R
 import com.project.archaeosite.models.HillfortModel
 import com.project.archaeosite.view.base.BaseView
-import com.project.archaeosite.view.base.HILLFORT_FAV_LIST
-import com.project.archaeosite.view.base.HILLFORT_LIST
+import com.project.archaeosite.view.base.DISPLAY_FAV_LIST
+import com.project.archaeosite.view.base.DISPLAY_ALL_LIST
 import kotlinx.android.synthetic.main.activity_hillfort_view.*
 import kotlinx.android.synthetic.main.activity_hillfort_view.mytoolbar
 import kotlinx.android.synthetic.main.activity_hillfort_view.progressBar
 import kotlinx.android.synthetic.main.dialog_hillfortsite.*
 import kotlinx.android.synthetic.main.nav_header_main.useremail
-import org.jetbrains.anko.info
 import java.lang.reflect.Field
 
 
@@ -35,7 +34,6 @@ class HillfortView :  BaseView(), HillfortListener {
 
     lateinit var presenter: HillfortPresenter
     lateinit var adapter: HillfortListAdapter
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,21 +50,11 @@ class HillfortView :  BaseView(), HillfortListener {
         navigation_view.setCheckedItem(R.id.item_hillfort)
         navigation_view.setNavigationItemSelectedListener {
             when (it.itemId) {
-                R.id.item_add -> {
-                    presenter.doAddSite()
-                }
-                R.id.item_map -> {
-                    presenter.doShowSitesMap()
-                }
-                R.id.item_logout -> {
-                    presenter.doLogout()
-                }
-                R.id.item_profile -> {
-                    presenter.doOpenProfile()
-                }
-                R.id.item_home -> {
-                    presenter.doDisplayList()
-                }
+                R.id.item_add -> { presenter.doAddSite() }
+                R.id.item_map -> { presenter.doShowSitesMap() }
+                R.id.item_logout -> { presenter.doLogout() }
+                R.id.item_profile -> { presenter.doOpenProfile() }
+                R.id.item_home -> { presenter.doDisplayList() }
             }
             true
         }
@@ -82,29 +70,22 @@ class HillfortView :  BaseView(), HillfortListener {
 
         val layoutManager = LinearLayoutManager(this)
         recyclerview_hillfort.layoutManager = layoutManager
-        presenter.loadHillfortList(HILLFORT_LIST)
-        var clicked = false
+        presenter.loadHillfortList(DISPLAY_ALL_LIST)
+
+        //region interface for floating botton
+
         floatingActionButton_fav.setOnClickListener {
-            if (!clicked) {
-                presenter.loadHillfortList(HILLFORT_FAV_LIST)
-                floatingActionButton_fav.backgroundTintList = ContextCompat.getColorStateList(
-                    this,
-                    R.color.fav_toggle_red
-                )
-                info("FALSE")
-                clicked = true
+            if (!presenter.fav_clicked) {
+                presenter.loadHillfortList(DISPLAY_FAV_LIST)
+                floatingActionButton_fav.backgroundTintList = ContextCompat.getColorStateList(this, R.color.fav_toggle_red)
+                presenter.fav_clicked = true
             } else {
-                presenter.loadHillfortList(HILLFORT_LIST)
-                floatingActionButton_fav.backgroundTintList = ContextCompat.getColorStateList(
-                    this,
-                    R.color.fav_toggle_grey
-                )
-                info("TRUE")
-                clicked = false
+                presenter.loadHillfortList(DISPLAY_ALL_LIST)
+                floatingActionButton_fav.backgroundTintList = ContextCompat.getColorStateList(this, R.color.fav_toggle_grey)
+                presenter.fav_clicked = false
             }
         }
 
-        //region interface for floating botton
         recyclerview_hillfort.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 if (dy > 0) {
@@ -122,14 +103,19 @@ class HillfortView :  BaseView(), HillfortListener {
         adapter = HillfortListAdapter(hillfortList, this)
         recyclerview_hillfort.adapter = adapter
         recyclerview_hillfort.adapter?.notifyDataSetChanged()
-        if (!searchhistory.isNullOrBlank())
-            adapter.filter.filter(searchhistory)
+        if (!presenter.searchhistory.isNullOrBlank())
+            adapter.filter.filter(presenter.searchhistory)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        presenter.loadHillfortList(HILLFORT_LIST)
+        if(presenter.fav_clicked)
+            presenter.loadHillfortList(DISPLAY_FAV_LIST)
+        else
+            presenter.loadHillfortList(DISPLAY_ALL_LIST)
+
         super.onActivityResult(requestCode, resultCode, data)
     }
+
     override fun showProgress() {
         progressBar.visibility = View.VISIBLE
     }
@@ -161,7 +147,6 @@ class HillfortView :  BaseView(), HillfortListener {
         }
     }
 
-    var searchhistory: String? = null
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_search, menu)
         val searchViewItem = menu!!.findItem(R.id.search)
@@ -183,14 +168,13 @@ class HillfortView :  BaseView(), HillfortListener {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                searchhistory = newText
+                presenter.searchhistory = newText
                 adapter.filter.filter(newText)
                 return false
             }
         })
         return super.onCreateOptionsMenu(menu)
     }
-
     //endregion
 
     //region specify Hillfort
@@ -205,15 +189,15 @@ class HillfortView :  BaseView(), HillfortListener {
 
         //region set default text
         hillfortDialog.dialog_Title.text = "Title: " + hillfort.Title
-        Glide.with(this).load(hillfort.Image).into(hillfortDialog.imageView)
+        Glide.with(this).load(hillfort.Image).into(hillfortDialog.dialog_imageView)
         hillfortDialog.dialog_Location.text = hillfort.Location.toString()
 
         var specifyUserReaction = presenter.getIndiReactionModel(hillfort)
 
         hillfortDialog.dialog_checkBox_Visited.isChecked = specifyUserReaction.visited
         hillfortDialog.checkBox_favourite.isChecked = specifyUserReaction.favourite
-        if (specifyUserReaction.rating == null) hillfortDialog.ratingBar.rating = 0F
-        else hillfortDialog.ratingBar.rating = specifyUserReaction.rating!!
+        if (specifyUserReaction.rating == null) hillfortDialog.dialog_ratingBar.rating = 0F
+        else hillfortDialog.dialog_ratingBar.rating = specifyUserReaction.rating!!
 
         hillfortDialog.ratingBarAvg.rating = presenter.doCalculateAvg(hillfort)
         if (hillfortDialog.ratingBarAvg.rating == 0F) hillfortDialog.textView_avgRating.text =
@@ -237,7 +221,7 @@ class HillfortView :  BaseView(), HillfortListener {
                 hillfort
             )
         }
-        hillfortDialog.ratingBar.setOnRatingBarChangeListener { ratingBar: RatingBar?, rating: Float, fromUser: Boolean ->
+        hillfortDialog.dialog_ratingBar.setOnRatingBarChangeListener { ratingBar: RatingBar?, rating: Float, fromUser: Boolean ->
             presenter.doGetRating(rating, hillfort)
 
             hillfortDialog.ratingBarAvg.rating = presenter.doCalculateAvg(hillfort)
@@ -247,9 +231,9 @@ class HillfortView :  BaseView(), HillfortListener {
                 hillfortDialog.textView_avgRating.text = "(${hillfortDialog.ratingBarAvg.rating})"
         }
 
-        hillfortDialog.image_share.setOnClickListener {
-            presenter.doShareSite(hillfort,hillfortDialog)
-        }
+        hillfortDialog.image_share.setOnClickListener { presenter.doShareSite(hillfort,hillfortDialog) }
+
+        hillfortDialog.dialog_hillfort_image_navigator.setOnClickListener { presenter.doNavigator(hillfort) }
     }
     //endregion
 

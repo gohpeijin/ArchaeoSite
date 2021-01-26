@@ -11,8 +11,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.project.archaeosite.R
 import com.project.archaeosite.models.HillfortModel
 import kotlinx.android.synthetic.main.card_hillfort.view.*
-import org.jetbrains.anko.AnkoLogger
-import org.jetbrains.anko.info
 import java.util.*
 import kotlin.collections.ArrayList
 

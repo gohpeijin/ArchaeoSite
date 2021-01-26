@@ -22,13 +22,12 @@ val IMAGE_REQUEST = 1
 val LOCATION_REQUEST = 2
 val SAVE_IMAGE_REQUEST = 3
 val UPDATE_LOCATION_REQUEST = 4
-val HILLFORT_LIST=1
-val HILLFORT_FAV_LIST =2
+val DISPLAY_ALL_LIST=1
+val DISPLAY_FAV_LIST =2
 
 enum class VIEW {
     LOCATION, SITE, MAPS, LIST, LOGIN, PROFILE, HILLFORT, NAVIGATOR
 }
-
 
 open abstract class BaseView() : AppCompatActivity(), AnkoLogger {
 
@@ -62,11 +61,6 @@ open abstract class BaseView() : AppCompatActivity(), AnkoLogger {
         toolbar.title = title
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(upEnabled)
-//        val user = FirebaseAuth.getInstance().currentUser
-//        if (user != null) {
-//            useremail.text =user.email
-//           // toolbar.title = "${title}: ${user.email}"
-//        }
     }
 
 
@@ -94,10 +88,13 @@ open abstract class BaseView() : AppCompatActivity(), AnkoLogger {
     open fun showSites(sites: List<ArchaeoModel>) {}
     open fun showLocation(location : Location) {}
     open fun showHillfortList(hillfortList:List<HillfortModel>){}
-   // open fun showLocation(latitude : Double, longitude : Double) {}
+
     open fun showProgress() {}
     open fun hideProgress() {}
 
     open fun checkLocationSetting(builder: LocationSettingsRequest.Builder) {}
+
+    open fun showVisiblility(){}
+    open fun hideVisibility(){}
 
 }

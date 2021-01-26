@@ -53,7 +53,7 @@ class SiteMapView : BaseView(),GoogleMap.OnMarkerClickListener {
             if(site.image.isNotEmpty())
                 Glide.with(this).load(site.image[0]).into(currentImage)
             else
-                currentImage.setImageResource(android.R.color.transparent)
+                currentImage.setImageResource(R.drawable.no_image_available)
         }
         else if(site is HillfortModel){
             currentTitle.text=site.Title
