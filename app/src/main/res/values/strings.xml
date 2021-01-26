@@ -25,7 +25,7 @@
     <string name="title_activity_hillfort">Hillfort</string>
     <string name="hillfort">Hillfort Sites</string>
     <string name="dateInitialize">*Click to select date</string>
-    <string name="fromAddtoSaveText">SAVE</string>
+    <string name="fromAddtoSaveText">  SAVE  </string>
 
 
 </resources>

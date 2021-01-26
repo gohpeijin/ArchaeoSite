@@ -62,7 +62,6 @@ class SiteView : BaseView(), AnkoLogger,DatePickerDialog.OnDateSetListener {
         //endregion
 
         //region navigation
-        item_cancel.setOnClickListener{ presenter.doCancel()}
         item_delete.setOnClickListener { presenter.doDelete()}
         //endregion
 
@@ -120,7 +119,6 @@ class SiteView : BaseView(), AnkoLogger,DatePickerDialog.OnDateSetListener {
             if(editmode){
                 item_delete.visibility = View.VISIBLE
                 item_save.text = getString(R.string.fromAddtoSaveText)
-                item_cancel.visibility=View.INVISIBLE
             }
         this.showLocation(site.location)
     }

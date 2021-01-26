@@ -230,9 +230,7 @@ class HillfortView :  BaseView(), HillfortListener {
                 hillfortDialog.textView_avgRating.text = "(${hillfortDialog.ratingBarAvg.rating})"
         }
 
-        hillfortDialog.image_share.setOnClickListener {
-            presenter.doShareSite(hillfort,hillfortDialog)
-        }
+        hillfortDialog.image_share.setOnClickListener { presenter.doShareSite(hillfort,hillfortDialog) }
 
         hillfortDialog.dialog_hillfort_image_navigator.setOnClickListener { presenter.doNavigator(hillfort) }
     }

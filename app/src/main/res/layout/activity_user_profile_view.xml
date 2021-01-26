@@ -41,6 +41,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Email"
+            android:layout_marginTop="10dp"
             android:textStyle="bold" />
 
         <TextView
@@ -55,7 +56,7 @@
             android:id="@+id/textView_summaryStatistics"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="20dp"
             android:text="Summary Statistics:"
             android:textStyle="bold" />
 

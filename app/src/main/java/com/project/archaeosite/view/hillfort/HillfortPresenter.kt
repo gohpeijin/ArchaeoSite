@@ -9,7 +9,6 @@ import android.view.View
 import android.view.Window
 import androidx.core.content.FileProvider
 import com.google.firebase.auth.FirebaseAuth
-import com.project.archaeosite.models.ArchaeoModel
 import com.project.archaeosite.models.ForNavigate
 import com.project.archaeosite.models.HillfortModel
 import com.project.archaeosite.models.UserReaction

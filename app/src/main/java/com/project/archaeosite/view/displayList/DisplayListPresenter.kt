@@ -20,10 +20,14 @@ import java.io.FileOutputStream
 class DisplayListPresenter (view: BaseView): BasePresenter(view),AnkoLogger{
 
     var imageposition=0
+    var fav_clicked = false
+    var searchhistory:String?=null
 
     fun loadSitesList(int: Int){
         doAsync {
             val sites = app.sites.findAll()
+            if(sites.isEmpty()) view?.showVisiblility()
+            else view?.hideVisibility()
             uiThread {
                 when(int) {
                     DISPLAY_ALL_LIST -> view?.showSites(sites)
@@ -138,6 +142,15 @@ class DisplayListPresenter (view: BaseView): BasePresenter(view),AnkoLogger{
     fun doNavigator(site: ArchaeoModel){
         var siteNavi = ForNavigate(site.title,site.location.lat,site.location.lng)
         view?.navigateTo(VIEW.NAVIGATOR,0,"site_navigate",siteNavi)
+    }
+
+    fun doFavourite(checked: Boolean,site: ArchaeoModel){
+        site.favourite=checked
+        doAsync {
+            uiThread {
+                app.sites.update(site)
+                }
+            }
     }
     //endregion
 

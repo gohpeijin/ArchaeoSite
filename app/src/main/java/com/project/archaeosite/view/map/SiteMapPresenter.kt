@@ -1,8 +1,5 @@
 package com.project.archaeosite.view.map
 
-import android.os.Parcelable
-import android.view.View
-import com.bumptech.glide.Glide
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
@@ -16,8 +13,6 @@ import com.project.archaeosite.models.firebase.FirebaseRepo_Hillfort
 import com.project.archaeosite.view.base.BasePresenter
 import com.project.archaeosite.view.base.BaseView
 import com.project.archaeosite.view.base.VIEW
-import kotlinx.android.parcel.RawValue
-import kotlinx.android.synthetic.main.activity_sites_maps.*
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 
@@ -37,7 +32,6 @@ class SiteMapPresenter (view: BaseView) : BasePresenter(view)  {
     }
 
     fun doReadHillfortLocationToMap(map: GoogleMap, hillfortList: List<HillfortModel>) {
-
         hillfortList.forEach{
             val loc = LatLng(it.Location!!.latitude, it.Location!!.longitude)
             val options = MarkerOptions()

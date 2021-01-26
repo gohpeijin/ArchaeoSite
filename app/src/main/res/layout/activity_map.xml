@@ -96,7 +96,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:hint="*drag the marker to det your location"
+            android:hint="*drag the marker to set your location"
             android:textSize="12sp" />
     </LinearLayout>
 </LinearLayout>

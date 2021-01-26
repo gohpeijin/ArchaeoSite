@@ -57,7 +57,6 @@
                     android:layout_gravity="center"
                     android:layout_marginRight="10dp"
                     android:button="@drawable/ic_baseline_favorite_24"
-                    android:enabled="false"
                     android:theme="@style/checkBoxStyle" />
 
                 <ImageView
@@ -170,8 +169,7 @@
                 android:enabled="false"
                 android:layoutDirection="rtl"
                 android:text="Visited :"
-
-                android:textColor="#B5757575"
+                android:textColor="#898989"
                 android:textSize="12sp" />
 
             <TextView

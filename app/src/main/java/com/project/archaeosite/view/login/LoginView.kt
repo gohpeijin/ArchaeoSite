@@ -2,10 +2,12 @@ package com.project.archaeosite.view.login
 
 import android.os.Bundle
 import android.view.View
+import android.view.WindowManager
 import com.project.archaeosite.R
 import com.project.archaeosite.view.base.BaseView
 import kotlinx.android.synthetic.main.activity_login_view.*
 import org.jetbrains.anko.toast
+
 
 class LoginView : BaseView() {
 
@@ -25,7 +27,7 @@ class LoginView : BaseView() {
                 toast("Please provide email + password")
             }
             else {
-                presenter.doSignUp(email,password)
+                presenter.doSignUp(email, password)
             }
         }
 
@@ -36,15 +38,17 @@ class LoginView : BaseView() {
                 toast("Please provide email + password")
             }
             else {
-                presenter.doLogin(email,password)
+                presenter.doLogin(email, password)
             }
         }
     }
     override fun showProgress() {
         progressBar.visibility = View.VISIBLE
+        window.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
     }
 
     override fun hideProgress() {
         progressBar.visibility = View.GONE
+        window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
     }
 }

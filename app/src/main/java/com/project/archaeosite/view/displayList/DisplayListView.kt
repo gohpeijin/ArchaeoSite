@@ -28,7 +28,6 @@ import kotlinx.android.synthetic.main.activity_display_lists.drawer
 import kotlinx.android.synthetic.main.activity_display_lists.floatingActionButton_fav
 import kotlinx.android.synthetic.main.activity_display_lists.mytoolbar
 import kotlinx.android.synthetic.main.activity_display_lists.navigation_view
-import kotlinx.android.synthetic.main.activity_site.*
 import kotlinx.android.synthetic.main.dialog_individualsite.*
 import kotlinx.android.synthetic.main.nav_header_main.*
 import org.jetbrains.anko.*
@@ -78,16 +77,17 @@ class DisplayListView : BaseView(), AnkoLogger, SitesListener {
         presenter.loadSitesList(DISPLAY_ALL_LIST)
 
         //region interface for floating botton
-        var clicked = false
+
         floatingActionButton_fav.setOnClickListener {
-            if (!clicked) {
+            if (!presenter.fav_clicked) {
+                presenter.fav_clicked = true
                 presenter.loadSitesList(DISPLAY_FAV_LIST)
                 floatingActionButton_fav.backgroundTintList = ContextCompat.getColorStateList(this, R.color.fav_toggle_red)
-                clicked = true
             } else {
+                presenter.fav_clicked = false
                 presenter.loadSitesList(DISPLAY_ALL_LIST)
                 floatingActionButton_fav.backgroundTintList = ContextCompat.getColorStateList(this, R.color.fav_toggle_grey)
-                clicked = false
+
             }
         }
 
@@ -108,12 +108,15 @@ class DisplayListView : BaseView(), AnkoLogger, SitesListener {
         adapter= SitesAdapter(sites,this)
         recyclerview_sites.adapter = adapter
         recyclerview_sites.adapter?.notifyDataSetChanged()
-        if(!searchhistory.isNullOrBlank())
-            adapter.filter.filter(searchhistory)
+        if(!presenter.searchhistory.isNullOrBlank())
+            adapter.filter.filter(presenter.searchhistory)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        presenter.loadSitesList(DISPLAY_ALL_LIST)
+        if(presenter.fav_clicked)
+            presenter.loadSitesList(DISPLAY_FAV_LIST)
+        else
+            presenter.loadSitesList(DISPLAY_ALL_LIST)
         super.onActivityResult(requestCode, resultCode, data)
     }
 
@@ -140,7 +143,7 @@ class DisplayListView : BaseView(), AnkoLogger, SitesListener {
         }
     }
 
-    var searchhistory:String?=null
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_search, menu)
         val searchViewItem = menu!!.findItem(R.id.search)
@@ -155,7 +158,6 @@ class DisplayListView : BaseView(), AnkoLogger, SitesListener {
             // Ignore exception
         }
 
-
         searchView.queryHint="Search Site..."
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -163,7 +165,7 @@ class DisplayListView : BaseView(), AnkoLogger, SitesListener {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                searchhistory=newText
+                presenter.searchhistory=newText
                 adapter.filter.filter(newText)
                 return false
             }
@@ -229,10 +231,21 @@ class DisplayListView : BaseView(), AnkoLogger, SitesListener {
 
         siteDialog.image_edit.setOnClickListener {
             siteDialog.dismiss()
+
             presenter.doEditSite(site)
         }
 
+        siteDialog.dialog_checkBox_favourite.setOnClickListener { presenter.doFavourite(siteDialog.dialog_checkBox_favourite.isChecked,site) }
+
         siteDialog.dialog_site_image_navigator.setOnClickListener { presenter.doNavigator(site) }
+    }
+
+    override fun showVisiblility() {
+       textView_notifyNoSite.visibility=View.VISIBLE
+    }
+
+    override fun hideVisibility() {
+        textView_notifyNoSite.visibility=View.INVISIBLE
     }
 }
 

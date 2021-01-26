@@ -14,7 +14,6 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.project.archaeosite.helpers.*
 import com.project.archaeosite.models.ArchaeoModel
-import com.project.archaeosite.models.HillfortModel
 import com.project.archaeosite.models.Location
 import com.project.archaeosite.view.base.*
 import org.jetbrains.anko.*
@@ -131,8 +130,6 @@ class SitePresenter (view: SiteView): BasePresenter(view),AnkoLogger {
         view?.let{
             showCamera(view!!,SAVE_IMAGE_REQUEST)
         }
-        //view?.takePhoto()
-
     }
 
         fun doSelectImage() {

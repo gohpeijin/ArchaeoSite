@@ -56,8 +56,12 @@ class SiteFireStore(val context: Context) : SiteInterface, AnkoLogger {
             foundsite.favourite=site.favourite
         }
         db.child("users").child(userId).child("sites").child(site.fbId).setValue(site)
-         if ((site.image[0].length) > 0 && (site.image[0][0] != 'h')) {
-            updateImage(site)
+
+
+        if(site.image.isNotEmpty()){
+            if ((site.image[0].length) > 0 && (site.image[0][0] != 'h')) {
+                updateImage(site)
+        }
        }
     }
 

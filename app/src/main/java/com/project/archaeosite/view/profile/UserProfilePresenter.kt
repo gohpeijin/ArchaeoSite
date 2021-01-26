@@ -6,7 +6,6 @@ import com.project.archaeosite.models.firebase.FirebaseRepo_Hillfort
 import com.project.archaeosite.models.firebase.SiteFireStore
 import com.project.archaeosite.view.base.BasePresenter
 import com.project.archaeosite.view.base.BaseView
-import kotlinx.android.synthetic.main.activity_user_profile_view.*
 
 class UserProfilePresenter (view: BaseView) : BasePresenter(view){
 

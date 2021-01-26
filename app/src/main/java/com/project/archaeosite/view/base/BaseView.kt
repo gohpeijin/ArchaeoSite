@@ -29,7 +29,6 @@ enum class VIEW {
     LOCATION, SITE, MAPS, LIST, LOGIN, PROFILE, HILLFORT, NAVIGATOR
 }
 
-
 open abstract class BaseView() : AppCompatActivity(), AnkoLogger {
 
     var basePresenter: BasePresenter? = null
@@ -62,11 +61,6 @@ open abstract class BaseView() : AppCompatActivity(), AnkoLogger {
         toolbar.title = title
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(upEnabled)
-//        val user = FirebaseAuth.getInstance().currentUser
-//        if (user != null) {
-//            useremail.text =user.email
-//           // toolbar.title = "${title}: ${user.email}"
-//        }
     }
 
 
@@ -94,7 +88,7 @@ open abstract class BaseView() : AppCompatActivity(), AnkoLogger {
     open fun showSites(sites: List<ArchaeoModel>) {}
     open fun showLocation(location : Location) {}
     open fun showHillfortList(hillfortList:List<HillfortModel>){}
-   // open fun showLocation(latitude : Double, longitude : Double) {}
+
     open fun showProgress() {}
     open fun hideProgress() {}
 
