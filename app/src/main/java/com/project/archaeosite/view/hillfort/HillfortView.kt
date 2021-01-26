@@ -108,7 +108,11 @@ class HillfortView :  BaseView(), HillfortListener {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        presenter.loadHillfortList(DISPLAY_ALL_LIST)
+        if(presenter.fav_clicked)
+            presenter.loadHillfortList(DISPLAY_FAV_LIST)
+        else
+            presenter.loadHillfortList(DISPLAY_ALL_LIST)
+
         super.onActivityResult(requestCode, resultCode, data)
     }
 
