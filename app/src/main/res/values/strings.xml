@@ -2,6 +2,8 @@
     <string name="open">open</string>
     <string name="close">close</string>
 
+    <string name="sign_up"><u>Sign up</u></string>
+
     <string name="app_name">ArchaeoSite</string>
     <string name="select_site_image">Select Site Image</string>
     <string name="title_activity_map">Map</string>
