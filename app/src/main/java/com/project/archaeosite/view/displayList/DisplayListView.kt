@@ -229,9 +229,10 @@ class DisplayListView : BaseView(), AnkoLogger, SitesListener {
 
         siteDialog.image_edit.setOnClickListener {
             siteDialog.dismiss()
-            presenter.doEditSite(site) }
+            presenter.doEditSite(site)
+        }
 
-
+        siteDialog.dialog_site_image_navigator.setOnClickListener { presenter.doNavigator(site) }
     }
 }
 

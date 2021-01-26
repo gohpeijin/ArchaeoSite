@@ -9,6 +9,8 @@ import android.view.View
 import android.view.Window
 import androidx.core.content.FileProvider
 import com.google.firebase.auth.FirebaseAuth
+import com.project.archaeosite.models.ArchaeoModel
+import com.project.archaeosite.models.ForNavigate
 import com.project.archaeosite.models.HillfortModel
 import com.project.archaeosite.models.UserReaction
 import com.project.archaeosite.models.firebase.FirebaseRepo_Hillfort
@@ -145,6 +147,12 @@ class HillfortPresenter(view: BaseView): BasePresenter(view),AnkoLogger {
         app.hillfortlist.updateHillfort(hillfort)
     }
 
+    fun doNavigator(hillfort: HillfortModel){
+        var siteNavi = ForNavigate(hillfort.Title, hillfort.Location!!.latitude,hillfort.Location!!.longitude)
+        view?.navigateTo(VIEW.NAVIGATOR,0,"site_navigate",siteNavi)
+    }
+
+    //region shareSite
     fun doShareSite(hillfort: HillfortModel,dialog: Dialog) {
         val b: Bitmap = screenshot(dialog)!!
         shareImage(store(b, "Hillfort.png")!!,hillfort)
@@ -194,5 +202,6 @@ class HillfortPresenter(view: BaseView): BasePresenter(view),AnkoLogger {
             view?.toast("No App Available")
         }
     }
+    //endregion
     //endregion
 }

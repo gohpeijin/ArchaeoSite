@@ -13,7 +13,6 @@ import com.project.archaeosite.models.ArchaeoModel
 import com.project.archaeosite.models.Location
 import com.project.archaeosite.view.base.BaseView
 import kotlinx.android.synthetic.main.activity_site.*
-import kotlinx.android.synthetic.main.dialog_individualsite.*
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.toast
 import java.util.*
@@ -63,7 +62,7 @@ class SiteView : BaseView(), AnkoLogger,DatePickerDialog.OnDateSetListener {
         //endregion
 
         //region navigation
-        item_back.setOnClickListener{ presenter.doCancel()}
+        item_cancel.setOnClickListener{ presenter.doCancel()}
         item_delete.setOnClickListener { presenter.doDelete()}
         //endregion
 
@@ -121,7 +120,7 @@ class SiteView : BaseView(), AnkoLogger,DatePickerDialog.OnDateSetListener {
             if(editmode){
                 item_delete.visibility = View.VISIBLE
                 item_save.text = getString(R.string.fromAddtoSaveText)
-                item_back.visibility=View.INVISIBLE
+                item_cancel.visibility=View.INVISIBLE
             }
         this.showLocation(site.location)
     }

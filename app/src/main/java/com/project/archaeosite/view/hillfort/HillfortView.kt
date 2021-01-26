@@ -233,6 +233,8 @@ class HillfortView :  BaseView(), HillfortListener {
         hillfortDialog.image_share.setOnClickListener {
             presenter.doShareSite(hillfort,hillfortDialog)
         }
+
+        hillfortDialog.dialog_hillfort_image_navigator.setOnClickListener { presenter.doNavigator(hillfort) }
     }
     //endregion
 

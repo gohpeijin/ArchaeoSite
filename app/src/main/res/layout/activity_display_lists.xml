@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -26,6 +27,7 @@
                 app:title="My Sites"
                 app:titleTextColor="@color/white"
                 app:theme="@style/ThemeOverlay.AppCompat.Dark"/>
+
         </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.recyclerview.widget.RecyclerView
@@ -54,7 +56,6 @@
             app:pressedTranslationZ="0dp"
             app:srcCompat="@drawable/ic_baseline_favorite_24" />
 
-
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <com.google.android.material.navigation.NavigationView
@@ -65,4 +66,5 @@
         android:clipToPadding="false"
         app:menu="@menu/main_menu"
         app:headerLayout="@layout/nav_header_main"/>
+
 </androidx.drawerlayout.widget.DrawerLayout>

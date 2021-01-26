@@ -33,6 +33,15 @@
                     android:textSize="25sp"
                     android:textStyle="bold" />
 
+                <ImageView
+                    android:id="@+id/dialog_hillfort_image_navigator"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="10dp"
+                    app:tint="#99757575"
+                    app:srcCompat="@android:drawable/ic_dialog_map" />
+
                 <CheckBox
                     android:id="@+id/checkBox_favourite"
                     android:layout_width="24dp"

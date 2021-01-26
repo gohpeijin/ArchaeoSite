@@ -11,6 +11,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.content.FileProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.project.archaeosite.models.ArchaeoModel
+import com.project.archaeosite.models.ForNavigate
 import com.project.archaeosite.view.base.*
 import org.jetbrains.anko.*
 import java.io.File
@@ -39,6 +40,7 @@ class DisplayListPresenter (view: BaseView): BasePresenter(view),AnkoLogger{
         }
     }
 
+    //region drawer
     fun doAddSite(){
        view?.navigateTo(VIEW.SITE)
     }
@@ -60,7 +62,11 @@ class DisplayListPresenter (view: BaseView): BasePresenter(view),AnkoLogger{
     fun doShowHillfort(){
         view?.navigateTo(VIEW.HILLFORT)
     }
+    //endregion
 
+
+    //region dialog
+    //region shareSite
     fun doShareSite(site: ArchaeoModel, siteDialog: AlertDialog) {
         val b: Bitmap = screenshot(siteDialog)!!
         shareImage(store(b, "Site.png")!!,site)
@@ -109,6 +115,7 @@ class DisplayListPresenter (view: BaseView): BasePresenter(view),AnkoLogger{
         }
     }
 
+    //endregion
 
     fun doNextImage(site: ArchaeoModel) :Int{
         if (imageposition < site.image.size - 1) {
@@ -127,4 +134,11 @@ class DisplayListPresenter (view: BaseView): BasePresenter(view),AnkoLogger{
         }
         return imageposition
     }
+
+    fun doNavigator(site: ArchaeoModel){
+        var siteNavi = ForNavigate(site.title,site.location.lat,site.location.lng)
+        view?.navigateTo(VIEW.NAVIGATOR,0,"site_navigate",siteNavi)
+    }
+    //endregion
+
 }
