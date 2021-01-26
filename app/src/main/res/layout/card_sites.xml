@@ -11,7 +11,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="15dp"
+        android:paddingLeft="5dp"
         android:paddingRight="10dp"
         android:paddingBottom="8dp"
         android:paddingTop="2dp">
@@ -26,14 +26,25 @@
             android:textSize="10sp"
             android:textStyle="italic" />
 
+        <CheckBox
+            android:id="@+id/checkBox_favourite"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignParentStart="true"
+            android:layout_gravity="center"
+            android:button="@drawable/ic_baseline_favorite_24"
+            android:elevation="1dp"
+            android:enabled="false"
+            android:theme="@style/checkBoxStyle" />
+
         <TextView
             android:id="@+id/textView_Date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:text="dd/mm/yyyy"
             android:textAlignment="textEnd"
+            android:layout_toEndOf="@+id/checkBox_favourite"
             android:textSize="10sp"
             android:textStyle="italic" />
 
@@ -43,16 +54,19 @@
             android:layout_height="64dp"
             android:layout_below="@+id/textView_Date"
             android:layout_alignParentStart="true"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="1dp"
             android:layout_marginEnd="16dp"
             android:scaleType="centerInside"
-            tools:srcCompat="@tools:sample/backgrounds/scenic" />
+            android:background="#0C9C9292"
+            tools:srcCompat="@tools:sample/avatars" />
 
         <TextView
             android:id="@+id/textView_ImageCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
+            android:layout_marginStart="10dp"
             android:layout_below="@+id/imageIcon"
             android:text="*images number"
             android:textSize="8sp"
@@ -77,7 +91,7 @@
             android:text="Description" />
 
         <TextView
-            android:id="@+id/textView_Additionalnote"
+            android:id="@+id/dialog_textView_Additionalnote"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
@@ -87,7 +101,5 @@
             android:textAlignment="textEnd"
             android:textSize="8sp"
             android:textStyle="italic" />
-
-
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

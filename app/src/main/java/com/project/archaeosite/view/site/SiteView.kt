@@ -62,7 +62,6 @@ class SiteView : BaseView(), AnkoLogger,DatePickerDialog.OnDateSetListener {
         //endregion
 
         //region navigation
-        item_back.setOnClickListener{ presenter.doCancel()}
         item_delete.setOnClickListener { presenter.doDelete()}
         //endregion
 
@@ -73,9 +72,14 @@ class SiteView : BaseView(), AnkoLogger,DatePickerDialog.OnDateSetListener {
         }
         //endregion
 
-        //region visited checkbox
+        //region checkbox
         checkBox_visited.setOnClickListener { presenter.doVisitedCheckbox(checkBox_visited.isChecked) }
+        checkBox_favourite.setOnClickListener { presenter.doFavouriteCheckbox(checkBox_favourite.isChecked) }
         //endregion
+
+        ratingBar.setOnRatingBarChangeListener { ratingBar, rating, fromUser ->
+            presenter.doGetRating(rating)
+        }
     }
 
 
@@ -96,24 +100,43 @@ class SiteView : BaseView(), AnkoLogger,DatePickerDialog.OnDateSetListener {
         if ( text_Site_Name.text.isEmpty())  text_Site_Name.setText(site.title)
         if (text_Site_Description.text.isEmpty()) text_Site_Description.setText(site.description)
         if(text_AdditionalNote.text.isEmpty()) text_AdditionalNote.setText(site.additionalNote)
-        if(site.visited) checkBox_visited.isChecked=true
-        if(site.date.day==0&&site.date.month==0&&site.date.year==0) editTextDate.text = getString(R.string.dateformat)
+
+        checkBox_visited.isChecked=site.visited
+        checkBox_favourite.isChecked=site.favourite
+
+        if (site.rating == null) ratingBar.rating = 0F
+        else ratingBar.rating = site.rating!!
+
+        if(site.date.day==0&&site.date.month==0&&site.date.year==0) editTextDate.text = getString(R.string.dateInitialize)
         else editTextDate.text = "${site.date.day}/${site.date.month}/${site.date.year}"
+
         if(site.image.isNotEmpty())
             Glide.with(this).load(site.image[0]).into(ImageSelected)
+        if (site.image.size==1||site.image.isEmpty())
+            hideVisibility()
+
        // if(this::presenter.isInitialized)
             if(editmode){
                 item_delete.visibility = View.VISIBLE
                 item_save.text = getString(R.string.fromAddtoSaveText)
-                item_back.visibility=View.INVISIBLE
             }
         this.showLocation(site.location)
     }
 
+    override fun showVisiblility() {
+        button_previos_image.visibility=View.VISIBLE
+        button_next_image.visibility=View.VISIBLE
+    }
+
+    override fun hideVisibility() {
+        button_previos_image.visibility=View.INVISIBLE
+        button_next_image.visibility=View.INVISIBLE
+    }
+
     @SuppressLint("SetTextI18n")
     override fun showLocation (location : Location) {
-        lat.text = "%.6f".format(location.lat)
-        lng.text = "%.6f".format(location.lng)
+        lat.text = "latitude: "+ "%.6f".format(location.lat)
+        lng.text = "longitude: "+"%.6f".format(location.lng)
     }
 
 //region map

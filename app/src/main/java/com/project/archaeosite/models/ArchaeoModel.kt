@@ -10,8 +10,6 @@ import com.google.firebase.firestore.GeoPoint
 import kotlinx.android.parcel.Parcelize
 import kotlinx.android.parcel.RawValue
 
-
-//we need a unique way of identifying sites - this is usually via an id.
 @Parcelize
 @Entity
 data class ArchaeoModel(
@@ -24,7 +22,9 @@ data class ArchaeoModel(
     @Embedded var location : Location = Location(),
     var additionalNote: String="",
     var visited: Boolean=false,
-    @Embedded var date : Date=Date()
+    @Embedded var date : Date=Date(),
+    var favourite:Boolean = false,
+    var rating: Float? = null
 ): Parcelable
 
 @Parcelize
@@ -55,9 +55,6 @@ data class HillfortModel(
         var Title:String="",
         var Image:String="",
         var Location:@RawValue GeoPoint?=null,
-
-//    var visited: MutableList<String> = arrayListOf(),
-//    var favourite: MutableList<String> = arrayListOf(),
         var userReaction: @RawValue MutableList<UserReaction> = arrayListOf()
 ): Parcelable
 
