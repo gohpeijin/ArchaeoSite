@@ -143,7 +143,6 @@ class DisplayListView : BaseView(), AnkoLogger, SitesListener {
         }
     }
 
-
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_search, menu)
         val searchViewItem = menu!!.findItem(R.id.search)

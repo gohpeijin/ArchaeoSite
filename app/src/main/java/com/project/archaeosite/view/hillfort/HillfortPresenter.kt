@@ -20,6 +20,9 @@ import java.io.FileOutputStream
 
 class HillfortPresenter(view: BaseView): BasePresenter(view),AnkoLogger {
 
+    var fav_clicked = false
+    var searchhistory: String? = null
+
     //region listView
     fun loadHillfortList(int: Int){
         view!!.showProgress()
@@ -77,7 +80,6 @@ class HillfortPresenter(view: BaseView): BasePresenter(view),AnkoLogger {
     var reacted=false
     var index: Int? =null
 
-
     //for display use only and will no updated unless the dialog is called agn
     fun getIndiReactionModel(hillfort: HillfortModel):UserReaction {
         indiUserReaction = UserReaction(userID = user!!.uid)
@@ -106,7 +108,6 @@ class HillfortPresenter(view: BaseView): BasePresenter(view),AnkoLogger {
         }
         return avgRate/count
     }
-
 
     fun doVisitedCheckbox(checked: Boolean, hillfort: HillfortModel) {
         if(reacted)

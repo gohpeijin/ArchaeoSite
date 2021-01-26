@@ -35,7 +35,6 @@ class HillfortView :  BaseView(), HillfortListener {
     lateinit var presenter: HillfortPresenter
     lateinit var adapter: HillfortListAdapter
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_hillfort_view)
@@ -74,16 +73,16 @@ class HillfortView :  BaseView(), HillfortListener {
         presenter.loadHillfortList(DISPLAY_ALL_LIST)
 
         //region interface for floating botton
-        var clicked = false
+
         floatingActionButton_fav.setOnClickListener {
-            if (!clicked) {
+            if (!presenter.fav_clicked) {
                 presenter.loadHillfortList(DISPLAY_FAV_LIST)
                 floatingActionButton_fav.backgroundTintList = ContextCompat.getColorStateList(this, R.color.fav_toggle_red)
-                clicked = true
+                presenter.fav_clicked = true
             } else {
                 presenter.loadHillfortList(DISPLAY_ALL_LIST)
                 floatingActionButton_fav.backgroundTintList = ContextCompat.getColorStateList(this, R.color.fav_toggle_grey)
-                clicked = false
+                presenter.fav_clicked = false
             }
         }
 
@@ -104,8 +103,8 @@ class HillfortView :  BaseView(), HillfortListener {
         adapter = HillfortListAdapter(hillfortList, this)
         recyclerview_hillfort.adapter = adapter
         recyclerview_hillfort.adapter?.notifyDataSetChanged()
-        if (!searchhistory.isNullOrBlank())
-            adapter.filter.filter(searchhistory)
+        if (!presenter.searchhistory.isNullOrBlank())
+            adapter.filter.filter(presenter.searchhistory)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -144,7 +143,6 @@ class HillfortView :  BaseView(), HillfortListener {
         }
     }
 
-    var searchhistory: String? = null
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_search, menu)
         val searchViewItem = menu!!.findItem(R.id.search)
@@ -166,14 +164,13 @@ class HillfortView :  BaseView(), HillfortListener {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                searchhistory = newText
+                presenter.searchhistory = newText
                 adapter.filter.filter(newText)
                 return false
             }
         })
         return super.onCreateOptionsMenu(menu)
     }
-
     //endregion
 
     //region specify Hillfort
