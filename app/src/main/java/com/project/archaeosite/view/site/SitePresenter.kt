@@ -1,8 +1,12 @@
 package com.project.archaeosite.view.site
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
+import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
@@ -63,27 +67,55 @@ class SitePresenter (view: SiteView): BasePresenter(view),AnkoLogger {
         }
     }
 
+
         @SuppressLint("MissingPermission")
         fun doSetCurrentLocation() {
             locationService.lastLocation.addOnSuccessListener {
-                locationUpdate(Location(it.latitude, it.longitude))
+                if (it != null) {
+                    locationUpdate(Location(it.latitude, it.longitude))
+                }
+                else{
+                    view!!.toast("Since GPS location is off, default location will be used")
+                    locationUpdate(defaultLocation)
+                }
             }
         }
 
         override fun doRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-            if (isPermissionGranted(requestCode, grantResults)) {
-                doSetCurrentLocation()
-            } else {
-                // permissions denied, so use the default location
-                locationUpdate(defaultLocation)
+
+            when(requestCode){
+                REQUEST_PERMISSIONS_REQUEST_CODE->{
+                    if (isPermissionGranted(requestCode, grantResults)) {
+                        doSetCurrentLocation()
+                    } else {
+                        // permissions denied, so use the default location
+                        locationUpdate(defaultLocation)
+                        view!!.toast("Location permission not granted, default location will use to set your location")
+                    }
+                }
+                CAMERA_PERMISSION_REQUEST_CODE->{
+                    if(isCameraPermissionGranted(requestCode,grantResults)){
+                        takephoto()
+                    }
+                    else {
+                        view!!.toast("Unable to take photo without permission")
+                    }
+                }
             }
 
-            if(isCameraPermissionGranted(requestCode,grantResults)){
-                takephoto()
-            }
-            else {
-                view!!.toast("Unable to take photo without permission")
-            }
+//            if (isPermissionGranted(requestCode, grantResults)) {
+//                doSetCurrentLocation()
+//            } else {
+//                // permissions denied, so use the default location
+//                locationUpdate(defaultLocation)
+//            }
+//
+//            if(isCameraPermissionGranted(requestCode,grantResults)){
+//                takephoto()
+//            }
+//            else {
+//                view!!.toast("Unable to take photo without permission")
+//            }
         }
 
         fun doConfigureMap(m: GoogleMap) {

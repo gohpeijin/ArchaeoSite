@@ -38,8 +38,8 @@ class EditLocationView : BaseView(),  GoogleMap.OnMarkerDragListener,GoogleMap.O
 
     @SuppressLint("SetTextI18n")
     override fun onMarkerDrag(marker: Marker) {
-        lat.text = "%.6f".format(marker.position.latitude)
-        lng.text = "%.6f".format(marker.position.longitude)
+        lat.text = "latitude: "+"%.6f".format(marker.position.latitude)
+        lng.text = "longitude: "+"%.6f".format(marker.position.longitude)
     }
 
     @SuppressLint("SetTextI18n")
