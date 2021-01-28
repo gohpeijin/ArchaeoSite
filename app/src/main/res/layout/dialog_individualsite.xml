@@ -35,11 +35,12 @@
 
                 <ImageView
                     android:id="@+id/image_edit"
+                    android:padding="2dp"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:layout_gravity="center"
                     android:layout_marginRight="10dp"
-                    app:srcCompat="@android:drawable/ic_menu_edit" />
+                    app:srcCompat="@drawable/edit" />
 
                 <ImageView
                     android:id="@+id/dialog_site_image_navigator"
@@ -177,8 +178,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Description : "
-                android:textSize="12sp"
-                android:textColor="?android:attr/textColorPrimary" />
+                android:textSize="12sp" />
 
             <TextView
                 android:paddingTop="5dp"
