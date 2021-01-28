@@ -102,20 +102,6 @@ class SitePresenter (view: SiteView): BasePresenter(view),AnkoLogger {
                     }
                 }
             }
-
-//            if (isPermissionGranted(requestCode, grantResults)) {
-//                doSetCurrentLocation()
-//            } else {
-//                // permissions denied, so use the default location
-//                locationUpdate(defaultLocation)
-//            }
-//
-//            if(isCameraPermissionGranted(requestCode,grantResults)){
-//                takephoto()
-//            }
-//            else {
-//                view!!.toast("Unable to take photo without permission")
-//            }
         }
 
         fun doConfigureMap(m: GoogleMap) {
