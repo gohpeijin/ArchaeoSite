@@ -62,7 +62,7 @@ ix. Navigator
 *Select image,location and add the site*
 
 <img src="ArchaeoImg\selectImg.gif" width="200">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<img src="ArchaeoImg\selectLoc.gif" width="200">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<img src="ArchaeoImg\SelectLoc.gif" width="200">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <img src="ArchaeoImg\Add.gif" width="200"><br /><br />
 
 *Delete Individual Site*
@@ -93,7 +93,7 @@ ix. Navigator
 
 *Map*
 
-<img src="ArchaeoImg\ShowMap.gif" width="200">nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<img src="ArchaeoImg\ShowMap.gif" width="200">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <img src="ArchaeoImg\ShowMapAll.gif" width="200"><br /><br />
 
 *Change dark/light mode*
